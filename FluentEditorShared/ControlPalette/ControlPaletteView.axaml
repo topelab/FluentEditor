@@ -200,8 +200,9 @@
                                 x:Name="BaseExpanderButton"
                                 Grid.Column="1"
                                 HorizontalAlignment="Right"
-                                VerticalAlignment="Top">
-                                ^
+                                VerticalAlignment="Top"
+                                BorderThickness="0"
+                                Theme="{StaticResource FluentExpanderToggleButtonDownTheme}">
                             </ToggleButton>
                         </Grid>
                         <Grid Margin="0,8,0,32">
@@ -274,8 +275,9 @@
                                 x:Name="PrimaryExpanderButton"
                                 Grid.Column="1"
                                 HorizontalAlignment="Right"
-                                VerticalAlignment="Top">
-                                ^
+                                VerticalAlignment="Top"
+                                BorderThickness="0"
+                                Theme="{StaticResource FluentExpanderToggleButtonDownTheme}">
                             </ToggleButton>
                         </Grid>
                         <Grid Margin="0,8,0,0">
