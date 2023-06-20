@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 
 using System.Collections.Generic;
-using Windows.Data.Json;
-using Windows.UI;
-using FluentEditorShared.Utils;
+using System.Text.Json.Nodes;
+using Avalonia.Media;
 using FluentEditorShared.ColorPalette;
+using FluentEditorShared.Utils;
 
 namespace FluentEditor.ControlPalette.Model
 {
@@ -15,11 +15,11 @@ namespace FluentEditor.ControlPalette.Model
         {
             if(id == null)
             {
-                id = data["Id"].GetString();
+                id = data["Id"].GetValue<string>();
             }
             if (name == null)
             {
-                name = data["Name"].GetString();
+                name = data["Name"].GetValue<string>();
             }
             Color lightRegionColor = data["LightRegionColor"].GetColor();
             Color darkRegionColor = data["DarkRegionColor"].GetColor();
@@ -31,10 +31,10 @@ namespace FluentEditor.ControlPalette.Model
             Dictionary<int, Color> lightBaseOverrides = new Dictionary<int, Color>();
             if (data.ContainsKey("LightBaseOverrides"))
             {
-                var lightBaseOverridesNode = data["LightBaseOverrides"].GetArray();
+                var lightBaseOverridesNode = data["LightBaseOverrides"].AsArray();
                 foreach (var v in lightBaseOverridesNode)
                 {
-                    var node = v.GetObject();
+                    var node = v.AsObject();
 
                     int index = node["Index"].GetInt();
                     Color color = node["Color"].GetColor();
@@ -45,10 +45,10 @@ namespace FluentEditor.ControlPalette.Model
             Dictionary<int, Color> darkBaseOverrides = new Dictionary<int, Color>();
             if (data.ContainsKey("DarkBaseOverrides"))
             {
-                var darkBaseOverridesNode = data["DarkBaseOverrides"].GetArray();
+                var darkBaseOverridesNode = data["DarkBaseOverrides"].AsArray();
                 foreach (var v in darkBaseOverridesNode)
                 {
-                    var node = v.GetObject();
+                    var node = v.AsObject();
 
                     int index = node["Index"].GetInt();
                     Color color = node["Color"].GetColor();
@@ -59,10 +59,10 @@ namespace FluentEditor.ControlPalette.Model
             Dictionary<int, Color> lightPrimaryOverrides = new Dictionary<int, Color>();
             if (data.ContainsKey("LightPrimaryOverrides"))
             {
-                var lightPrimaryOverridesNode = data["LightPrimaryOverrides"].GetArray();
+                var lightPrimaryOverridesNode = data["LightPrimaryOverrides"].AsArray();
                 foreach (var v in lightPrimaryOverridesNode)
                 {
-                    var node = v.GetObject();
+                    var node = v.AsObject();
 
                     int index = node["Index"].GetInt();
                     Color color = node["Color"].GetColor();
@@ -73,10 +73,10 @@ namespace FluentEditor.ControlPalette.Model
             Dictionary<int, Color> darkPrimaryOverrides = new Dictionary<int, Color>();
             if (data.ContainsKey("DarkPrimaryOverrides"))
             {
-                var darkPrimaryOverridesNode = data["DarkPrimaryOverrides"].GetArray();
+                var darkPrimaryOverridesNode = data["DarkPrimaryOverrides"].AsArray();
                 foreach (var v in darkPrimaryOverridesNode)
                 {
-                    var node = v.GetObject();
+                    var node = v.AsObject();
 
                     int index = node["Index"].GetInt();
                     Color color = node["Color"].GetColor();
@@ -92,25 +92,25 @@ namespace FluentEditor.ControlPalette.Model
             JsonObject data = new JsonObject();
             if (!string.IsNullOrEmpty(preset.Id))
             {
-                data["Id"] = JsonValue.CreateStringValue(preset.Id);
+                data["Id"] = preset.Id;
             }
             if (!string.IsNullOrEmpty(preset.Name))
             {
-                data["Name"] = JsonValue.CreateStringValue(preset.Name);
+                data["Name"] = preset.Name;
             }
-            data["LightRegionColor"] = JsonValue.CreateStringValue(preset.LightRegionColor.ToString());
-            data["DarkRegionColor"] = JsonValue.CreateStringValue(preset.DarkRegionColor.ToString());
-            data["LightBaseColor"] = JsonValue.CreateStringValue(preset.LightBaseColor.ToString());
-            data["DarkBaseColor"] = JsonValue.CreateStringValue(preset.DarkBaseColor.ToString());
-            data["LightPrimaryColor"] = JsonValue.CreateStringValue(preset.LightPrimaryColor.ToString());
-            data["DarkPrimaryColor"] = JsonValue.CreateStringValue(preset.DarkPrimaryColor.ToString());
+            data["LightRegionColor"] = preset.LightRegionColor.ToString();
+            data["DarkRegionColor"] = preset.DarkRegionColor.ToString();
+            data["LightBaseColor"] = preset.LightBaseColor.ToString();
+            data["DarkBaseColor"] = preset.DarkBaseColor.ToString();
+            data["LightPrimaryColor"] = preset.LightPrimaryColor.ToString();
+            data["DarkPrimaryColor"] = preset.DarkPrimaryColor.ToString();
 
             var lightBaseOverridesNode = new JsonArray();
             foreach (int index in preset.LightBaseOverrides.Keys)
             {
                 JsonObject node = new JsonObject();
-                node["Index"] = JsonValue.CreateNumberValue(index);
-                node["Color"] = JsonValue.CreateStringValue(preset.LightBaseOverrides[index].ToString());
+                node["Index"] = index;
+                node["Color"] = preset.LightBaseOverrides[index].ToString();
                 lightBaseOverridesNode.Add(node);
             }
             data["LightBaseOverrides"] = lightBaseOverridesNode;
@@ -119,8 +119,8 @@ namespace FluentEditor.ControlPalette.Model
             foreach (int index in preset.DarkBaseOverrides.Keys)
             {
                 JsonObject node = new JsonObject();
-                node["Index"] = JsonValue.CreateNumberValue(index);
-                node["Color"] = JsonValue.CreateStringValue(preset.DarkBaseOverrides[index].ToString());
+                node["Index"] = index;
+                node["Color"] = preset.DarkBaseOverrides[index].ToString();
                 darkBaseOverridesNode.Add(node);
             }
             data["DarkBaseOverrides"] = darkBaseOverridesNode;
@@ -129,8 +129,8 @@ namespace FluentEditor.ControlPalette.Model
             foreach (int index in preset.LightPrimaryOverrides.Keys)
             {
                 JsonObject node = new JsonObject();
-                node["Index"] = JsonValue.CreateNumberValue(index);
-                node["Color"] = JsonValue.CreateStringValue(preset.LightPrimaryOverrides[index].ToString());
+                node["Index"] = index;
+                node["Color"] = preset.LightPrimaryOverrides[index].ToString();
                 lightPrimaryOverridesNode.Add(node);
             }
             data["LightPrimaryOverrides"] = lightPrimaryOverridesNode;
@@ -139,8 +139,8 @@ namespace FluentEditor.ControlPalette.Model
             foreach (int index in preset.DarkPrimaryOverrides.Keys)
             {
                 JsonObject node = new JsonObject();
-                node["Index"] = JsonValue.CreateNumberValue(index);
-                node["Color"] = JsonValue.CreateStringValue(preset.DarkPrimaryOverrides[index].ToString());
+                node["Index"] = index;
+                node["Color"] = preset.DarkPrimaryOverrides[index].ToString();
                 darkPrimaryOverridesNode.Add(node);
             }
             data["DarkPrimaryOverrides"] = darkPrimaryOverridesNode;

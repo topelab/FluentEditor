@@ -2,9 +2,10 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Globalization;
+using Avalonia.Media;
 using System.Numerics;
-using Windows.Data.Json;
-using Windows.UI;
+using System.Text.Json.Nodes;
 
 namespace FluentEditorShared.Utils
 {
@@ -26,123 +27,100 @@ namespace FluentEditorShared.Utils
             }
         }
 
-        public static string GetOptionalString(this IJsonValue data)
+        public static string GetOptionalString(this JsonNode data)
         {
             if (data == null)
             {
                 return null;
             }
-            if (data.ValueType == JsonValueType.String)
+            if (data is JsonValue value
+                && value.TryGetValue<string>(out var val))
             {
-                return data.GetString();
+                return val;
             }
             return data.ToString();
         }
 
-        public static int GetInt(this IJsonValue data)
+        public static int GetInt(this JsonNode data)
         {
             if (data == null)
             {
                 throw new ArgumentNullException("data");
             }
-            if (data.ValueType == JsonValueType.String)
+            if (data is JsonValue value)
             {
-                int retVal;
-                if (!int.TryParse(data.GetString(), out retVal))
+                if (value.TryGetValue<string>(out var val))
                 {
-                    throw new Exception("JsonObject is type string but cannot be parsed to int");
+                    int retVal;
+                    if (!int.TryParse(val, out retVal))
+                    {
+                        throw new Exception("JsonObject is type string but cannot be parsed to int");
+                    }
+
+                    return retVal;
                 }
-                return retVal;
+                else if (value.TryGetValue<int>(out var number))
+                {
+                    return number;
+                }
             }
-            else if (data.ValueType == JsonValueType.Number)
-            {
-                return (int)Math.Round(data.GetNumber());
-            }
-            else
-            {
-                throw new Exception(string.Format("JsonObject is type {0}", data.ValueType.ToString()));
-            }
+
+            throw new InvalidOperationException();
         }
 
-        public static bool TryGetInt(this IJsonValue data, out int retVal)
+        public static bool TryGetInt(this JsonNode data, out int retVal)
         {
             if (data == null)
             {
                 retVal = default(int);
                 return false;
             }
-            if (data.ValueType == JsonValueType.String)
+            if (data is JsonValue value)
             {
-                if (!int.TryParse(data.GetString(), out retVal))
+                if (value.TryGetValue<string>(out var val))
                 {
-                    retVal = default(int);
-                    return false;
+                    if (!int.TryParse(val, out retVal))
+                    {
+                        throw new Exception("JsonObject is type string but cannot be parsed to int");
+                    }
+
+                    return true;
                 }
-                return true;
+                else if (value.TryGetValue<int>(out retVal))
+                {
+                    return true;
+                }
             }
-            else if (data.ValueType == JsonValueType.Number)
-            {
-                retVal = (int)Math.Round(data.GetNumber());
-                return true;
-            }
-            else
-            {
-                retVal = default(int);
-                return false;
-            }
+
+            retVal = default;
+            return false;
         }
 
-        public static float GetFloat(this IJsonValue data)
-        {
-            if (data == null)
-            {
-                throw new ArgumentNullException("data");
-            }
-            if (data.ValueType == JsonValueType.String)
-            {
-                float retVal;
-                if (!float.TryParse(data.GetString(), out retVal))
-                {
-                    throw new Exception("JsonObject is type string but cannot be parsed to float");
-                }
-                return retVal;
-            }
-            else if (data.ValueType == JsonValueType.Number)
-            {
-                return (float)data.GetNumber();
-            }
-            else
-            {
-                throw new Exception(string.Format("JsonObject is type {0}", data.ValueType.ToString()));
-            }
-        }
-
-        public static bool TryGetFloat(this IJsonValue data, out float retVal)
+        public static bool TryGetFloat(this JsonNode data, out float retVal)
         {
             if (data == null)
             {
                 retVal = default(float);
                 return false;
             }
-            if (data.ValueType == JsonValueType.String)
+            if (data is JsonValue value)
             {
-                if (!float.TryParse(data.GetString(), out retVal))
+                if (value.TryGetValue<string>(out var val))
                 {
-                    retVal = default(float);
-                    return false;
+                    if (!float.TryParse(val, NumberStyles.Any, CultureInfo.InvariantCulture, out retVal))
+                    {
+                        throw new Exception("JsonObject is type string but cannot be parsed to int");
+                    }
+
+                    return true;
                 }
-                return true;
+                else if (value.TryGetValue<float>(out retVal))
+                {
+                    return true;
+                }
             }
-            else if (data.ValueType == JsonValueType.Number)
-            {
-                retVal = (float)data.GetNumber();
-                return true;
-            }
-            else
-            {
-                retVal = default(float);
-                return false;
-            }
+            retVal = default(float);
+            return false;
         }
 
         public static Vector2 GetVector2(this JsonObject data)
@@ -153,14 +131,14 @@ namespace FluentEditorShared.Utils
             }
             float x = 0f, y = 0f;
 
-            IJsonValue xnode = null;
+            JsonValue xnode = null;
             if (data.ContainsKey("X"))
             {
-                xnode = data["X"];
+                xnode = data["X"].AsValue();
             }
             else if (data.ContainsKey("x"))
             {
-                xnode = data["x"];
+                xnode = data["x"].AsValue();
             }
             if (xnode != null)
             {
@@ -170,14 +148,14 @@ namespace FluentEditorShared.Utils
                 }
             }
 
-            IJsonValue ynode = null;
+            JsonValue ynode = null;
             if (data.ContainsKey("Y"))
             {
-                ynode = data["Y"];
+                ynode = data["Y"].AsValue();
             }
             else if (data.ContainsKey("y"))
             {
-                ynode = data["y"];
+                ynode = data["y"].AsValue();
             }
             if (ynode != null)
             {
@@ -198,14 +176,14 @@ namespace FluentEditorShared.Utils
             }
             float x = 0f, y = 0f, z = 0f;
 
-            IJsonValue xnode = null;
+            JsonValue xnode = null;
             if (data.ContainsKey("X"))
             {
-                xnode = data["X"];
+                xnode = data["X"].AsValue();
             }
             else if (data.ContainsKey("x"))
             {
-                xnode = data["x"];
+                xnode = data["x"].AsValue();
             }
             if (xnode != null)
             {
@@ -215,14 +193,14 @@ namespace FluentEditorShared.Utils
                 }
             }
 
-            IJsonValue ynode = null;
+            JsonValue ynode = null;
             if (data.ContainsKey("Y"))
             {
-                ynode = data["Y"];
+                ynode = data["Y"].AsValue();
             }
             else if (data.ContainsKey("y"))
             {
-                ynode = data["y"];
+                ynode = data["y"].AsValue();
             }
             if (ynode != null)
             {
@@ -232,14 +210,14 @@ namespace FluentEditorShared.Utils
                 }
             }
 
-            IJsonValue znode = null;
+            JsonValue znode = null;
             if (data.ContainsKey("Z"))
             {
-                znode = data["Z"];
+                znode = data["Z"].AsValue();
             }
             else if (data.ContainsKey("z"))
             {
-                znode = data["z"];
+                znode = data["z"].AsValue();
             }
             if (znode != null)
             {
@@ -252,30 +230,29 @@ namespace FluentEditorShared.Utils
             return new Vector3(x, y, z);
         }
 
-        public static Color GetColor(this IJsonValue data)
+        public static Color GetColor(this JsonNode data)
         {
             if (data == null)
             {
                 throw new ArgumentNullException("data");
             }
-            if (data.ValueType == JsonValueType.String)
+            if (data is JsonValue value
+                && value.TryGetValue<string>(out var str))
             {
                 Color retVal;
-                if (!FluentEditorShared.Utils.ColorUtils.TryParseColorString(data.GetString(), out retVal))
+                if (!FluentEditorShared.Utils.ColorUtils.TryParseColorString(str, out retVal))
                 {
                     throw new Exception("JsonObject is type string but cannot be parsed to Color");
                 }
                 return retVal;
             }
-            else
-            {
-                throw new Exception(string.Format("JsonObject is type {0}", data.ValueType.ToString()));
-            }
+
+            throw new InvalidOperationException();
         }
 
-        public static T GetEnum<T>(this IJsonValue data) where T : struct
+        public static T GetEnum<T>(this JsonNode data) where T : struct
         {
-            string dataString = data.GetString();
+            string dataString = data.GetOptionalString();
             if (Enum.TryParse<T>(dataString, out T retVal))
             {
                 return retVal;

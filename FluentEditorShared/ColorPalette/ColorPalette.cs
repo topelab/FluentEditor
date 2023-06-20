@@ -4,8 +4,8 @@
 using FluentEditorShared.Utils;
 using System;
 using System.Collections.Generic;
-using Windows.Data.Json;
-using Windows.UI;
+using Avalonia.Media;
+using System.Text.Json.Nodes;
 
 namespace FluentEditorShared.ColorPalette
 {
@@ -18,11 +18,11 @@ namespace FluentEditorShared.ColorPalette
             IColorPaletteEntry baseColor = null;
             if (data.ContainsKey("EditableBaseColor"))
             {
-                baseColor = EditableColorPaletteEntry.Parse(data["EditableBaseColor"].GetObject(), null, contrastColors);
+                baseColor = EditableColorPaletteEntry.Parse(data["EditableBaseColor"].AsObject(), null, contrastColors);
             }
             else if (data.ContainsKey("BaseColor"))
             {
-                baseColor = ColorPaletteEntry.Parse(data["BaseColor"].GetObject(), contrastColors);
+                baseColor = ColorPaletteEntry.Parse(data["BaseColor"].AsObject(), contrastColors);
             }
 
             int steps = data["Steps"].GetInt();

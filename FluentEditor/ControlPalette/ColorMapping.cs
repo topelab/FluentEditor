@@ -4,8 +4,8 @@
 using FluentEditorShared.ColorPalette;
 using System;
 using System.Collections.Generic;
-using Windows.Data.Json;
-using Windows.UI.Xaml;
+using System.Text.Json.Nodes;
+using Avalonia.Themes.Fluent;
 using FluentEditorShared.Utils;
 
 namespace FluentEditor.ControlPalette
@@ -53,7 +53,7 @@ namespace FluentEditor.ControlPalette
             List<ColorMapping> retVal = new List<ColorMapping>();
             foreach (var node in data)
             {
-                retVal.Add(ColorMapping.Parse(node.GetObject(), lightRegion, darkRegion, lightBase, darkBase, lightPrimary, darkPrimary, white, black));
+                retVal.Add(ColorMapping.Parse(node.AsObject(), lightRegion, darkRegion, lightBase, darkBase, lightPrimary, darkPrimary, white, black));
             }
             return retVal;
         }
@@ -98,111 +98,10 @@ namespace FluentEditor.ControlPalette
         private readonly IColorPaletteEntry _source;
         private readonly ColorTarget _targetColor;
         private readonly ColorPaletteResources _targetResources;
-
-        private static object _linkMapLock = new object();
-        private static Dictionary<FrameworkElement, bool> _updateInProgress = new Dictionary<FrameworkElement, bool>();
-
-        private FrameworkElement _linkedElement;
-        public FrameworkElement LinkedElement
-        {
-            set
-            {
-                lock (_linkMapLock)
-                {
-                    if(_linkedElement != null)
-                    {
-                        if(_updateInProgress.ContainsKey(_linkedElement))
-                        {
-                            _updateInProgress.Remove(_linkedElement);
-                        }
-                        _linkedElement.Unloaded -= _linkedElement_Unloaded;
-                    }
-
-                    if (_linkedElement != value)
-                    {
-                        _linkedElement = value;
-                        _linkedElement.Unloaded += _linkedElement_Unloaded;
-                    }
-                }
-            }
-        }
-
-        private void _linkedElement_Unloaded(object sender, RoutedEventArgs e)
-        {
-            lock(_linkMapLock)
-            {
-                if(_linkedElement != null)
-                {
-                    if (_updateInProgress.ContainsKey(_linkedElement))
-                    {
-                        _updateInProgress.Remove(_linkedElement);
-                    }
-                    _linkedElement.Unloaded -= _linkedElement_Unloaded;
-                    _linkedElement = null;
-                }
-            }
-        }
-
-        private void ForceThemeUpdateInLinkedElement()
-        {
-            FrameworkElement element = null;
-            lock (_linkMapLock)
-            {
-                if(_linkedElement == null)
-                {
-                    return;
-                }
-                element = _linkedElement;
-                if (_updateInProgress.ContainsKey(element))
-                {
-                    if (_updateInProgress[element])
-                    {
-                        return;
-                    }
-                    else
-                    {
-                        _updateInProgress[element] = true;
-                    }
-                }
-                else
-                {
-                    _updateInProgress.Add(element, true);
-                }
-            }
-
-            _ = element.Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () =>
-            {
-                if (element.RequestedTheme == ElementTheme.Light)
-                {
-                    element.RequestedTheme = ElementTheme.Dark;
-                    element.RequestedTheme = ElementTheme.Light;
-                }
-                else if (element.RequestedTheme == ElementTheme.Dark)
-                {
-                    element.RequestedTheme = ElementTheme.Light;
-                    element.RequestedTheme = ElementTheme.Dark;
-                }
-                else
-                {
-                    element.RequestedTheme = ElementTheme.Light;
-                    element.RequestedTheme = ElementTheme.Dark;
-                    element.RequestedTheme = ElementTheme.Default;
-                }
-
-                lock (_linkMapLock)
-                {
-                    if (_updateInProgress.ContainsKey(element))
-                    {
-                        _updateInProgress[element] = false;
-                    }
-                }
-            });
-        }
-
+        
         private void Source_ActiveColorChanged(IColorPaletteEntry obj)
         {
             Apply();
-            ForceThemeUpdateInLinkedElement();
         }
 
         private void UpdateAcrylicSurfaceVisual()

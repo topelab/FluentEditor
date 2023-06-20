@@ -3,30 +3,28 @@
 
 using System;
 using System.Linq;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
+using Avalonia.Controls.Primitives;
+using Avalonia.Markup.Xaml.Templates;
 
 namespace FluentEditorShared.Editors
 {
-    public class EnumEditor : Control
+    public class EnumEditor : TemplatedControl
     {
-        public EnumEditor()
+        private ContentPresenter _headerContentPresenter;
+        
+        protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
         {
-            this.DefaultStyleKey = typeof(EnumEditor);
-        }
+            base.OnApplyTemplate(e);
 
-        protected override void OnApplyTemplate()
-        {
-            base.OnApplyTemplate();
+            _headerContentPresenter = e.NameScope.Find<ContentPresenter>("HeaderContentPresenter");
 
             var h = Header;
             if (h != null)
             {
-                var headerContentPresenter = GetTemplateChild("HeaderContentPresenter") as UIElement;
-                if (headerContentPresenter != null)
-                {
-                    headerContentPresenter.Visibility = h == null ? Visibility.Collapsed : Visibility.Visible;
-                }
+                _headerContentPresenter.IsVisible = h != null;
             }
         }
 
@@ -55,16 +53,8 @@ namespace FluentEditorShared.Editors
 
         #region EnumTypeProperty
 
-        public static readonly DependencyProperty EnumTypeProperty = DependencyProperty.Register("EnumType", typeof(Type), typeof(EnumEditor), new PropertyMetadata(null, new PropertyChangedCallback(OnEnumTypePropertyChanged)));
-
-        private static void OnEnumTypePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is EnumEditor target)
-            {
-                target.OnEnumTypeChanged(e.OldValue as Type, e.NewValue as Type);
-            }
-        }
-
+        public static readonly StyledProperty<Type> EnumTypeProperty = AvaloniaProperty.Register<EnumEditor, Type>("EnumType");
+        
         private void OnEnumTypeChanged(Type oldValue, Type newValue)
         {
             if (!_internalValueChanging)
@@ -104,35 +94,27 @@ namespace FluentEditorShared.Editors
 
         public Type EnumType
         {
-            get { return GetValue(EnumTypeProperty) as Type; }
-            set { SetValue(EnumTypeProperty, value); }
+            get => GetValue(EnumTypeProperty);
+            set => SetValue(EnumTypeProperty, value);
         }
 
         #endregion
 
         #region AvailableStringsProperty
 
-        public static readonly DependencyProperty AvailableStringsProperty = DependencyProperty.Register("AvailableStrings", typeof(string[]), typeof(EnumEditor), new PropertyMetadata(null));
+        public static readonly StyledProperty<string[]> AvailableStringsProperty = AvaloniaProperty.Register<EnumEditor, string[]>("AvailableStrings");
 
         public string[] AvailableStrings
         {
-            get { return GetValue(AvailableStringsProperty) as string[]; }
-            set { SetValue(AvailableStringsProperty, value); }
+            get => GetValue(AvailableStringsProperty);
+            set => SetValue(AvailableStringsProperty, value);
         }
         #endregion
 
         #region SelectedString
 
-        public static readonly DependencyProperty SelectedStringProperty = DependencyProperty.Register("SelectedString", typeof(string), typeof(EnumEditor), new PropertyMetadata(null, new PropertyChangedCallback(OnSelectedStringPropertyChanged)));
-
-        private static void OnSelectedStringPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is EnumEditor target)
-            {
-                target.OnSelectedStringChanged(e.OldValue as string, e.NewValue as string);
-            }
-        }
-
+        public static readonly StyledProperty<string> SelectedStringProperty = AvaloniaProperty.Register<EnumEditor, string>("SelectedString");
+        
         private void OnSelectedStringChanged(string oldValue, string newValue)
         {
             if (!_internalValueChanging)
@@ -163,24 +145,16 @@ namespace FluentEditorShared.Editors
 
         public string SelectedString
         {
-            get { return GetValue(SelectedStringProperty) as string; }
-            set { SetValue(SelectedStringProperty, value); }
+            get => GetValue(SelectedStringProperty);
+            set => SetValue(SelectedStringProperty, value);
         }
 
         #endregion
 
         #region SelectedBoxedEnumProperty
 
-        public static readonly DependencyProperty SelectedBoxedEnumProperty = DependencyProperty.Register("SelectedBoxedEnum", typeof(object), typeof(EnumEditor), new PropertyMetadata(null, new PropertyChangedCallback(OnSelectedBoxedEnumPropertyChanged)));
-
-        private static void OnSelectedBoxedEnumPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is EnumEditor target)
-            {
-                target.OnSelectedBoxedEnumChanged(e.OldValue, e.NewValue);
-            }
-        }
-
+        public static readonly StyledProperty<object> SelectedBoxedEnumProperty = AvaloniaProperty.Register<EnumEditor, object>("SelectedBoxedEnum");
+        
         private void OnSelectedBoxedEnumChanged(object oldValue, object newValue)
         {
             if (!_internalValueChanging)
@@ -203,51 +177,65 @@ namespace FluentEditorShared.Editors
 
         public object SelectedBoxedEnum
         {
-            get { return GetValue(SelectedBoxedEnumProperty); }
-            set { SetValue(SelectedBoxedEnumProperty, value); }
+            get => GetValue(SelectedBoxedEnumProperty);
+            set => SetValue(SelectedBoxedEnumProperty, value);
         }
 
         #endregion
 
         #region HeaderProperty
 
-        public static readonly DependencyProperty HeaderProperty = DependencyProperty.Register("Header", typeof(object), typeof(EnumEditor), new PropertyMetadata(null, new PropertyChangedCallback(OnHeaderPropertyChanged)));
-
-        private static void OnHeaderPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is EnumEditor target)
-            {
-                target.OnHeaderChanged(e.OldValue, e.NewValue);
-            }
-        }
-
+        public static readonly StyledProperty<object> HeaderProperty = AvaloniaProperty.Register<EnumEditor, object>("Header");
+        
         private void OnHeaderChanged(object oldVal, object newVal)
         {
-            var headerContentPresenter = GetTemplateChild("HeaderContentPresenter") as UIElement;
-            if (headerContentPresenter != null)
-            {
-                headerContentPresenter.Visibility = newVal == null ? Visibility.Collapsed : Visibility.Visible;
-            }
+            _headerContentPresenter.IsVisible = newVal != null;
         }
 
         public object Header
         {
-            get { return GetValue(HeaderProperty); }
-            set { SetValue(HeaderProperty, value); }
+            get => GetValue(HeaderProperty);
+            set => SetValue(HeaderProperty, value);
         }
 
         #endregion
 
         #region HeaderTemplateProperty
 
-        public static readonly DependencyProperty HeaderTemplateProperty = DependencyProperty.Register("HeaderTemplate", typeof(DataTemplate), typeof(EnumEditor), new PropertyMetadata(null));
+        public static readonly StyledProperty<DataTemplate> HeaderTemplateProperty = AvaloniaProperty.Register<EnumEditor, DataTemplate>("HeaderTemplate");
 
         public DataTemplate HeaderTemplate
         {
-            get { return GetValue(HeaderTemplateProperty) as DataTemplate; }
-            set { SetValue(HeaderTemplateProperty, value); }
+            get => GetValue(HeaderTemplateProperty);
+            set => SetValue(HeaderTemplateProperty, value);
         }
 
         #endregion
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == HeaderProperty)
+            {
+                var (oldValue, newValue) = change.GetOldAndNewValue<object>();
+                OnHeaderChanged(oldValue, newValue);
+            }
+            else if (change.Property == SelectedBoxedEnumProperty)
+            {
+                var (oldValue, newValue) = change.GetOldAndNewValue<object>();
+                OnSelectedBoxedEnumChanged(oldValue, newValue);
+            }
+            else if (change.Property == SelectedStringProperty)
+            {
+                var (oldValue, newValue) = change.GetOldAndNewValue<string>();
+                OnSelectedStringChanged(oldValue, newValue);
+            }
+            else if (change.Property == EnumTypeProperty)
+            {
+                var (oldValue, newValue) = change.GetOldAndNewValue<Type>();
+                OnEnumTypeChanged(oldValue, newValue);
+            }
+        }
     }
 }

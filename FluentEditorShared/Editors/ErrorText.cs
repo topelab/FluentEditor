@@ -1,59 +1,51 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 
 namespace FluentEditorShared.Editors
 {
-    public class ErrorText : Control
+    public class ErrorText : TemplatedControl
     {
-        public ErrorText()
+        public static readonly StyledProperty<string> TextProperty = AvaloniaProperty.Register<ErrorText, string>(
+            "Text");
+
+        public string Text
         {
-            this.DefaultStyleKey = typeof(ErrorText);
+            get => GetValue(TextProperty);
+            set => SetValue(TextProperty, value);
         }
 
-        protected override void OnApplyTemplate()
-        {
-            base.OnApplyTemplate();
+        public static readonly StyledProperty<bool> ShowErrorStateProperty = AvaloniaProperty.Register<ErrorText, bool>(
+            "ShowErrorState");
 
+        public bool ShowErrorState
+        {
+            get => GetValue(ShowErrorStateProperty);
+            set => SetValue(ShowErrorStateProperty, value);
+        }
+        
+        protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
+        {
+            base.OnApplyTemplate(e);
             UpdateState();
+        }
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == ShowErrorStateProperty)
+            {
+                UpdateState();
+            }
         }
 
         private void UpdateState()
         {
-            if(ShowErrorState)
-            {
-                VisualStateManager.GoToState(this, "ErrorStateActive", true);
-            }
-            else
-            {
-                VisualStateManager.GoToState(this, "ErrorStateInactive", true);
-            }
-        }
-
-        public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(ErrorText), new PropertyMetadata(null));
-
-        public string Text
-        {
-            get { return GetValue(TextProperty) as string; }
-            set { SetValue(TextProperty, value); }
-        }
-
-        public static readonly DependencyProperty ShowErrorStateProperty = DependencyProperty.Register("ShowErrorState", typeof(bool), typeof(ErrorText), new PropertyMetadata(false, new PropertyChangedCallback(OnShowErrorStatePropertyChanged)));
-
-        private static void OnShowErrorStatePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is ErrorText target)
-            {
-                target.UpdateState();
-            }
-        }
-
-        public bool ShowErrorState
-        {
-            get { return (bool)GetValue(ShowErrorStateProperty); }
-            set { SetValue(ShowErrorStateProperty, value); }
+            PseudoClasses.Set(":active", ShowErrorState);
         }
     }
 }

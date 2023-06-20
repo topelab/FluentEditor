@@ -3,8 +3,6 @@
 
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Windows.ApplicationModel.DataTransfer;
-using Windows.UI.Xaml;
 
 namespace FluentEditor.ControlPalette.Export
 {
@@ -39,14 +37,6 @@ namespace FluentEditor.ControlPalette.Export
             {
                 return !string.IsNullOrEmpty(_exportText);
             }
-        }
-
-        public void OnCopyToClipboard(object sender, RoutedEventArgs e)
-        {
-            DataPackage data = new DataPackage();
-            data.RequestedOperation = DataPackageOperation.Copy;
-            data.SetText(_exportText);
-            Clipboard.SetContent(data);
         }
 
         #region INotifyPropertyChanged

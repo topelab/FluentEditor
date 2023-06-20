@@ -3,7 +3,7 @@
 
 using System;
 using System.Collections.Generic;
-using Windows.UI;
+using Avalonia.Media;
 
 namespace FluentEditorShared.ColorPalette
 {

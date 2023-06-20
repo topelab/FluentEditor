@@ -2,15 +2,15 @@
 // Licensed under the MIT License.
 
 using System;
-using Windows.UI;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Markup;
+using System.Globalization;
+using Avalonia.Data.Converters;
+using Avalonia.Media;
 
 namespace FluentEditorShared
 {
     public class ColorToStringConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, string language)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo language)
         {
             if(value is Color c)
             {
@@ -22,12 +22,11 @@ namespace FluentEditorShared
             }
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo language)
         {
             try
             {
-                var boxedColor = XamlBindingHelper.ConvertValue(typeof(Color), value);
-                if(boxedColor is Color c)
+                if (Color.TryParse(value as string, out var c))
                 {
                     return c;
                 }
@@ -45,7 +44,7 @@ namespace FluentEditorShared
 
     public class NullableColorToStringConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, string language)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo language)
         {
             if (value is Nullable<Color>)
             {
@@ -65,23 +64,22 @@ namespace FluentEditorShared
             }
         }
 
-        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo language)
         {
             try
             {
-                var boxedColor = XamlBindingHelper.ConvertValue(typeof(Color), value);
-                if (boxedColor is Color c)
+                if (Color.TryParse(value as string, out var c))
                 {
-                    return new Color?(c);
+                    return c;
                 }
                 else
                 {
-                    return new Color?(Colors.White);
+                    return Colors.White;
                 }
             }
             catch
             {
-                return new Color?(Colors.White);
+                return Colors.White;
             }
         }
     }

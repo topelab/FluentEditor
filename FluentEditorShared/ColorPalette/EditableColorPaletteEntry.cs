@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 
 using System;
-using Windows.Data.Json;
-using Windows.UI;
 using FluentEditorShared.Utils;
 using System.Collections.Generic;
+using Avalonia.Media;
+using System.Text.Json.Nodes;
 
 namespace FluentEditorShared.ColorPalette
 {
@@ -27,7 +27,7 @@ namespace FluentEditorShared.ColorPalette
             bool useCustomColor = false;
             if (data.ContainsKey("UseCustomColor"))
             {
-                useCustomColor = data["UseCustomColor"].GetBoolean();
+                useCustomColor = data["UseCustomColor"].GetValue<bool>();
             }
 
             FluentEditorShared.Utils.ColorStringFormat activeColorStringFormat = FluentEditorShared.Utils.ColorStringFormat.PoundRGB;

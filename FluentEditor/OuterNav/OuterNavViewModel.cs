@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using FluentEditorShared;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Avalonia.Collections;
 
 namespace FluentEditor.OuterNav
 {
@@ -17,7 +17,7 @@ namespace FluentEditor.OuterNav
             {
                 throw new ArgumentNullException("navItems");
             }
-            _navItems = new ObservableList<INavItem>(navItems);
+            _navItems = new AvaloniaList<INavItem>(navItems);
 
             if (selectedNavItem != null)
             {
@@ -29,8 +29,8 @@ namespace FluentEditor.OuterNav
             }
         }
 
-        private ObservableList<INavItem> _navItems;
-        public ObservableList<INavItem> NavItems
+        private AvaloniaList<INavItem> _navItems;
+        public AvaloniaList<INavItem> NavItems
         {
             get { return _navItems; }
         }

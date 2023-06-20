@@ -2,21 +2,21 @@
 // Licensed under the MIT License.
 
 using FluentEditor.OuterNav;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Windows.Data.Json;
 using FluentEditorShared.ColorPalette;
-using Windows.UI.Xaml;
-using FluentEditorShared.Utils;
 using FluentEditor.ControlPalette.Model;
-using Windows.UI.Xaml.Media;
 using FluentEditorShared;
-using Windows.Storage;
-using Windows.Storage.Provider;
 using System.ComponentModel;
+using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
-using Windows.UI.Xaml.Controls;
+using System.Text.Json.Nodes;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Platform.Storage;
+using FluentEditorShared.Utils;
 
 namespace FluentEditor.ControlPalette
 {
@@ -86,88 +86,62 @@ namespace FluentEditor.ControlPalette
             }
         }
 
-        public void OnSaveDataRequested(object sender, RoutedEventArgs e)
+        public void OnSaveDataRequested()
         {
             _ = SaveData();
         }
 
         private async Task SaveData()
         {
-            StorageFile file = await FilePickerAdapters.ShowSaveFilePicker("ColorData", ".json", new Tuple<string, IList<string>>[] { new Tuple<string, IList<string>>("JSON", new List<string>() { ".json" }) }, null, Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary, true, true);
+            var provider = TopLevel.GetTopLevel(App.NavPage).StorageProvider;
+            var file = await provider.SaveFilePickerAsync(new FilePickerSaveOptions
+            {
+                FileTypeChoices = new[] { App.JsonFileType }
+            });
+
             if (file == null)
             {
                 return;
             }
-            CachedFileManager.DeferUpdates(file);
 
-            Preset savePreset = new Preset(file.Path, file.DisplayName, _paletteModel);
+            Preset savePreset = new Preset(file.Name, file.Name, _paletteModel);
             var saveData = Preset.Serialize(savePreset);
-            var saveString = saveData.Stringify();
+            var saveString = saveData.ToString();
 
-            await FileIO.WriteTextAsync(file, saveString);
-            FileUpdateStatus status = await CachedFileManager.CompleteUpdatesAsync(file);
-            if (status == FileUpdateStatus.Complete)
-            {
-                _paletteModel.AddOrReplacePreset(savePreset);
-                _paletteModel.ApplyPreset(savePreset);
-            }
-            else
-            {
-                if (file == null || file.Path == null)
-                {
-                    return;
-                }
-                var message = string.Format(_stringProvider.GetString("ControlPaletteSaveError"), file.Path);
-                ContentDialog saveFailedDialog = new ContentDialog()
-                {
-                    CloseButtonText = _stringProvider.GetString("ControlPaletteErrorOkButtonCaption"),
-                    Title = _stringProvider.GetString("ControlPaletteSaveErrorTitle"),
-                    Content = message
-                };
-                _ = saveFailedDialog.ShowAsync();
-                return;
-            }
+            await using var stream = await file.OpenWriteAsync();
+            await using var writer = new StreamWriter(stream);
+            await writer.WriteAsync(saveString);
         }
 
-        public void OnLoadDataRequested(object sender, RoutedEventArgs e)
+        public void OnLoadDataRequested()
         {
             _ = LoadData();
         }
 
         private async Task LoadData()
         {
-            StorageFile file = await FilePickerAdapters.ShowLoadFilePicker(new string[] { ".json" }, Windows.Storage.Pickers.PickerLocationId.DocumentsLibrary, Windows.Storage.Pickers.PickerViewMode.List, true, true);
+            var provider = TopLevel.GetTopLevel(App.NavPage).StorageProvider;
+            var file = (await provider.OpenFilePickerAsync(new FilePickerOpenOptions
+            {
+                FileTypeFilter = new[] { App.JsonFileType }
+            })).FirstOrDefault();
+
             if (file == null)
             {
                 return;
             }
-            string dataString = await FileIO.ReadTextAsync(file);
-            JsonObject rootObject = JsonObject.Parse(dataString);
+
+            await using var data = await file.OpenReadAsync();
+            using var reader = new StreamReader(data);
+            var rootObject = JsonObject.Parse(await reader.ReadToEndAsync()).AsObject();
             Preset loadedPreset = null;
             try
             {
-                loadedPreset = Preset.Parse(rootObject, file.Path, file.DisplayName);
+                loadedPreset = Preset.Parse(rootObject, file.TryGetLocalPath() ?? file.Name, file.Name);
             }
             catch
             {
                 loadedPreset = null;
-            }
-
-            if(loadedPreset == null)
-            {
-                if (file == null || file.Path == null)
-                {
-                    return;
-                }
-                var message = string.Format(_stringProvider.GetString("ControlPaletteLoadError"), file.Path);
-                ContentDialog loadFailedDialog = new ContentDialog()
-                {
-                    CloseButtonText = _stringProvider.GetString("ControlPaletteErrorOkButtonCaption"),
-                    Title = _stringProvider.GetString("ControlPaletteLoadErrorTitle"),
-                    Content = message
-                };
-                _ = loadFailedDialog.ShowAsync();
-                return;
             }
 
             _paletteModel.AddOrReplacePreset(loadedPreset);
@@ -279,7 +253,7 @@ namespace FluentEditor.ControlPalette
             get { return _paletteModel.DarkColorMapping; }
         }
 
-        public void OnExportRequested(object sender, RoutedEventArgs e)
+        public void OnExportRequested()
         {
             _exportProvider.ShowExportView(_exportProvider.GenerateExportData(_paletteModel, this));
         }

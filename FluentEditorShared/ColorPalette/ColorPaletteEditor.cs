@@ -2,32 +2,23 @@
 // Licensed under the MIT License.
 
 using System.Collections.Generic;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
+using Avalonia;
+using Avalonia.Controls.Primitives;
 
 namespace FluentEditorShared.ColorPalette
 {
-    public class ColorPaletteEditor : Control
+    public class ColorPaletteEditor : TemplatedControl
     {
-        private double collapsedHeight = 56;
+        private double collapsedHeight = 56; // what
         private double expandedHeight = 465;
         public ColorPaletteEditor()
         {
-            this.DefaultStyleKey = typeof(ColorPaletteEditor);
-            this.Height = collapsedHeight;
+            Height = collapsedHeight;
         }
 
         #region ColorPaletteProperty
 
-        public static readonly DependencyProperty ColorPaletteProperty = DependencyProperty.Register("ColorPalette", typeof(ColorPalette), typeof(ColorPaletteEditor), new PropertyMetadata(null, new PropertyChangedCallback(OnColorPalettePropertyChanged)));
-
-        private static void OnColorPalettePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is ColorPaletteEditor target)
-            {
-                target.OnColorPaletteChanged(e.OldValue as ColorPalette, e.NewValue as ColorPalette);
-            }
-        }
+        public static readonly StyledProperty<ColorPalette> ColorPaletteProperty = AvaloniaProperty.Register<ColorPaletteEditor, ColorPalette>("ColorPalette");
 
         private void OnColorPaletteChanged(ColorPalette oldValue, ColorPalette newValue)
         {
@@ -51,7 +42,7 @@ namespace FluentEditorShared.ColorPalette
 
         #region PaletteEntriesProperty
 
-        public static readonly DependencyProperty PaletteEntriesProperty = DependencyProperty.Register("PaletteEntries", typeof(IReadOnlyList<IColorPaletteEntry>), typeof(ColorPaletteEditor), new PropertyMetadata(null));
+        public static readonly StyledProperty<IReadOnlyList<IColorPaletteEntry>> PaletteEntriesProperty = AvaloniaProperty.Register<ColorPaletteEditor, IReadOnlyList<IColorPaletteEntry>>("PaletteEntries");
 
         public IReadOnlyList<IColorPaletteEntry> PaletteEntries
         {
@@ -62,7 +53,7 @@ namespace FluentEditorShared.ColorPalette
 
         #region IsExpandedProperty
 
-        public static readonly DependencyProperty IsExpandedProperty = DependencyProperty.Register("IsExpanded", typeof(bool), typeof(ColorPaletteEditor), new PropertyMetadata(true));
+        public static readonly StyledProperty<bool> IsExpandedProperty = AvaloniaProperty.Register<ColorPaletteEditor, bool>("IsExpanded", true);
 
         public bool IsExpanded
         {
@@ -86,5 +77,16 @@ namespace FluentEditorShared.ColorPalette
         }
 
         #endregion
+        
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == ColorPaletteProperty)
+            {
+                var (oldValue, newValue) = change.GetOldAndNewValue<ColorPalette>();
+                OnColorPaletteChanged(oldValue, newValue);
+            }
+        }
     }
 }

@@ -1,33 +1,32 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using Windows.UI;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Markup;
-using Windows.UI.Xaml.Media;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.Presenters;
+using Avalonia.Controls.Primitives;
+using Avalonia.Controls.Templates;
+using Avalonia.Markup.Xaml.Templates;
+using Avalonia.Media;
+using FluentEditorShared.Utils;
 
 namespace FluentEditorShared.Editors
 {
-    public class ColorEditor : Control
+    public class ColorEditor : TemplatedControl
     {
-        public ColorEditor()
+        private ContentPresenter _headerPresenter;
+        private Control _alphaInputBox;
+        
+        protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
         {
-            this.DefaultStyleKey = typeof(ColorEditor);
-        }
+            base.OnApplyTemplate(e);
 
-        protected override void OnApplyTemplate()
-        {
-            base.OnApplyTemplate();
+            _alphaInputBox = e.NameScope.Find<Control>("AlphaInputBox")!;
+            _headerPresenter = e.NameScope.Find<ContentPresenter>("HeaderContentPresenter")!;
 
-            var h = Header;
-            if (h != null)
+            if (Header is {} header)
             {
-                var headerContentPresenter = GetTemplateChild("HeaderContentPresenter") as UIElement;
-                if (headerContentPresenter != null)
-                {
-                    headerContentPresenter.Visibility = h == null ? Visibility.Collapsed : Visibility.Visible;
-                }
+                _headerPresenter.IsVisible = header is not null;
             }
         }
 
@@ -66,15 +65,7 @@ namespace FluentEditorShared.Editors
 
         #region ValueColor
 
-        public static readonly DependencyProperty ValueColorProperty = DependencyProperty.Register("ValueColor", typeof(Color), typeof(ColorEditor), new PropertyMetadata(Colors.Black, new PropertyChangedCallback(OnValueColorPropertyChanged)));
-
-        private static void OnValueColorPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is ColorEditor target)
-            {
-                target.OnValueColorChanged((Color)e.OldValue, (Color)e.NewValue);
-            }
-        }
+        public static readonly StyledProperty<Color> ValueColorProperty = AvaloniaProperty.Register<ColorEditor, Color>("ValueColor", Colors.Black);
 
         private void OnValueColorChanged(Color oldValue, Color newValue)
         {
@@ -90,42 +81,21 @@ namespace FluentEditorShared.Editors
 
         public Color ValueColor
         {
-            get { return (Color)GetValue(ValueColorProperty); }
-            set { SetValue(ValueColorProperty, value); }
+            get => GetValue(ValueColorProperty);
+            set => SetValue(ValueColorProperty, value);
         }
 
         #endregion
 
         #region ValueStringProperty
 
-        public static readonly DependencyProperty ValueStringProperty = DependencyProperty.Register("ValueString", typeof(string), typeof(ColorEditor), new PropertyMetadata("000000", new PropertyChangedCallback(OnValueStringPropertyChanged)));
-
-        private static void OnValueStringPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is ColorEditor target)
-            {
-                target.OnValueStringChanged(e.OldValue as string, e.NewValue as string);
-            }
-        }
+        public static readonly StyledProperty<string> ValueStringProperty = AvaloniaProperty.Register<ColorEditor, string>("ValueString", "000000");
 
         private void OnValueStringChanged(string oldValue, string newValue)
         {
             if (!_internalValueChanging)
             {
-                Color c;
-                try
-                {
-                    var boxedColor = XamlBindingHelper.ConvertValue(typeof(Color), newValue);
-                    if (boxedColor == null)
-                    {
-                        return;
-                    }
-                    c = (Color)boxedColor;
-                }
-                catch
-                {
-                    return;
-                }
+                Color.TryParse(newValue, out var c);
 
                 _internalValueChanging = true;
 
@@ -137,23 +107,15 @@ namespace FluentEditorShared.Editors
 
         public string ValueString
         {
-            get { return GetValue(ValueStringProperty) as string; }
-            set { SetValue(ValueStringProperty, value); }
+            get => GetValue(ValueStringProperty) as string;
+            set => SetValue(ValueStringProperty, value);
         }
 
         #endregion
 
         #region ValueBrushProperty
 
-        public static DependencyProperty ValueBrushProperty = DependencyProperty.Register("ValueBrush", typeof(SolidColorBrush), typeof(ColorEditor), new PropertyMetadata(new SolidColorBrush(Colors.Black), new PropertyChangedCallback(OnValueBrushPropertyChanged)));
-
-        private static void OnValueBrushPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is ColorEditor target)
-            {
-                target.OnValueBrushChanged(e.OldValue as SolidColorBrush, e.NewValue as SolidColorBrush);
-            }
-        }
+        public static readonly StyledProperty<SolidColorBrush> ValueBrushProperty = AvaloniaProperty.Register<ColorEditor, SolidColorBrush>("ValueBrush", new SolidColorBrush(Colors.Black));
 
         private void OnValueBrushChanged(SolidColorBrush oldValue, SolidColorBrush newValue)
         {
@@ -179,23 +141,15 @@ namespace FluentEditorShared.Editors
 
         public SolidColorBrush ValueBrush
         {
-            get { return GetValue(ValueBrushProperty) as SolidColorBrush; }
-            set { SetValue(ValueBrushProperty, value); }
+            get => GetValue(ValueBrushProperty) as SolidColorBrush;
+            set => SetValue(ValueBrushProperty, value);
         }
 
         #endregion
 
         #region ValueRed
 
-        public static DependencyProperty ValueRedProperty = DependencyProperty.Register("ValueRed", typeof(byte), typeof(ColorEditor), new PropertyMetadata((byte)0, new PropertyChangedCallback(OnValueRedPropertyChanged)));
-
-        private static void OnValueRedPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is ColorEditor target)
-            {
-                target.OnValueRedChanged((byte)e.OldValue, (byte)e.NewValue);
-            }
-        }
+        public static readonly StyledProperty<byte> ValueRedProperty = AvaloniaProperty.Register<ColorEditor, byte>("ValueRed");
 
         private void OnValueRedChanged(byte oldValue, byte newValue)
         {
@@ -212,23 +166,15 @@ namespace FluentEditorShared.Editors
 
         public byte ValueRed
         {
-            get { return (byte)GetValue(ValueRedProperty); }
-            set { SetValue(ValueRedProperty, value); }
+            get => GetValue(ValueRedProperty);
+            set => SetValue(ValueRedProperty, value);
         }
 
         #endregion
 
         #region ValueRedString
 
-        public static DependencyProperty ValueRedStringProperty = DependencyProperty.Register("ValueRedString", typeof(string), typeof(ColorEditor), new PropertyMetadata("0", new PropertyChangedCallback(OnValueRedStringPropertyChanged)));
-
-        private static void OnValueRedStringPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is ColorEditor target)
-            {
-                target.OnValueRedStringChanged(e.OldValue as string, e.NewValue as string);
-            }
-        }
+        public static readonly StyledProperty<string> ValueRedStringProperty = AvaloniaProperty.Register<ColorEditor, string>("ValueRedString", "0");
 
         private void OnValueRedStringChanged(string oldValue, string newValue)
         {
@@ -253,23 +199,15 @@ namespace FluentEditorShared.Editors
 
         public string ValueRedString
         {
-            get { return GetValue(ValueRedStringProperty) as string; }
-            set { SetValue(ValueRedStringProperty, value); }
+            get => GetValue(ValueRedStringProperty) as string;
+            set => SetValue(ValueRedStringProperty, value);
         }
 
         #endregion
 
         #region ValueGreen
 
-        public static DependencyProperty ValueGreenProperty = DependencyProperty.Register("ValueGreen", typeof(byte), typeof(ColorEditor), new PropertyMetadata((byte)0, new PropertyChangedCallback(OnValueGreenPropertyChanged)));
-
-        private static void OnValueGreenPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is ColorEditor target)
-            {
-                target.OnValueGreenChanged((byte)e.OldValue, (byte)e.NewValue);
-            }
-        }
+        public static readonly StyledProperty<byte> ValueGreenProperty = AvaloniaProperty.Register<ColorEditor, byte>("ValueGreen");
 
         private void OnValueGreenChanged(byte oldValue, byte newValue)
         {
@@ -286,23 +224,15 @@ namespace FluentEditorShared.Editors
 
         public byte ValueGreen
         {
-            get { return (byte)GetValue(ValueGreenProperty); }
-            set { SetValue(ValueGreenProperty, value); }
+            get => GetValue(ValueGreenProperty);
+            set => SetValue(ValueGreenProperty, value);
         }
 
         #endregion
 
         #region ValueGreenString
 
-        public static DependencyProperty ValueGreenStringProperty = DependencyProperty.Register("ValueGreenString", typeof(string), typeof(ColorEditor), new PropertyMetadata("0", new PropertyChangedCallback(OnValueGreenStringPropertyChanged)));
-
-        private static void OnValueGreenStringPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is ColorEditor target)
-            {
-                target.OnValueGreenStringChanged(e.OldValue as string, e.NewValue as string);
-            }
-        }
+        public static readonly StyledProperty<string> ValueGreenStringProperty = AvaloniaProperty.Register<ColorEditor, string>("ValueGreenString", "0");
 
         private void OnValueGreenStringChanged(string oldValue, string newValue)
         {
@@ -327,23 +257,15 @@ namespace FluentEditorShared.Editors
 
         public string ValueGreenString
         {
-            get { return GetValue(ValueGreenStringProperty) as string; }
-            set { SetValue(ValueGreenStringProperty, value); }
+            get => GetValue(ValueGreenStringProperty) as string;
+            set => SetValue(ValueGreenStringProperty, value);
         }
 
         #endregion
 
         #region ValueBlue
 
-        public static DependencyProperty ValueBlueProperty = DependencyProperty.Register("ValueBlue", typeof(byte), typeof(ColorEditor), new PropertyMetadata((byte)0, new PropertyChangedCallback(OnValueBluePropertyChanged)));
-
-        private static void OnValueBluePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is ColorEditor target)
-            {
-                target.OnValueBlueChanged((byte)e.OldValue, (byte)e.NewValue);
-            }
-        }
+        public static readonly StyledProperty<byte> ValueBlueProperty = AvaloniaProperty.Register<ColorEditor, byte>("ValueBlue");
 
         private void OnValueBlueChanged(byte oldValue, byte newValue)
         {
@@ -360,23 +282,15 @@ namespace FluentEditorShared.Editors
 
         public byte ValueBlue
         {
-            get { return (byte)GetValue(ValueBlueProperty); }
-            set { SetValue(ValueBlueProperty, value); }
+            get => GetValue(ValueBlueProperty);
+            set => SetValue(ValueBlueProperty, value);
         }
 
         #endregion
 
         #region ValueBlueString
 
-        public static DependencyProperty ValueBlueStringProperty = DependencyProperty.Register("ValueBlueString", typeof(string), typeof(ColorEditor), new PropertyMetadata("0", new PropertyChangedCallback(OnValueBlueStringPropertyChanged)));
-
-        private static void OnValueBlueStringPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is ColorEditor target)
-            {
-                target.OnValueBlueStringChanged(e.OldValue as string, e.NewValue as string);
-            }
-        }
+        public static readonly StyledProperty<string> ValueBlueStringProperty = AvaloniaProperty.Register<ColorEditor, string>("ValueBlueString", "0");
 
         private void OnValueBlueStringChanged(string oldValue, string newValue)
         {
@@ -401,23 +315,15 @@ namespace FluentEditorShared.Editors
 
         public string ValueBlueString
         {
-            get { return GetValue(ValueBlueStringProperty) as string; }
-            set { SetValue(ValueBlueStringProperty, value); }
+            get => GetValue(ValueBlueStringProperty) as string;
+            set => SetValue(ValueBlueStringProperty, value);
         }
 
         #endregion
 
         #region ValueAlpha
 
-        public static DependencyProperty ValueAlphaProperty = DependencyProperty.Register("ValueAlpha", typeof(byte), typeof(ColorEditor), new PropertyMetadata((byte)255, new PropertyChangedCallback(OnValueAlphaPropertyChanged)));
-
-        private static void OnValueAlphaPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is ColorEditor target)
-            {
-                target.OnValueAlphaChanged((byte)e.OldValue, (byte)e.NewValue);
-            }
-        }
+        public static readonly StyledProperty<byte> ValueAlphaProperty = AvaloniaProperty.Register<ColorEditor, byte>("ValueAlpha", 255);
 
         private void OnValueAlphaChanged(byte oldValue, byte newValue)
         {
@@ -434,23 +340,15 @@ namespace FluentEditorShared.Editors
 
         public byte ValueAlpha
         {
-            get { return (byte)GetValue(ValueAlphaProperty); }
-            set { SetValue(ValueAlphaProperty, value); }
+            get => GetValue(ValueAlphaProperty);
+            set => SetValue(ValueAlphaProperty, value);
         }
 
         #endregion
 
         #region ValueAlphaString
 
-        public static DependencyProperty ValueAlphaStringProperty = DependencyProperty.Register("ValueAlphaString", typeof(string), typeof(ColorEditor), new PropertyMetadata("255", new PropertyChangedCallback(OnValueAlphaStringPropertyChanged)));
-
-        private static void OnValueAlphaStringPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is ColorEditor target)
-            {
-                target.OnValueAlphaStringChanged(e.OldValue as string, e.NewValue as string);
-            }
-        }
+        public static readonly StyledProperty<string> ValueAlphaStringProperty = AvaloniaProperty.Register<ColorEditor, string>("ValueAlphaString", "255");
 
         private void OnValueAlphaStringChanged(string oldValue, string newValue)
         {
@@ -475,8 +373,8 @@ namespace FluentEditorShared.Editors
 
         public string ValueAlphaString
         {
-            get { return GetValue(ValueAlphaStringProperty) as string; }
-            set { SetValue(ValueAlphaStringProperty, value); }
+            get => GetValue(ValueAlphaStringProperty) as string;
+            set => SetValue(ValueAlphaStringProperty, value);
         }
 
         #endregion
@@ -485,15 +383,7 @@ namespace FluentEditorShared.Editors
 
         #region UseAlphaProperty
 
-        public static readonly DependencyProperty UseAlphaProperty = DependencyProperty.Register("UseAlpha", typeof(bool), typeof(ColorEditor), new PropertyMetadata(true, new PropertyChangedCallback(OnUseAlphaPropertyChanged)));
-
-        private static void OnUseAlphaPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is ColorEditor target)
-            {
-                target.OnUseAlphaChanged((bool)e.OldValue, (bool)e.NewValue);
-            }
-        }
+        public static readonly StyledProperty<bool> UseAlphaProperty = AvaloniaProperty.Register<ColorEditor, bool>("UseAlpha", true);
 
         private void OnUseAlphaChanged(bool oldValue, bool newValue)
         {
@@ -507,11 +397,7 @@ namespace FluentEditorShared.Editors
                     UpdateProperties(Color.FromArgb(255, oldColor.R, oldColor.G, oldColor.B));
                 }
 
-                var alphaInputBox = GetTemplateChild("AlphaInputBox") as UIElement;
-                if (alphaInputBox != null)
-                {
-                    alphaInputBox.Visibility = newValue == false ? Visibility.Collapsed : Visibility.Visible;
-                }
+                _alphaInputBox.IsVisible = newValue;
 
                 _internalValueChanging = false;
             }
@@ -519,23 +405,15 @@ namespace FluentEditorShared.Editors
 
         public bool UseAlpha
         {
-            get { return (bool)GetValue(UseAlphaProperty); }
-            set { SetValue(UseAlphaProperty, value); }
+            get => GetValue(UseAlphaProperty);
+            set => SetValue(UseAlphaProperty, value);
         }
 
         #endregion
 
         #region ColorStringFormatProperty
 
-        public static readonly DependencyProperty ColorStringFormatProperty = DependencyProperty.Register("ColorStringFormat", typeof(FluentEditorShared.Utils.ColorStringFormat), typeof(ColorEditor), new PropertyMetadata(FluentEditorShared.Utils.ColorStringFormat.PoundRGB, new PropertyChangedCallback(OnColorStringFormatPropertyChanged)));
-
-        private static void OnColorStringFormatPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is ColorEditor target)
-            {
-                target.OnColorStringFormatChanged((FluentEditorShared.Utils.ColorStringFormat)e.OldValue, (FluentEditorShared.Utils.ColorStringFormat)e.NewValue);
-            }
-        }
+        public static readonly StyledProperty<FluentEditorShared.Utils.ColorStringFormat> ColorStringFormatProperty = AvaloniaProperty.Register<ColorEditor, FluentEditorShared.Utils.ColorStringFormat>("ColorStringFormat", FluentEditorShared.Utils.ColorStringFormat.PoundRGB);
 
         private void OnColorStringFormatChanged(FluentEditorShared.Utils.ColorStringFormat oldValue, FluentEditorShared.Utils.ColorStringFormat newValue)
         {
@@ -551,23 +429,15 @@ namespace FluentEditorShared.Editors
 
         public FluentEditorShared.Utils.ColorStringFormat ColorStringFormat
         {
-            get { return (FluentEditorShared.Utils.ColorStringFormat)GetValue(ColorStringFormatProperty); }
-            set { SetValue(ColorStringFormatProperty, value); }
+            get => GetValue(ColorStringFormatProperty);
+            set => SetValue(ColorStringFormatProperty, value);
         }
 
         #endregion
 
         #region PrecisionProperty
 
-        public static readonly DependencyProperty PrecisionProperty = DependencyProperty.Register("Precision", typeof(int), typeof(ColorEditor), new PropertyMetadata((int)4, new PropertyChangedCallback(OnPrecisionPropertyChanged)));
-
-        private static void OnPrecisionPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is ColorEditor target)
-            {
-                target.OnPrecisionChanged((int)e.OldValue, (int)e.NewValue);
-            }
-        }
+        public static readonly StyledProperty<int> PrecisionProperty = AvaloniaProperty.Register<ColorEditor, int>("Precision", 4);
 
         private void OnPrecisionChanged(int oldValue, int newValue)
         {
@@ -583,51 +453,120 @@ namespace FluentEditorShared.Editors
 
         public int Precision
         {
-            get { return (int)GetValue(PrecisionProperty); }
-            set { SetValue(PrecisionProperty, value); }
+            get => GetValue(PrecisionProperty);
+            set => SetValue(PrecisionProperty, value);
         }
 
         #endregion
 
         #region HeaderProperty
 
-        public static readonly DependencyProperty HeaderProperty = DependencyProperty.Register("Header", typeof(object), typeof(ColorEditor), new PropertyMetadata(null, new PropertyChangedCallback(OnHeaderPropertyChanged)));
-
-        private static void OnHeaderPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is ColorEditor target)
-            {
-                target.OnHeaderChanged(e.OldValue, e.NewValue);
-            }
-        }
+        public static readonly StyledProperty<object> HeaderProperty = AvaloniaProperty.Register<ColorEditor, object>("Header");
 
         private void OnHeaderChanged(object oldVal, object newVal)
         {
-            var headerContentPresenter = GetTemplateChild("HeaderContentPresenter") as UIElement;
-            if (headerContentPresenter != null)
-            {
-                headerContentPresenter.Visibility = newVal == null ? Visibility.Collapsed : Visibility.Visible;
-            }
+            _headerPresenter!.IsVisible = newVal is not null;
         }
 
         public object Header
         {
-            get { return GetValue(HeaderProperty); }
-            set { SetValue(HeaderProperty, value); }
+            get => GetValue(HeaderProperty);
+            set => SetValue(HeaderProperty, value);
         }
 
         #endregion
 
         #region HeaderTemplateProperty
 
-        public static readonly DependencyProperty HeaderTemplateProperty = DependencyProperty.Register("HeaderTemplate", typeof(DataTemplate), typeof(ColorEditor), new PropertyMetadata(null));
+        public static readonly StyledProperty<IDataTemplate> HeaderTemplateProperty = AvaloniaProperty.Register<ColorEditor, IDataTemplate>("HeaderTemplate");
 
-        public DataTemplate HeaderTemplate
+        public IDataTemplate HeaderTemplate
         {
-            get { return GetValue(HeaderTemplateProperty) as DataTemplate; }
-            set { SetValue(HeaderTemplateProperty, value); }
+            get => GetValue(HeaderTemplateProperty) as DataTemplate;
+            set => SetValue(HeaderTemplateProperty, value);
         }
 
         #endregion
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == HeaderProperty)
+            {
+                var (oldValue, newValue) = change.GetOldAndNewValue<object>();
+                OnHeaderChanged(oldValue, newValue);
+            }
+            else if (change.Property == PrecisionProperty)
+            {
+                var (oldValue, newValue) = change.GetOldAndNewValue<int>();
+                OnPrecisionChanged(oldValue, newValue);
+            }
+            else if (change.Property == UseAlphaProperty)
+            {
+                var (oldValue, newValue) = change.GetOldAndNewValue<bool>();
+                OnUseAlphaChanged(oldValue, newValue);
+            }
+            else if (change.Property == ValueAlphaProperty)
+            {
+                var (oldValue, newValue) = change.GetOldAndNewValue<byte>();
+                OnValueAlphaChanged(oldValue, newValue);
+            }
+            else if (change.Property == ValueRedProperty)
+            {
+                var (oldValue, newValue) = change.GetOldAndNewValue<byte>();
+                OnValueRedChanged(oldValue, newValue);
+            }
+            else if (change.Property == ValueGreenProperty)
+            {
+                var (oldValue, newValue) = change.GetOldAndNewValue<byte>();
+                OnValueGreenChanged(oldValue, newValue);
+            }
+            else if (change.Property == ValueBlueProperty)
+            {
+                var (oldValue, newValue) = change.GetOldAndNewValue<byte>();
+                OnValueBlueChanged(oldValue, newValue);
+            }
+            else if (change.Property == ColorStringFormatProperty)
+            {
+                var (oldValue, newValue) = change.GetOldAndNewValue<ColorStringFormat>();
+                OnColorStringFormatChanged(oldValue, newValue);
+            }
+            else if (change.Property == ValueAlphaStringProperty)
+            {
+                var (oldValue, newValue) = change.GetOldAndNewValue<string>();
+                OnValueAlphaStringChanged(oldValue, newValue);
+            }
+            else if (change.Property == ValueRedStringProperty)
+            {
+                var (oldValue, newValue) = change.GetOldAndNewValue<string>();
+                OnValueRedStringChanged(oldValue, newValue);
+            }
+            else if (change.Property == ValueGreenStringProperty)
+            {
+                var (oldValue, newValue) = change.GetOldAndNewValue<string>();
+                OnValueGreenStringChanged(oldValue, newValue);
+            }
+            else if (change.Property == ValueBlueStringProperty)
+            {
+                var (oldValue, newValue) = change.GetOldAndNewValue<string>();
+                OnValueBlueStringChanged(oldValue, newValue);
+            }
+            else if (change.Property == ValueColorProperty)
+            {
+                var (oldValue, newValue) = change.GetOldAndNewValue<Color>();
+                OnValueColorChanged(oldValue, newValue);
+            }
+            else if (change.Property == ValueBrushProperty)
+            {
+                var (oldValue, newValue) = change.GetOldAndNewValue<SolidColorBrush>();
+                OnValueBrushChanged(oldValue, newValue);
+            }
+            else if (change.Property == ValueStringProperty)
+            {
+                var (oldValue, newValue) = change.GetOldAndNewValue<string>();
+                OnValueStringChanged(oldValue, newValue);
+            }
+        }
     }
 }

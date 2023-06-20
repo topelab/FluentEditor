@@ -1,10 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using Windows.UI;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Interactivity;
+using Avalonia.Layout;
+using Avalonia.Markup.Xaml.Templates;
+using Avalonia.Media;
+using Avalonia.Styling;
 
 namespace FluentEditorShared.ColorPalette
 {
@@ -14,8 +17,6 @@ namespace FluentEditorShared.ColorPalette
     {
         public ColorPaletteEntryEditor()
         {
-            this.DefaultStyleKey = typeof(ColorPaletteEntryEditor);
-
             // Make sure each instance of the control gets its own brush instances
             ActiveColorBrush = new SolidColorBrush();
             ContrastColorBrush = new SolidColorBrush();
@@ -25,16 +26,8 @@ namespace FluentEditorShared.ColorPalette
 
         #region ColorPaletteEntryProperty
 
-        public static readonly DependencyProperty ColorPaletteEntryProperty = DependencyProperty.Register("ColorPaletteEntry", typeof(IColorPaletteEntry), typeof(ColorPaletteEntryEditor), new PropertyMetadata(null, new PropertyChangedCallback(OnColorPaletteEntryPropertyChanged)));
-
-        private static void OnColorPaletteEntryPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is ColorPaletteEntryEditor target)
-            {
-                target.OnColorPaletteEntryChanged(e.OldValue as IColorPaletteEntry, e.NewValue as IColorPaletteEntry);
-            }
-        }
-
+        public static readonly StyledProperty<IColorPaletteEntry> ColorPaletteEntryProperty = AvaloniaProperty.Register<ColorPaletteEntryEditor, IColorPaletteEntry>("ColorPaletteEntry");
+        
         private void OnColorPaletteEntryChanged(IColorPaletteEntry oldValue, IColorPaletteEntry newValue)
         {
             if (oldValue != null)
@@ -75,20 +68,7 @@ namespace FluentEditorShared.ColorPalette
 
         #region CaptionModeProperty
 
-        public static readonly DependencyProperty CaptionModeProperty = DependencyProperty.Register("CaptionMode", typeof(ColorPaletteEntryCaptionMode), typeof(ColorPaletteEntryEditor), new PropertyMetadata(ColorPaletteEntryCaptionMode.ActiveColorString, new PropertyChangedCallback(OnCaptionModePropertyChanged)));
-
-        private static void OnCaptionModePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            if (d is ColorPaletteEntryEditor target)
-            {
-                target.OnCaptionModeChanged((ColorPaletteEntryCaptionMode)e.OldValue, (ColorPaletteEntryCaptionMode)e.NewValue);
-            }
-        }
-
-        private void OnCaptionModeChanged(ColorPaletteEntryCaptionMode oldValue, ColorPaletteEntryCaptionMode newValue)
-        {
-            UpdateCaption();
-        }
+        public static readonly StyledProperty<ColorPaletteEntryCaptionMode> CaptionModeProperty = AvaloniaProperty.Register<ColorPaletteEntryEditor, ColorPaletteEntryCaptionMode>("CaptionMode");
 
         public ColorPaletteEntryCaptionMode CaptionMode
         {
@@ -100,7 +80,7 @@ namespace FluentEditorShared.ColorPalette
 
         #region CaptionProperty
 
-        public static readonly DependencyProperty CaptionProperty = DependencyProperty.Register("Caption", typeof(string), typeof(ColorPaletteEntryEditor), new PropertyMetadata(null));
+        public static readonly StyledProperty<string> CaptionProperty = AvaloniaProperty.Register<ColorPaletteEntryEditor, string>("Caption");
 
         public string Caption
         {
@@ -112,7 +92,7 @@ namespace FluentEditorShared.ColorPalette
 
         #region FlyoutTemplateProperty
 
-        public static readonly DependencyProperty FlyoutTemplateProperty = DependencyProperty.Register("FlyoutTemplate", typeof(DataTemplate), typeof(ColorPaletteEntryEditor), new PropertyMetadata(null));
+        public static readonly StyledProperty<DataTemplate> FlyoutTemplateProperty = AvaloniaProperty.Register<ColorPaletteEntryEditor, DataTemplate>("FlyoutTemplate");
 
         public DataTemplate FlyoutTemplate
         {
@@ -124,11 +104,11 @@ namespace FluentEditorShared.ColorPalette
 
         #region FlyoutPresenterStyleProperty
 
-        public static readonly DependencyProperty FlyoutPresenterStyleProperty = DependencyProperty.Register("FlyoutPresenterStyle", typeof(Style), typeof(ColorPaletteEntryEditor), new PropertyMetadata(null));
+        public static readonly StyledProperty<ControlTheme> FlyoutPresenterStyleProperty = AvaloniaProperty.Register<ColorPaletteEntryEditor, ControlTheme>("FlyoutPresenterStyle");
 
-        public Style FlyoutPresenterStyle
+        public ControlTheme FlyoutPresenterStyle
         {
-            get { return GetValue(FlyoutPresenterStyleProperty) as Style; }
+            get { return GetValue(FlyoutPresenterStyleProperty) as ControlTheme; }
             set { SetValue(FlyoutPresenterStyleProperty, value); }
         }
 
@@ -136,7 +116,7 @@ namespace FluentEditorShared.ColorPalette
 
         #region ActiveColorBrushProperty
 
-        public static readonly DependencyProperty ActiveColorBrushProperty = DependencyProperty.Register("ActiveColorBrush", typeof(SolidColorBrush), typeof(ColorPaletteEntryEditor), new PropertyMetadata(new SolidColorBrush()));
+        public static readonly StyledProperty<SolidColorBrush> ActiveColorBrushProperty = AvaloniaProperty.Register<ColorPaletteEntryEditor, SolidColorBrush>("ActiveColorBrush", new SolidColorBrush());
 
         public SolidColorBrush ActiveColorBrush
         {
@@ -148,7 +128,7 @@ namespace FluentEditorShared.ColorPalette
 
         #region ContrastColorBrushProperty
 
-        public static readonly DependencyProperty ContrastColorBrushProperty = DependencyProperty.Register("ContrastColorBrush", typeof(SolidColorBrush), typeof(ColorPaletteEntryEditor), new PropertyMetadata(new SolidColorBrush()));
+        public static readonly StyledProperty<SolidColorBrush> ContrastColorBrushProperty = AvaloniaProperty.Register<ColorPaletteEntryEditor, SolidColorBrush>("ContrastColorBrush", new SolidColorBrush());
 
         public SolidColorBrush ContrastColorBrush
         {
@@ -223,7 +203,7 @@ namespace FluentEditorShared.ColorPalette
             var flyoutPresenterStyle = FlyoutPresenterStyle;
             if(flyoutPresenterStyle != null)
             {
-                flyout.FlyoutPresenterStyle = flyoutPresenterStyle;
+                flyout.FlyoutPresenterTheme = flyoutPresenterStyle;
             }
 
             ContentControl flyoutContent = new ContentControl();
@@ -246,6 +226,21 @@ namespace FluentEditorShared.ColorPalette
                 _flyout.Hide();
                 _flyout = null;
                 _flyoutContent = null;
+            }
+        }
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == CaptionModeProperty)
+            {
+                UpdateCaption();
+            }
+            else if (change.Property == ColorPaletteEntryProperty)
+            {
+                var (oldValue, newValue) = change.GetOldAndNewValue<IColorPaletteEntry>();
+                OnColorPaletteEntryChanged(oldValue, newValue);
             }
         }
     }

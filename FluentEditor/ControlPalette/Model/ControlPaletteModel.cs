@@ -5,12 +5,12 @@ using FluentEditorShared;
 using FluentEditorShared.ColorPalette;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
-using Windows.Data.Json;
-using Windows.Storage;
-using Windows.UI;
 using System.Linq;
-using Windows.UI.Xaml.Media;
+using System.Text.Json.Nodes;
+using System.Threading.Tasks;
+using Avalonia.Collections;
+using Avalonia.Media;
+using Avalonia.Platform;
 
 namespace FluentEditor.ControlPalette.Model
 {
@@ -21,7 +21,7 @@ namespace FluentEditor.ControlPalette.Model
 
         void AddOrReplacePreset(Preset preset);
         void ApplyPreset(Preset preset);
-        ObservableList<Preset> Presets { get; }
+        AvaloniaList<Preset> Presets { get; }
         Preset ActivePreset { get; }
         event Action<IControlPaletteModel> ActivePresetChanged;
 
@@ -41,38 +41,37 @@ namespace FluentEditor.ControlPalette.Model
         {
             _stringProvider = stringProvider;
 
-            StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(dataPath));
-            string dataString = await FileIO.ReadTextAsync(file);
-            JsonObject rootObject = JsonObject.Parse(dataString);
+            var stream = AssetLoader.Open(new Uri(dataPath));
+            var rootObject = JsonObject.Parse(stream).AsObject();
 
             _whiteColor = new ColorPaletteEntry(Colors.White, _stringProvider.GetString("DarkThemeTextContrastTitle"), null, FluentEditorShared.Utils.ColorStringFormat.PoundRGB, null);
             _blackColor = new ColorPaletteEntry(Colors.Black, _stringProvider.GetString("LightThemeTextContrastTitle"), null, FluentEditorShared.Utils.ColorStringFormat.PoundRGB, null);
 
-            var lightRegionNode = rootObject["LightRegion"].GetObject();
+            var lightRegionNode = rootObject["LightRegion"].AsObject();
             _lightRegion = ColorPaletteEntry.Parse(lightRegionNode, null);
 
-            var darkRegionNode = rootObject["DarkRegion"].GetObject();
+            var darkRegionNode = rootObject["DarkRegion"].AsObject();
             _darkRegion = ColorPaletteEntry.Parse(darkRegionNode, null);
 
-            var lightBaseNode = rootObject["LightBase"].GetObject();
+            var lightBaseNode = rootObject["LightBase"].AsObject();
             _lightBase = ColorPalette.Parse(lightBaseNode, null);
 
-            var darkBaseNode = rootObject["DarkBase"].GetObject();
+            var darkBaseNode = rootObject["DarkBase"].AsObject();
             _darkBase = ColorPalette.Parse(darkBaseNode, null);
 
-            var lightPrimaryNode = rootObject["LightPrimary"].GetObject();
+            var lightPrimaryNode = rootObject["LightPrimary"].AsObject();
             _lightPrimary = ColorPalette.Parse(lightPrimaryNode, null);
 
-            var darkPrimaryNode = rootObject["DarkPrimary"].GetObject();
+            var darkPrimaryNode = rootObject["DarkPrimary"].AsObject();
             _darkPrimary = ColorPalette.Parse(darkPrimaryNode, null);
 
-            _presets = new ObservableList<Preset>();
+            _presets = new AvaloniaList<Preset>();
             if (rootObject.ContainsKey("Presets"))
             {
-                var presetsNode = rootObject["Presets"].GetArray();
+                var presetsNode = rootObject["Presets"].AsArray();
                 foreach (var presetNode in presetsNode)
                 {
-                    _presets.Add(Preset.Parse(presetNode.GetObject()));
+                    _presets.Add(Preset.Parse(presetNode.AsObject()));
                 }
             }
             if (_presets.Count >= 1)
@@ -89,13 +88,13 @@ namespace FluentEditor.ControlPalette.Model
             _lightPrimary.ContrastColors = new List<ContrastColorWrapper>() { new ContrastColorWrapper(_whiteColor, true, true), new ContrastColorWrapper(_blackColor, false, false), new ContrastColorWrapper(_lightRegion, true, false), new ContrastColorWrapper(_lightBase.BaseColor, true, false) };
             _darkPrimary.ContrastColors = new List<ContrastColorWrapper>() { new ContrastColorWrapper(_whiteColor, true, true), new ContrastColorWrapper(_blackColor, false, false), new ContrastColorWrapper(_darkRegion, true, false), new ContrastColorWrapper(_darkBase.BaseColor, true, false) };
 
-            _lightColorMappings = ColorMapping.ParseList(rootObject["LightPaletteMapping"].GetArray(), _lightRegion, _darkRegion, _lightBase, _darkBase, _lightPrimary, _darkPrimary, _whiteColor, _blackColor);
+            _lightColorMappings = ColorMapping.ParseList(rootObject["LightPaletteMapping"].AsArray(), _lightRegion, _darkRegion, _lightBase, _darkBase, _lightPrimary, _darkPrimary, _whiteColor, _blackColor);
             _lightColorMappings.Sort((a, b) =>
             {
                 return a.Target.ToString().CompareTo(b.Target.ToString());
             });
 
-            _darkColorMappings = ColorMapping.ParseList(rootObject["DarkPaletteMapping"].GetArray(), _lightRegion, _darkRegion, _lightBase, _darkBase, _lightPrimary, _darkPrimary, _whiteColor, _blackColor);
+            _darkColorMappings = ColorMapping.ParseList(rootObject["DarkPaletteMapping"].AsArray(), _lightRegion, _darkRegion, _lightBase, _darkBase, _lightPrimary, _darkPrimary, _whiteColor, _blackColor);
             _darkColorMappings.Sort((a, b) =>
             {
                 return a.Target.ToString().CompareTo(b.Target.ToString());
@@ -271,8 +270,8 @@ namespace FluentEditor.ControlPalette.Model
             }
         }
 
-        private ObservableList<Preset> _presets;
-        public ObservableList<Preset> Presets
+        private AvaloniaList<Preset> _presets;
+        public AvaloniaList<Preset> Presets
         {
             get { return _presets; }
         }

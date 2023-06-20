@@ -1,0 +1,360 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:color="using:FluentEditorShared.ColorPalette"
+                    xmlns:local="using:FluentEditorShared">
+  
+    <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Default">
+            <SolidColorBrush x:Key="PaletteEditorDividerBrush" Color="#FF424242" />
+            <SolidColorBrush x:Key="PaletteEntryEditorBorderBrush" Color="Transparent" />
+            <Thickness x:Key="PaletteEntryEditorBorderThickness">0 0 0 0</Thickness>
+            <Thickness x:Key="ControlPreviewBorderThickness">0</Thickness>
+            
+            <Color x:Key="SystemChromeAltHighColor">#FF1C1C1C</Color>
+            <Color x:Key="SystemChromeMediumColor">#FF1C1C1C</Color>
+
+            <SolidColorBrush x:Key="OverlayBackgroundBrush" Color="#25FFFFFF"/>           
+            
+            <!--<AcrylicBrush x:Key="SystemControlTransientBackgroundBrush" BackgroundSource="HostBackdrop" TintColor="{DynamicResource SystemChromeAltHighColor_Dark}" TintOpacity="0.8" FallbackColor="{DynamicResource SystemChromeMediumColor_Dark}" />-->
+            <SolidColorBrush x:Key="TimePickerFlyoutPresenterBackground" Color="{DynamicResource SystemChromeMediumColor_Dark}" />
+            <SolidColorBrush x:Key="DatePickerFlyoutPresenterBackground" Color="{DynamicResource SystemChromeMediumColor_Dark}" />
+            <SolidColorBrush x:Key="ComboBoxDropDownBackground" Color="{DynamicResource SystemChromeMediumColor_Dark}" />
+            <SolidColorBrush x:Key="SystemControlAcrylicWindowBrush" Color="{DynamicResource SystemChromeMediumColor_Dark}" />
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="Light">
+            <SolidColorBrush x:Key="PaletteEditorDividerBrush" Color="#FF424242" />
+            <SolidColorBrush x:Key="PaletteEntryEditorBorderBrush" Color="Transparent" />
+            <Thickness x:Key="PaletteEntryEditorBorderThickness">0 0 0 0</Thickness>
+            <Thickness x:Key="ControlPreviewBorderThickness">0</Thickness>
+
+            <SolidColorBrush x:Key="OverlayBackgroundBrush" Color="White" />
+
+            <Color x:Key="SystemChromeAltHighColor">#FFFFFFFF</Color>
+            <Color x:Key="SystemChromeMediumColor">#FFFFFFFF</Color>
+
+            <SolidColorBrush x:Key="TimePickerFlyoutPresenterBackground" Color="{DynamicResource SystemChromeMediumColor}" />
+            <SolidColorBrush x:Key="DatePickerFlyoutPresenterBackground" Color="{DynamicResource SystemChromeMediumColor}" />
+            <SolidColorBrush x:Key="ComboBoxDropDownBackground" Color="{DynamicResource SystemChromeMediumColor}" />
+            <SolidColorBrush x:Key="SystemControlAcrylicWindowBrush" Color="{DynamicResource SystemChromeMediumColor}" />
+        </ResourceDictionary>
+    </ResourceDictionary.ThemeDictionaries>
+
+    <local:ColorToStringConverter x:Key="ColorToStringConverter" />
+    <local:NullableColorToStringConverter x:Key="NullableColorToStringConverter" />
+
+    <Color x:Key="SystemAccentColor">#ff0073CF</Color>
+    <Color x:Key="SystemChromeAltHighColor_Dark">#FF2B2B2B</Color>
+    <Color x:Key="SystemChromeMediumColor_Dark">#FF2B2B2B</Color>
+
+    <SolidColorBrush x:Key="ComboBoxItemRevealBackgroundSelectedPointerOver" Color="{DynamicResource SystemAccentColor}" Opacity="0.6"/>
+    <SolidColorBrush x:Key="ComboBoxItemRevealBackgroundSelected" Color="{DynamicResource SystemAccentColor}" Opacity="0.4"/>
+    <SolidColorBrush x:Key="ComboBoxItemRevealBackgroundSelectedPressed" Color="{DynamicResource SystemAccentColor}" Opacity="0.7" />
+
+    <SolidColorBrush x:Key="TimePickerFlyoutPresenterHighlightFill" Color="{DynamicResource SystemAccentColor}" Opacity="0.4"/>
+    <SolidColorBrush x:Key="DatePickerFlyoutPresenterHighlightFill" Color="{DynamicResource SystemAccentColor}" Opacity="0.4"/>
+
+    <SolidColorBrush x:Key="AccentButtonBackgroundPointerOver" Color="{DynamicResource SystemAccentColor}" Opacity="0.8"/>
+    <SolidColorBrush x:Key="AccentButtonBackgroundPressed" Color="{DynamicResource SystemAccentColor}" Opacity="0.6"/>
+    <SolidColorBrush x:Key="ToggleButtonBackgroundPointerOver" Color="{DynamicResource SystemAccentColor}" Opacity="0.8"/>
+    <SolidColorBrush x:Key="ToggleButtonBackgroundPressed" Color="{DynamicResource SystemAccentColor}" Opacity="0.6"/>
+    <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPointerOver" Color="{DynamicResource SystemAccentColor}" Opacity="0.8"/>
+    <SolidColorBrush x:Key="ToggleButtonBackgroundCheckedPressed" Color="{DynamicResource SystemAccentColor}" Opacity="0.6"/>
+    <SolidColorBrush x:Key="SystemControlAccentAcrylicWindowAccentMediumHighBrush" Color="{DynamicResource SystemAccentColor}" />
+
+    <CornerRadius x:Key="ControlCornerRadius">2</CornerRadius>
+    <CornerRadius x:Key="OverlayCornerRadius">4</CornerRadius>
+
+    <Thickness x:Key="ComboBoxBorderThemeThickness">1</Thickness>
+    <Thickness x:Key="DatePickerBorderThemeThickness">1</Thickness>
+    <Thickness x:Key="TimePickerBorderThemeThickness">1</Thickness>
+    <Thickness x:Key="TextControlBorderThemeThickness">1</Thickness>
+    <Thickness x:Key="CheckBoxBorderThemeThickness">1</Thickness>
+    <Thickness x:Key="ToggleSwitchOuterBorderStrokeThickness">1</Thickness>
+    <Thickness x:Key="RadioButtonBorderThemeThickness">1</Thickness>
+
+    <ControlTheme x:Key="ColorPaletteFlyoutPresenterStyle" TargetType="FlyoutPresenter" BasedOn="{StaticResource {x:Type FlyoutPresenter}}">
+        <Setter Property="Padding" Value="0,0,0,0" />
+        <Setter Property="MaxWidth" Value="1000" />
+        <Setter Property="MaxHeight" Value="1000" />
+    </ControlTheme>
+
+    <ControlTheme x:Key="LargeColorPaletteEntryEditorStyle" TargetType="color:ColorPaletteEntryEditor">
+        <Setter Property="FlyoutPresenterStyle" Value="{StaticResource ColorPaletteFlyoutPresenterStyle}" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="color:ColorPaletteEntryEditor">
+                    <Grid x:Name="OuterGrid" AutomationProperties.AccessibilityView="Raw">
+                        <Border 
+                            Background="{DynamicResource SystemControlBackgroundAltHighBrush}"
+                            BorderBrush="{DynamicResource PaletteEntryEditorBorderBrush}"
+                            BorderThickness="{DynamicResource PaletteEntryEditorBorderThickness}"
+                            CornerRadius="4">
+                        <Grid
+                            x:Name="Backplate"
+                            Width="134"
+                            Height="56"
+                            RenderTransformOrigin="0.5,0.5">
+                            <Border
+                                Width="44"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Stretch"
+                                Background="{TemplateBinding ActiveColorBrush}"
+                                CornerRadius="0,4,4,0" />
+                        </Grid>
+                        </Border>
+
+                        <TextBlock
+                            Margin="6,0,6,8"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Bottom"
+                            AutomationProperties.AccessibilityView="Raw"
+                            Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"
+                            IsHitTestVisible="False"
+                            Text="{TemplateBinding Caption}" />
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="FlyoutTemplate">
+            <Setter.Value>
+                <DataTemplate x:DataType="color:IColorPaletteEntry">
+                    <Grid HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                        <color:ExpandedColorPaletteEntryEditor ColorPaletteEntry="{Binding}" />
+                    </Grid>
+                </DataTemplate>
+            </Setter.Value>
+        </Setter>
+    </ControlTheme>
+
+    <ControlTheme x:Key="ExpanderButtonStyle" TargetType="ToggleButton" BasedOn="{StaticResource {x:Type ToggleButton}}">
+        <!--
+        <Setter Property="Padding" Value="{StaticResource ButtonPadding}" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="FontFamily" Value="{DynamicResource ContentControlThemeFontFamily}" />
+        <Setter Property="FontWeight" Value="Normal" />
+        <Setter Property="FontSize" Value="{DynamicResource ControlContentThemeFontSize}" />
+        <Setter Property="FocusVisualMargin" Value="-3" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="ToggleButton">
+                    <ContentPresenter
+                        x:Name="ContentPresenter"
+                        Padding="{TemplateBinding Padding}"
+                        HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                        VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                        AutomationProperties.AccessibilityView="Raw"
+                        Background="Transparent"
+                        Content="{TemplateBinding Content}"
+                        ContentTemplate="{TemplateBinding ContentTemplate}"
+                        ContentTransitions="{TemplateBinding ContentTransitions}"
+                        Foreground="{DynamicResource ExpanderButtonStyleNormalForegroundBrush}"
+                        RenderTransformOrigin="0.5,0.5">
+                        <ContentPresenter.RenderTransform>
+                            <RotateTransform x:Name="ContentRotateTransform" />
+                        </ContentPresenter.RenderTransform>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal">
+                                    <VisualState.Setters>
+                                        <Setter Target="ContentPresenter.Foreground" Value="{DynamicResource ExpanderButtonStyleNormalForegroundBrush}" />
+                                    </VisualState.Setters>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="ContentRotateTransform"
+                                            Storyboard.TargetProperty="Angle"
+                                            To="0"
+                                            Duration="00:00:00.15">
+                                            <DoubleAnimation.EasingFunction>
+                                                <ExponentialEase EasingMode="EaseOut" Exponent="7" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="PointerOver">
+                                    <VisualState.Setters>
+                                        <Setter Target="ContentPresenter.Foreground" Value="{DynamicResource ExpanderButtonStylePointerOverForegroundBrush}" />
+                                    </VisualState.Setters>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="ContentRotateTransform"
+                                            Storyboard.TargetProperty="Angle"
+                                            To="0"
+                                            Duration="00:00:00.15">
+                                            <DoubleAnimation.EasingFunction>
+                                                <ExponentialEase EasingMode="EaseOut" Exponent="7" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <VisualState.Setters>
+                                        <Setter Target="ContentPresenter.Foreground" Value="{DynamicResource ExpanderButtonStylePressedForegroundBrush}" />
+                                    </VisualState.Setters>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="ContentRotateTransform"
+                                            Storyboard.TargetProperty="Angle"
+                                            To="0"
+                                            Duration="00:00:00.15">
+                                            <DoubleAnimation.EasingFunction>
+                                                <ExponentialEase EasingMode="EaseOut" Exponent="7" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <VisualState.Setters>
+                                        <Setter Target="ContentPresenter.Foreground" Value="{DynamicResource ExpanderButtonStyleDisabledForegroundBrush}" />
+                                    </VisualState.Setters>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="ContentRotateTransform"
+                                            Storyboard.TargetProperty="Angle"
+                                            To="0"
+                                            Duration="00:00:00.15">
+                                            <DoubleAnimation.EasingFunction>
+                                                <ExponentialEase EasingMode="EaseOut" Exponent="7" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Checked">
+                                    <VisualState.Setters>
+                                        <Setter Target="ContentPresenter.Foreground" Value="{DynamicResource ExpanderButtonStyleCheckedForegroundBrush}" />
+                                    </VisualState.Setters>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="ContentRotateTransform"
+                                            Storyboard.TargetProperty="Angle"
+                                            To="180"
+                                            Duration="00:00:00.15">
+                                            <DoubleAnimation.EasingFunction>
+                                                <ExponentialEase EasingMode="EaseOut" Exponent="7" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="CheckedPointerOver">
+                                    <VisualState.Setters>
+                                        <Setter Target="ContentPresenter.Foreground" Value="{DynamicResource ExpanderButtonStyleCheckedPointerOverForegroundBrush}" />
+                                    </VisualState.Setters>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="ContentRotateTransform"
+                                            Storyboard.TargetProperty="Angle"
+                                            To="180"
+                                            Duration="00:00:00.15">
+                                            <DoubleAnimation.EasingFunction>
+                                                <ExponentialEase EasingMode="EaseOut" Exponent="7" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="CheckedPressed">
+                                    <VisualState.Setters>
+                                        <Setter Target="ContentPresenter.Foreground" Value="{DynamicResource ExpanderButtonStyleCheckedPressedForegroundBrush}" />
+                                    </VisualState.Setters>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="ContentRotateTransform"
+                                            Storyboard.TargetProperty="Angle"
+                                            To="180"
+                                            Duration="00:00:00.15">
+                                            <DoubleAnimation.EasingFunction>
+                                                <ExponentialEase EasingMode="EaseOut" Exponent="7" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="CheckedDisabled">
+                                    <VisualState.Setters>
+                                        <Setter Target="ContentPresenter.Foreground" Value="{DynamicResource ExpanderButtonStyleCheckedDisabledForegroundBrush}" />
+                                    </VisualState.Setters>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="ContentRotateTransform"
+                                            Storyboard.TargetProperty="Angle"
+                                            To="180"
+                                            Duration="00:00:00.15">
+                                            <DoubleAnimation.EasingFunction>
+                                                <ExponentialEase EasingMode="EaseOut" Exponent="7" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Indeterminate">
+                                    <VisualState.Setters>
+                                        <Setter Target="ContentPresenter.Foreground" Value="{DynamicResource ExpanderButtonStyleIndeterminateForegroundBrush}" />
+                                    </VisualState.Setters>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="ContentRotateTransform"
+                                            Storyboard.TargetProperty="Angle"
+                                            To="0"
+                                            Duration="00:00:00.15">
+                                            <DoubleAnimation.EasingFunction>
+                                                <ExponentialEase EasingMode="EaseOut" Exponent="7" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="IndeterminatePointerOver">
+                                    <VisualState.Setters>
+                                        <Setter Target="ContentPresenter.Foreground" Value="{DynamicResource ExpanderButtonStyleIndeterminatePointerOverForegroundBrush}" />
+                                    </VisualState.Setters>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="ContentRotateTransform"
+                                            Storyboard.TargetProperty="Angle"
+                                            To="0"
+                                            Duration="00:00:00.15">
+                                            <DoubleAnimation.EasingFunction>
+                                                <ExponentialEase EasingMode="EaseOut" Exponent="7" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="IndeterminatePressed">
+                                    <VisualState.Setters>
+                                        <Setter Target="ContentPresenter.Foreground" Value="{DynamicResource ExpanderButtonStyleIndeterminatePressedForegroundBrush}" />
+                                    </VisualState.Setters>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="ContentRotateTransform"
+                                            Storyboard.TargetProperty="Angle"
+                                            To="0"
+                                            Duration="00:00:00.15">
+                                            <DoubleAnimation.EasingFunction>
+                                                <ExponentialEase EasingMode="EaseOut" Exponent="7" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="IndeterminateDisabled">
+                                    <VisualState.Setters>
+                                        <Setter Target="ContentPresenter.Foreground" Value="{DynamicResource ExpanderButtonStyleIndeterminateDisabledForegroundBrush}" />
+                                    </VisualState.Setters>
+                                    <Storyboard>
+                                        <DoubleAnimation
+                                            Storyboard.TargetName="ContentRotateTransform"
+                                            Storyboard.TargetProperty="Angle"
+                                            To="0"
+                                            Duration="00:00:00.15">
+                                            <DoubleAnimation.EasingFunction>
+                                                <ExponentialEase EasingMode="EaseOut" Exponent="7" />
+                                            </DoubleAnimation.EasingFunction>
+                                        </DoubleAnimation>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                    </ContentPresenter>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        -->
+    </ControlTheme>
+</ResourceDictionary>

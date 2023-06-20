@@ -1,0 +1,118 @@
+﻿<!--
+    Copyright (c) Microsoft Corporation. All rights reserved.
+    Licensed under the MIT License.
+-->
+<UserControl
+    x:Class="FluentEditorShared.ColorPalette.ExpandedColorPaletteEntryEditor"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:editors="using:FluentEditorShared.Editors"
+    xmlns:local="using:FluentEditorShared.ColorPalette"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:shared="clr-namespace:FluentEditorShared"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
+    mc:Ignorable="d"
+    x:Name="ThisControl">
+
+    <Grid Width="780">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="24" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel
+            Grid.Row="0"
+            Grid.RowSpan="2"
+            Grid.Column="0"
+            Margin="12,12,0,12">
+            <TextBlock
+                x:Name="TitleField"
+                FontWeight="SemiBold"
+                LineHeight="28" />
+            <TextBlock
+                x:Name="DescriptionField"
+                Margin="0,2,0,0"
+                Foreground="{DynamicResource SystemControlForegroundBaseMediumHighBrush}"
+                LineHeight="16"
+                TextWrapping="Wrap" />
+            <TextBlock
+                Text="{shared:Loc ExpandedColorPaletteEntryEditorContrastRatioTitle}"
+                Margin="0,24,0,12"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Top"
+                LineHeight="20"
+                 />
+            <ItemsControl
+                Margin="0,0,0,12"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Top"
+                ItemsSource="{Binding #ThisControl.ContrastList, Mode=OneWay}">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="local:ContrastListItem">
+                        <Grid
+                            Margin="0,0,0,12"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Top">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Border
+                                Grid.Column="0"
+                                Width="28"
+                                Height="28"
+                                Background="{Binding ContrastColorBrush, Mode=OneWay}"
+                                BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}"
+                                BorderThickness="1"
+                                CornerRadius="1"
+                                ToolTip.Tip="{Binding ContrastColor.ActiveColorString, Mode=OneWay}" />
+                            <TextBlock
+                                Grid.Column="1"
+                                MinWidth="150"
+                                Margin="8,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                Text="{Binding Path=ContrastColor.Title, Mode=OneWay}"
+                                TextWrapping="Wrap" />
+                            <editors:ErrorText
+                                Grid.Column="2"
+                                Margin="8,0,0,0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Center"
+                                ShowErrorState="{Binding Path=ContrastError, Mode=OneWay}"
+                                Text="{Binding Path=Contrast, Mode=OneWay}" />
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </StackPanel>
+
+        <ColorPicker
+            x:Name="ColorPicker"
+            Grid.Row="0"
+            Grid.Column="2"
+            Margin="0,12,12,12"
+            ColorChanged="ColorPicker_ColorChanged"
+            Color="{Binding ColorPaletteEntry.ActiveColor, Mode=OneWay}"/>
+
+        <Button
+            x:Name="RevertButton"
+            Content="{shared:Loc ExpandedColorPaletteEntryEditorRevertButton}"
+            Grid.Row="1"
+            Grid.Column="2"
+            MinWidth="132"
+            MinHeight="32"
+            Margin="0,0,12,12"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Click="RevertButton_Click" />
+    </Grid>
+</UserControl>

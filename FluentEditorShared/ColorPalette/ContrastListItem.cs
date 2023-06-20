@@ -4,8 +4,7 @@
 using FluentEditorShared.Utils;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using Windows.UI;
-using Windows.UI.Xaml.Media;
+using Avalonia.Media;
 
 namespace FluentEditorShared.ColorPalette
 {

@@ -4,10 +4,8 @@
 using FluentEditor.OuterNav;
 using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
-using Windows.Data.Json;
-using Windows.Storage;
 using FluentEditorShared.Utils;
 using FluentEditor.ControlPalette.Model;
 using FluentEditorShared;
@@ -34,28 +32,28 @@ namespace FluentEditor.Model
 
         public async Task InitializeData(string dataPath, IControlPaletteModel paletteModel, ControlPaletteExportProvider controlPaletteExportProvider)
         {
-            StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(dataPath));
-            string dataString = await FileIO.ReadTextAsync(file);
-            JsonObject rootObject = JsonObject.Parse(dataString);
-
-            List<INavItem> navItems = new List<INavItem>();
-
-            if (rootObject.ContainsKey("Demos"))
-            {
-                JsonArray demoDataList = rootObject["Demos"].GetArray();
-                foreach (var demoData in demoDataList)
-                {
-                    navItems.Add(ParseNavItem(demoData.GetObject(), paletteModel, controlPaletteExportProvider));
-                }
-            }
-
-            string defaultDemoId = rootObject.GetOptionalString("DefaultDemoId");
-            if (!string.IsNullOrEmpty(defaultDemoId))
-            {
-                _defaultNavItem = navItems.FirstOrDefault((a) => a.Id == defaultDemoId);
-            }
-
-            _navItems = navItems;
+            // StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(dataPath));
+            // string dataString = await FileIO.ReadTextAsync(file);
+            // JsonObject rootObject = JsonObject.Parse(dataString);
+            //
+            // List<INavItem> navItems = new List<INavItem>();
+            //
+            // if (rootObject.ContainsKey("Demos"))
+            // {
+            //     JsonArray demoDataList = rootObject["Demos"].AsArray();
+            //     foreach (var demoData in demoDataList)
+            //     {
+            //         navItems.Add(ParseNavItem(demoData.AsObject(), paletteModel, controlPaletteExportProvider));
+            //     }
+            // }
+            //
+            // string defaultDemoId = rootObject.GetOptionalString("DefaultDemoId");
+            // if (!string.IsNullOrEmpty(defaultDemoId))
+            // {
+            //     _defaultNavItem = navItems.FirstOrDefault((a) => a.Id == defaultDemoId);
+            // }
+            //
+            // _navItems = navItems;
         }
 
         public Task HandleAppSuspend()

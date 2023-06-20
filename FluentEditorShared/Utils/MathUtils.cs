@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 
 using System;
-using Windows.Foundation;
+using Avalonia;
 
 namespace FluentEditorShared.Utils
 {

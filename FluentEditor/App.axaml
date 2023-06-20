@@ -1,0 +1,20 @@
+﻿<!--
+    Copyright (c) Microsoft Corporation. All rights reserved.
+    Licensed under the MIT License.
+-->
+<Application x:Class="FluentEditor.App"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <Application.Styles>
+    <FluentTheme />
+  </Application.Styles>
+
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://FluentEditorShared/FluentEditorSharedResources.axaml" />
+      </ResourceDictionary.MergedDictionaries>
+    </ResourceDictionary>
+  </Application.Resources>
+</Application>

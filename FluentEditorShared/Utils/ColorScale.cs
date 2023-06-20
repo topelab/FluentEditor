@@ -3,8 +3,8 @@
 
 using System;
 using System.Collections.Generic;
+using Avalonia.Media;
 using System.Linq;
-using Windows.UI;
 
 namespace FluentEditorShared.Utils
 {
