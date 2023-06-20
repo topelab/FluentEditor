@@ -1,0 +1,383 @@
+﻿<!--
+    Copyright (c) Microsoft Corporation. All rights reserved.
+    Licensed under the MIT License.
+-->
+<UserControl
+    x:Class="FluentEditor.ControlPalette.ControlPaletteView"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="using:FluentEditor.ControlPalette"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:shared="clr-namespace:FluentEditorShared;assembly=FluentEditorShared"
+    xmlns:colorPalette="clr-namespace:FluentEditorShared.ColorPalette;assembly=FluentEditorShared"
+    mc:Ignorable="d"
+    x:Name="ThisControl"
+    x:DataType="local:ControlPaletteViewModel"
+    x:CompileBindings="True"
+    ViewModel="{Binding}">
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="304" />
+        </Grid.ColumnDefinitions>
+        <Border
+            x:Name="ShadowCatcher"
+            Grid.Column="0"
+            Grid.ColumnSpan="2"
+            HorizontalAlignment="Stretch"
+            VerticalAlignment="Stretch"
+            Background="{DynamicResource AppBackgroundBrush}"/>
+        <Grid
+            x:Name="MainContentArea"
+            Grid.Column="0"
+            Margin="12,12,0,12"
+            Background="{DynamicResource AppContentBackgroundBrush}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition />
+            </Grid.ColumnDefinitions>
+
+            <Border
+                Grid.Column="0"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Background="{Binding LightRegionBrush, Mode=OneWay}"
+                CornerRadius="2 0 0 2" />
+            <Border
+                Grid.Column="1"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                Background="{Binding DarkRegionBrush, Mode=OneWay}"
+                CornerRadius="0 2 2 0" />
+
+            <ScrollViewer
+                Grid.Column="0"
+                Grid.ColumnSpan="2"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                HorizontalScrollBarVisibility="Disabled"
+                VerticalScrollBarVisibility="Auto">
+                <Grid
+                    x:Name="TestContentContainer"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Top">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <ThemeVariantScope
+                        Grid.Column="0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Top"
+                        RequestedThemeVariant="Light">
+                        <local:ControlPaletteTestContent
+                            x:Name="LightTestContent"
+                            Title="{shared:Loc ControlPaletteLightTestContent}"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Top">
+                        </local:ControlPaletteTestContent>
+                    </ThemeVariantScope>
+
+                    <ThemeVariantScope
+                        Grid.Column="1"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Top"
+                        RequestedThemeVariant="Dark">
+                        <local:ControlPaletteTestContent
+                            x:Name="DarkTestContent"
+                            Title="{shared:Loc ControlPaletteDarkTestContent}"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Top">
+                        </local:ControlPaletteTestContent>
+                    </ThemeVariantScope>
+                </Grid>
+            </ScrollViewer>
+
+        </Grid>
+        <Grid
+            x:Name="PropertyInspectorArea"
+            Grid.Column="1"
+            Margin="12"
+            Background="{DynamicResource ApplicationPageBackgroundThemeBrush}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <ScrollViewer
+                Grid.Row="1"
+                Margin="10,0,0,0"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"
+                HorizontalScrollBarVisibility="Disabled"
+                VerticalScrollBarVisibility="Auto">
+                <Grid>
+                    <StackPanel
+                        x:Name="ColorPanel"
+                        Margin="2,0,12,0"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Top"
+                        Orientation="Vertical">
+                        <ComboBox CornerRadius="2"
+                                  BorderThickness="1"
+                            Margin="0, 10, 0, 0"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Top"
+                            DisplayMemberBinding="{Binding Name}"
+                            ItemsSource="{Binding Presets, Mode=OneWay}"
+                            SelectedValue="{Binding ActivePreset, Mode=TwoWay}" />
+                        <Grid Margin="0,28,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                        
+                            <Button
+                                Content="{shared:Loc ControlPaletteLoadButton}"
+                                Grid.Column="0"
+                                Margin="0,0,6,0"
+                                HorizontalAlignment="Stretch"
+                                Command="{Binding OnLoadDataRequested}" />
+
+                            <Button
+                                Content="{shared:Loc ControlPaletteSaveButton}"
+                                Grid.Column="1"
+                                Margin="6,0,0,0"
+                                HorizontalAlignment="Stretch"
+                                Command="{Binding OnSaveDataRequested}" />
+                        </Grid>
+                        <TextBlock
+                            Text="{shared:Loc ControlPaletteRegionBlock}"
+                            Margin="0,32,0,0"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Top"
+                            FontWeight="SemiBold"
+                            LineHeight="20" />
+                        <Grid Margin="0,8,0,32">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                Text="{shared:Loc ControlPaletteLightThemeBlock}"
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Margin="0,0,8,12"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                LineHeight="16" />
+                            <TextBlock
+                                Text="{shared:Loc ControlPaletteDarkThemeBlock}"
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Margin="8,0,0,12"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                LineHeight="16" />
+                            <Border Grid.Row="1"
+                                Grid.Column="0"
+                                Margin="0,0,6,0" 
+                                HorizontalAlignment="Left"
+                                Padding="5, 0, 0, 0"
+                                VerticalAlignment="Top"
+                                BorderThickness="1"
+                                BorderBrush="{DynamicResource ButtonBackground}"
+                                CornerRadius="2">
+                                <colorPalette:ColorPaletteEntryEditor
+                                AutomationProperties.Name="{Binding LightRegion.Title, Mode=OneWay}"
+                                ColorPaletteEntry="{Binding LightRegion, Mode=OneWay}"
+                                Theme="{StaticResource LargeColorPaletteEntryEditorStyle}" />
+                            </Border>
+
+                            <Border
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Margin="6,0,0,0"
+                                HorizontalAlignment="Left"
+                                Padding="5, 0, 0, 0"
+                                VerticalAlignment="Top"
+                                BorderThickness="1"
+                                BorderBrush="{DynamicResource ButtonBackground}"
+                                CornerRadius="2">
+                            <colorPalette:ColorPaletteEntryEditor                            
+                                AutomationProperties.Name="{Binding DarkRegion.Title, Mode=OneWay}"
+                                ColorPaletteEntry="{Binding DarkRegion, Mode=OneWay}"
+                                Theme="{StaticResource LargeColorPaletteEntryEditorStyle}" />
+                            </Border>
+                        </Grid>
+                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                Text="{shared:Loc ControlPaletteBaseBlock}"
+                                Grid.Column="0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                FontWeight="SemiBold"
+                                LineHeight="20" />
+                            <ToggleButton
+                                x:Name="BaseExpanderButton"
+                                Grid.Column="1"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Top">
+                                ^
+                            </ToggleButton>
+                        </Grid>
+                        <Grid Margin="0,8,0,32">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                Text="{shared:Loc ControlPaletteLightThemeBlock}"
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Margin="0,0,8,12"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                LineHeight="16"/>
+                            <TextBlock
+                                Text="{shared:Loc ControlPaletteDarkThemeBlock}"
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Margin="8,0,0,12"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                LineHeight="16" />
+                            <Border
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Margin="0,0,6,0"
+                                HorizontalAlignment="Left"
+                                Padding="5, 0, 0, 0"
+                                VerticalAlignment="Top"
+                                BorderThickness="1"
+                                BorderBrush="{DynamicResource ButtonBackground}"
+                                CornerRadius="2">
+                            <colorPalette:ColorPaletteEditor                            
+                                ColorPalette="{Binding LightBase, Mode=OneWay}"
+                                IsExpanded="{Binding #BaseExpanderButton.IsChecked, Mode=OneWay}" />
+                            </Border>
+                            <Border
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Margin="6,0,0,0"
+                                HorizontalAlignment="Left"
+                                Padding="5, 0, 0, 0"
+                                VerticalAlignment="Top"
+                                BorderThickness="1"
+                                BorderBrush="{DynamicResource ButtonBackground}"
+                                CornerRadius="2">
+                            <colorPalette:ColorPaletteEditor                            
+                                ColorPalette="{Binding DarkBase, Mode=OneWay}"
+                                IsExpanded="{Binding #BaseExpanderButton.IsChecked, Mode=OneWay}" />
+                            </Border>
+                        </Grid>
+                        <Grid HorizontalAlignment="Stretch" VerticalAlignment="Top">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                Text="{shared:Loc ControlPalettePrimaryBlock}"
+                                Grid.Column="0"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                FontWeight="SemiBold"
+                                LineHeight="20" />
+                            <ToggleButton
+                                x:Name="PrimaryExpanderButton"
+                                Grid.Column="1"
+                                HorizontalAlignment="Right"
+                                VerticalAlignment="Top">
+                                ^
+                            </ToggleButton>
+                        </Grid>
+                        <Grid Margin="0,8,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock
+                                Text="{shared:Loc ControlPaletteLightThemeBlock}"
+                                Grid.Row="0"
+                                Grid.Column="0"
+                                Margin="0,0,8,12"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                LineHeight="16"/>
+                            <TextBlock
+                                Text="{shared:Loc ControlPaletteDarkThemeBlock}"
+                                Grid.Row="0"
+                                Grid.Column="1"
+                                Margin="8,0,0,12"
+                                HorizontalAlignment="Left"
+                                VerticalAlignment="Top"
+                                LineHeight="16" />
+                            <Border
+                                Grid.Row="1"
+                                Grid.Column="0"
+                                Margin="0,0,6,0"
+                                HorizontalAlignment="Left"
+                                Padding="5, 0, 0, 0"
+                                VerticalAlignment="Top"
+                                BorderThickness="1"
+                                BorderBrush="{DynamicResource ButtonBackground}"
+                                CornerRadius="2">
+                            <colorPalette:ColorPaletteEditor
+                                ColorPalette="{Binding LightPrimary, Mode=OneWay}"
+                                IsExpanded="{Binding #PrimaryExpanderButton.IsChecked, Mode=OneWay}" />
+                            </Border>
+                            <Border
+                                Grid.Row="1"
+                                Grid.Column="1"
+                                Margin="6,0,0,0"
+                                HorizontalAlignment="Left"
+                                Padding="5, 0, 0, 0"
+                                VerticalAlignment="Top"
+                                BorderThickness="1"
+                                BorderBrush="{DynamicResource ButtonBackground}"
+                                CornerRadius="2">
+                            <colorPalette:ColorPaletteEditor                            
+                                ColorPalette="{Binding DarkPrimary, Mode=OneWay}"
+                                IsExpanded="{Binding #PrimaryExpanderButton.IsChecked, Mode=OneWay}" />
+                            </Border>
+                        </Grid>
+                    </StackPanel>
+                </Grid>
+            </ScrollViewer>
+            <Grid
+                Grid.Row="2"
+                Margin="12,12,12,12"
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Bottom">
+                <Button
+                    Content="{shared:Loc ControlPaletteExportButton}"
+                    Grid.Column="0"
+                    CornerRadius="2"
+                    Margin="0,0,6,0"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Bottom"
+                    Command="{Binding OnExportRequested}"
+                    Classes="accent" />
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

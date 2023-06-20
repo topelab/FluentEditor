@@ -1,0 +1,36 @@
+﻿<!--
+    Copyright (c) Microsoft Corporation. All rights reserved.
+    Licensed under the MIT License.
+-->
+<UserControl x:Class="FluentEditor.OuterNav.OuterNavPage"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controlPalette="clr-namespace:FluentEditor.ControlPalette"
+             xmlns:export="clr-namespace:FluentEditor.ControlPalette.Export"
+             Background="{DynamicResource AppBackgroundBrush}"
+             mc:Ignorable="d">
+
+  <Grid>
+    <ContentControl x:Name="NavigationFrame"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch">
+      <ContentControl.DataTemplates>
+        <DataTemplate x:DataType="controlPalette:ControlPaletteViewModel">
+          <controlPalette:ControlPaletteView />
+        </DataTemplate>
+        <DataTemplate x:DataType="export:ExportViewModel">
+          <export:ExportViewModel />
+        </DataTemplate>
+      </ContentControl.DataTemplates>
+    </ContentControl>
+    <Border Background="#20000000"
+            IsVisible="{Binding #OverlayContainer.Content, Converter={x:Static ObjectConverters.IsNotNull}}">
+      <ContentControl x:Name="OverlayContainer"
+                      x:FieldModifier="public"
+                      HorizontalAlignment="Center"
+                      VerticalAlignment="Center" />
+    </Border>
+  </Grid>
+</UserControl>

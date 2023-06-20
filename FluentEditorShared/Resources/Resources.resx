@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+  <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" id="root">
+    <xsd:element name="root" msdata:IsDataSet="true" />
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>1.3</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="ExpandedColorPaletteEntryEditorContrastInfoButton" xml:space="preserve">
+        <value>Learn more about contrast ratios</value>
+    </data>
+  <data name="ExpandedColorPaletteEntryEditorContrastRatioTitle" xml:space="preserve">
+        <value>Contrast Ratio Information</value>
+      </data>
+  <data name="ExpandedColorPaletteEntryEditorRevertButton" xml:space="preserve">
+        <value>Revert Color</value>
+      </data>
+  <data name="AppDescription" xml:space="preserve">
+    <value>A tool that helps demonstrate the flexibility of the Fluent Design System as well as supports the app development process by generating XAML markup for our ResourceDictionary framework used in Universal Windows Platform (UWP) applications</value>
+  </data>
+  <data name="AppDisplayName" xml:space="preserve">
+    <value>Fluent XAML Theme Editor</value>
+  </data>
+  <data name="ApplyButtonText" xml:space="preserve">
+    <value>Apply</value>
+  </data>
+  <data name="CancelButtonPreviewText" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+  <data name="ColorFlyoutMappingDescription" xml:space="preserve">
+    <value>Maps to {0}</value>
+  </data>
+  <data name="ControlBorderThicknessPreview" xml:space="preserve">
+    <value>Border Preview</value>
+  </data>
+  <data name="ControlBorderThicknessSectionHeader" xml:space="preserve">
+    <value>Border Thickness</value>
+  </data>
+  <data name="ControlCornerRadiusPreview" xml:space="preserve">
+    <value>Control Preview</value>
+  </data>
+  <data name="ControlPaletteBaseBlock" xml:space="preserve">
+    <value>Base</value>
+  </data>
+  <data name="ControlPaletteDarkTestContent" xml:space="preserve">
+    <value>Dark theme</value>
+  </data>
+  <data name="ControlPaletteDarkThemeBlock" xml:space="preserve">
+    <value>Dark theme</value>
+  </data>
+  <data name="ControlPaletteDataPath" xml:space="preserve">
+    <value>avares://FluentEditorShared/Resources/controlPaletteData.json</value>
+  </data>
+  <data name="ControlPaletteErrorOkButtonCaption" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+  <data name="ControlPaletteExportButton" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="ControlPaletteInspectorHeader" xml:space="preserve">
+    <value>Color</value>
+  </data>
+  <data name="ControlPaletteLightTestContent" xml:space="preserve">
+    <value>Light theme</value>
+  </data>
+  <data name="ControlPaletteLightThemeBlock" xml:space="preserve">
+    <value>Light theme</value>
+  </data>
+  <data name="ControlPaletteLoadButton" xml:space="preserve">
+    <value>Load</value>
+  </data>
+  <data name="ControlPaletteLoadError" xml:space="preserve">
+    <value>Unable to load file {0}</value>
+  </data>
+  <data name="ControlPaletteLoadErrorTitle" xml:space="preserve">
+    <value>Unable to load</value>
+  </data>
+  <data name="ControlPalettePresetComboPlaceholderText" xml:space="preserve">
+    <value>Custom</value>
+  </data>
+  <data name="ControlPalettePrimaryBlock" xml:space="preserve">
+    <value>Primary</value>
+  </data>
+  <data name="ControlPaletteRegionBlock" xml:space="preserve">
+    <value>Region</value>
+  </data>
+  <data name="ControlPaletteResetButton" xml:space="preserve">
+    <value>Reset colors</value>
+  </data>
+  <data name="ControlPaletteSaveButton" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="ControlPaletteSaveError" xml:space="preserve">
+    <value>Unable to save file {0}</value>
+  </data>
+  <data name="ControlPaletteSaveErrorTitle" xml:space="preserve">
+    <value>Unable to save</value>
+  </data>
+  <data name="ControlsCornerRadiusSliderHeader" xml:space="preserve">
+    <value>Controls</value>
+  </data>
+  <data name="CornerRadiusSectionHeader" xml:space="preserve">
+    <value>Corner Radius</value>
+  </data>
+  <data name="DarkThemeTextContrastTitle" xml:space="preserve">
+    <value>White Text</value>
+  </data>
+  <data name="DefaultItemText" xml:space="preserve">
+    <value>Default</value>
+  </data>
+  <data name="ExportCopyButton" xml:space="preserve">
+    <value>Copy to Clipboard</value>
+  </data>
+  <data name="ExportLearnMoreButton" xml:space="preserve">
+    <value>Learn more about XAML ResourceDictionary</value>
+  </data>
+  <data name="LightThemeTextContrastTitle" xml:space="preserve">
+    <value>Black Text</value>
+  </data>
+  <data name="MainDataPath" xml:space="preserve">
+    <value>avares://FluentEditorShared/Resources/demodata.json</value>
+  </data>
+  <data name="OKButtonPreviewText" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="OverlayCornerRadiusHeader" xml:space="preserve">
+    <value>Overlay</value>
+  </data>
+  <data name="OverlayCornerRadiusPreview" xml:space="preserve">
+    <value>Overlay Preview</value>
+  </data>
+  <data name="PreFluent" xml:space="preserve">
+    <value>No Rounding, Thicker Borders</value>
+  </data>
+  <data name="TestContentAppBarButton" xml:space="preserve">
+    <value>Yolo</value>
+  </data>
+  <data name="TestContentButtonsBlock" xml:space="preserve">
+    <value>Buttons</value>
+  </data>
+  <data name="TestContentCalendarViewBlock" xml:space="preserve">
+    <value>Calendar view</value>
+  </data>
+  <data name="TestContentCheckboxBlock" xml:space="preserve">
+    <value>Checkbox</value>
+  </data>
+  <data name="TestContentCheckedCheckbox" xml:space="preserve">
+    <value>Checked</value>
+  </data>
+  <data name="TestContentCheckedRadio" xml:space="preserve">
+    <value>Checked</value>
+  </data>
+  <data name="TestContentComboBlock" xml:space="preserve">
+    <value>Combo box</value>
+  </data>
+  <data name="TestContentComboItem1" xml:space="preserve">
+    <value>Item 1</value>
+  </data>
+  <data name="TestContentComboItem2" xml:space="preserve">
+    <value>Item 2</value>
+  </data>
+  <data name="TestContentComboItem3" xml:space="preserve">
+    <value>Item 3</value>
+  </data>
+  <data name="TestContentCommandBarBlock" xml:space="preserve">
+    <value>Command bar</value>
+  </data>
+  <data name="TestContentDatePickerBlock" xml:space="preserve">
+    <value>Date picker</value>
+  </data>
+  <data name="TestContentDisabledAccentButton" xml:space="preserve">
+    <value>Disabled accent button</value>
+  </data>
+  <data name="TestContentDisabledButton" xml:space="preserve">
+    <value>Disabled button</value>
+  </data>
+  <data name="TestContentDisabledCheckbox" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="TestContentDisabledRadio" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="TestContentEditableComboItem1" xml:space="preserve">
+    <value>Editable item 1</value>
+  </data>
+  <data name="TestContentEditableComboItem2" xml:space="preserve">
+    <value>Editable item 2</value>
+  </data>
+  <data name="TestContentEditableComboItem3" xml:space="preserve">
+    <value>Editable item 3</value>
+  </data>
+  <data name="TestContentEnabledAccentButton" xml:space="preserve">
+    <value>Enabled accent button</value>
+  </data>
+  <data name="TestContentEnabledButton" xml:space="preserve">
+    <value>Enabled button</value>
+  </data>
+  <data name="TestContentListviewBlock" xml:space="preserve">
+    <value>List view</value>
+  </data>
+  <data name="TestContentListviewItem1" xml:space="preserve">
+    <value>Howdy! (disabled)</value>
+  </data>
+  <data name="TestContentListviewItem2" xml:space="preserve">
+    <value>Aloha! (selected)</value>
+  </data>
+  <data name="TestContentListviewItem3" xml:space="preserve">
+    <value>Hello!</value>
+  </data>
+  <data name="TestContentListviewItem4" xml:space="preserve">
+    <value>Hola!</value>
+  </data>
+  <data name="TestContentRadioBlock" xml:space="preserve">
+    <value>Radio button</value>
+  </data>
+  <data name="TestContentSliderBlock" xml:space="preserve">
+    <value>Slider</value>
+  </data>
+  <data name="TestContentTextboxPlaceholderText" xml:space="preserve">
+    <value>Enter text here</value>
+  </data>
+  <data name="TestContentTextboxBlock" xml:space="preserve">
+    <value>Textbox</value>
+  </data>
+  <data name="TestContentThirdStateCheckbox" xml:space="preserve">
+    <value>Third state</value>
+  </data>
+  <data name="TestContentTimePickerBlock" xml:space="preserve">
+    <value>Time picker</value>
+  </data>
+  <data name="TestContentToggleBlock" xml:space="preserve">
+    <value>Toggle switch</value>
+  </data>
+  <data name="TestContentToggleButton" xml:space="preserve">
+    <value>Toggle button</value>
+  </data>
+  <data name="TestContentToggledButton" xml:space="preserve">
+    <value>Toggled button</value>
+  </data>
+  <data name="TestContentUncheckedCheckbox" xml:space="preserve">
+    <value>Unchecked</value>
+  </data>
+  <data name="TestContentUncheckedRadio" xml:space="preserve">
+    <value>Unchecked</value>
+  </data>
+</root>

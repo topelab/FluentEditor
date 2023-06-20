@@ -14,6 +14,6 @@ public class LocExtension : MarkupExtension
     
     public override object ProvideValue(IServiceProvider serviceProvider)
     {
-        return _key;
+        return Resources.Resources.ResourceManager.GetString(_key) ?? _key;
     }
 }

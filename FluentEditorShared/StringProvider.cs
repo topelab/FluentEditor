@@ -12,7 +12,7 @@ namespace FluentEditorShared
     {
         public string GetString(string id)
         {
-            return id;
+            return Resources.Resources.ResourceManager.GetString(id) ?? id;
         }
     }
 }
