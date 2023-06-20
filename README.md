@@ -1,20 +1,11 @@
----
-page_type: sample
-name: Fluent Xaml Theme Editor
-languages:
-  - csharp
-  - xaml
-products:
-  - avalonia
-description: A tool and sample app that shows you how to theme your app effortlessly. Jumpstarting this by also giving you lightweight toolability to see your custom theme come to life in your app.
----
-
 Fluent XAML Theme Editor 
 ===
 
 This repo contains the full solution and source code to the Fluent XAML Theme Editor - a tool that helps demonstrate the flexibility of the [Fluent Design System](https://www.microsoft.com/design/fluent/) as well as supports the app development process by generating XAML markup for our ResourceDictionary framework used in Avalonia applications.
 
 It is a fork of [UWP Fluent XAML Theme Editor](https://github.com/microsoft/fluent-xaml-theme-editor/tree/97321946cf1f03128c98251f03da62b7334671af) by Microsoft, modified to work with Avalonia.
+
+![color properties window](README_Images/App.png)
 
 How to use the tool
 ---
