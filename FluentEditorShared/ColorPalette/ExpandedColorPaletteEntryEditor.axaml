@@ -7,7 +7,6 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:editors="using:FluentEditorShared.Editors"
     xmlns:local="using:FluentEditorShared.ColorPalette"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:shared="clr-namespace:FluentEditorShared"
@@ -82,12 +81,13 @@
                                 VerticalAlignment="Center"
                                 Text="{Binding Path=ContrastColor.Title, Mode=OneWay}"
                                 TextWrapping="Wrap" />
-                            <editors:ErrorText
+                            <TextBlock
                                 Grid.Column="2"
                                 Margin="8,0,0,0"
                                 HorizontalAlignment="Left"
                                 VerticalAlignment="Center"
-                                ShowErrorState="{Binding Path=ContrastError, Mode=OneWay}"
+                                Foreground="{DynamicResource SystemErrorTextColor}"
+                                IsVisible="{Binding Path=ContrastError, Mode=OneWay}"
                                 Text="{Binding Path=Contrast, Mode=OneWay}" />
                         </Grid>
                     </DataTemplate>
