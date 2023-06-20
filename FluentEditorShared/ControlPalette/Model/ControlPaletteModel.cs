@@ -194,14 +194,17 @@ namespace FluentEditor.ControlPalette.Model
             return Task.CompletedTask;
         }
 
-        private DispatcherOperation _operation;
+        private DispatcherTimer _timer;
         private void PaletteEntry_ActiveColorChanged(IColorPaletteEntry obj)
         {
             UpdateActivePreset();
 
-            _operation?.Abort();
-            _operation = Dispatcher.UIThread.InvokeAsync(() => PaletteUpdated?.Invoke(this, EventArgs.Empty),
-                DispatcherPriority.Background);
+            _timer?.Stop();
+            _timer = new DispatcherTimer(TimeSpan.FromMilliseconds(500), DispatcherPriority.Background, (_, _) =>
+            {
+                _timer.Stop();
+                PaletteUpdated?.Invoke(this, EventArgs.Empty);
+            });
         }
 
         private void UpdateActivePreset()
