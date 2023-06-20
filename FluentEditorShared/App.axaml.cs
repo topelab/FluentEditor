@@ -24,6 +24,7 @@ namespace FluentEditor
         };
         
         public static OuterNavPage NavPage { get; private set; }
+        public static IStringProvider StringProvider { get; private set; }
         
         public App()
         {
@@ -81,6 +82,7 @@ namespace FluentEditor
 
             _mainNavModel = navModel;
             _outerNavViewModel = new OuterNavViewModel(_mainNavModel.NavItems, _mainNavModel.DefaultNavItem);
+            StringProvider = stringProvider;
         }
 
         private StringProvider _stringProvider;

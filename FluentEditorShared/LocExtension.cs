@@ -1,5 +1,6 @@
 using System;
 using Avalonia.Markup.Xaml;
+using FluentEditor;
 
 namespace FluentEditorShared;
 
@@ -14,6 +15,6 @@ public class LocExtension : MarkupExtension
     
     public override object ProvideValue(IServiceProvider serviceProvider)
     {
-        return Resources.Resources.ResourceManager.GetString(_key) ?? _key;
+        return App.StringProvider.GetString(_key);
     }
 }
