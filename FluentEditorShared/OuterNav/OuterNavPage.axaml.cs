@@ -17,13 +17,13 @@ namespace FluentEditor.OuterNav
             _viewModel = viewModel;
             _viewModel.NavigateToItem += _viewModel_NavigateToItem;
 
-            this.InitializeComponent();
+            InitializeComponent();
 
             NavigateToViewModel(_viewModel.SelectedNavItem);
         }
 
         private readonly OuterNavViewModel _viewModel;
-        public OuterNavViewModel ViewModel { get { return _viewModel; } }
+        public OuterNavViewModel ViewModel => _viewModel;
 
         private void _viewModel_NavigateToItem(OuterNavViewModel source, INavItem navItem)
         {

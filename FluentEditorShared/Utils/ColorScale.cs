@@ -3,12 +3,12 @@
 
 using System;
 using System.Collections.Generic;
-using Avalonia.Media;
 using System.Linq;
+using Avalonia.Media;
 
 namespace FluentEditorShared.Utils
 {
-    public enum ColorScaleInterpolationMode { RGB, LAB, XYZ };
+    public enum ColorScaleInterpolationMode { RGB, LAB, XYZ }
 
     public readonly struct ColorScaleStop
     {
@@ -54,7 +54,7 @@ namespace FluentEditorShared.Utils
                 }
                 else
                 {
-                    _stops[index] = new ColorScaleStop(color, (double)index * (1.0 / (double)(count - 1)));
+                    _stops[index] = new ColorScaleStop(color, index * (1.0 / (count - 1)));
                 }
                 index++;
             }
@@ -103,7 +103,8 @@ namespace FluentEditorShared.Utils
             {
                 return _stops[0].Color;
             }
-            else if (position >= 1)
+
+            if (position >= 1)
             {
                 return _stops[_stops.Length - 1].Color;
             }
@@ -147,7 +148,7 @@ namespace FluentEditorShared.Utils
             }
             if (lowerBound == upperBound)
             {
-                return new ColorScale(new Color[] { GetColor(lowerBound, mode) });
+                return new ColorScale(new[] { GetColor(lowerBound, mode) });
             }
             List<ColorScaleStop> containedStops = new List<ColorScaleStop>(_stops.Length);
 
@@ -161,7 +162,7 @@ namespace FluentEditorShared.Utils
 
             if (containedStops.Count == 0)
             {
-                return new ColorScale(new Color[] { GetColor(lowerBound, mode), GetColor(upperBound, mode) });
+                return new ColorScale(new[] { GetColor(lowerBound, mode), GetColor(upperBound, mode) });
             }
 
             if (containedStops.First().Position != lowerBound)
@@ -229,7 +230,8 @@ namespace FluentEditorShared.Utils
                 {
                     return mid;
                 }
-                else if (midContrast > contrast)
+
+                if (midContrast > contrast)
                 {
                     if(searchDown)
                     {

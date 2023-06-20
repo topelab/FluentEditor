@@ -16,11 +16,11 @@ namespace FluentEditor.ControlPalette.Export
                 throw new ArgumentNullException("viewModel");
             }
             _viewModel = viewModel;
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         private readonly ExportViewModel _viewModel;
-        public ExportViewModel ViewModel { get { return _viewModel; } }
+        public ExportViewModel ViewModel => _viewModel;
 
         private void ExportClick(object sender, RoutedEventArgs e)
         {

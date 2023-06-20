@@ -30,15 +30,12 @@ namespace FluentEditor.OuterNav
         }
 
         private AvaloniaList<INavItem> _navItems;
-        public AvaloniaList<INavItem> NavItems
-        {
-            get { return _navItems; }
-        }
+        public AvaloniaList<INavItem> NavItems => _navItems;
 
         private INavItem _selectedNavItem;
         public INavItem SelectedNavItem
         {
-            get { return _selectedNavItem; }
+            get => _selectedNavItem;
             set
             {
                 if (_selectedNavItem != value)

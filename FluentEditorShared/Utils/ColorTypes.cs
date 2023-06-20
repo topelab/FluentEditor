@@ -6,7 +6,7 @@ using Avalonia.Media;
 
 namespace FluentEditorShared.Utils
 {
-    public enum ColorStringFormat { RGB, PoundRGB, ARGB, NormalizedRGB, HSL, HSV, LAB, LCH, XYZ, Luminance, Temperature };
+    public enum ColorStringFormat { RGB, PoundRGB, ARGB, NormalizedRGB, HSL, HSV, LAB, LCH, XYZ, Luminance, Temperature }
 
     // Valid values for each channel are ∈ [0.0,1.0]
     // But sometimes it is useful to allow values outside that range during calculations as long as they are clamped eventually
@@ -34,15 +34,15 @@ namespace FluentEditorShared.Utils
         {
             if (round)
             {
-                R = Math.Round((double)rgb.R / 255.0, roundingPrecision);
-                G = Math.Round((double)rgb.G / 255.0, roundingPrecision);
-                B = Math.Round((double)rgb.B / 255.0, roundingPrecision);
+                R = Math.Round(rgb.R / 255.0, roundingPrecision);
+                G = Math.Round(rgb.G / 255.0, roundingPrecision);
+                B = Math.Round(rgb.B / 255.0, roundingPrecision);
             }
             else
             {
-                R = (double)rgb.R / 255.0;
-                G = (double)rgb.G / 255.0;
-                B = (double)rgb.B / 255.0;
+                R = rgb.R / 255.0;
+                G = rgb.G / 255.0;
+                B = rgb.B / 255.0;
             }
         }
 
@@ -72,10 +72,8 @@ namespace FluentEditorShared.Utils
             {
                 return R == other.R && G == other.G && B == other.B;
             }
-            else
-            {
-                return base.Equals(obj);
-            }
+
+            return base.Equals(obj);
         }
 
         public override int GetHashCode()
@@ -139,10 +137,8 @@ namespace FluentEditorShared.Utils
             {
                 return H == other.H && S == other.S && L == other.L;
             }
-            else
-            {
-                return base.Equals(obj);
-            }
+
+            return base.Equals(obj);
         }
 
         public override int GetHashCode()
@@ -206,10 +202,8 @@ namespace FluentEditorShared.Utils
             {
                 return H == other.H && S == other.S && V == other.V;
             }
-            else
-            {
-                return base.Equals(obj);
-            }
+
+            return base.Equals(obj);
         }
 
         public override int GetHashCode()
@@ -270,10 +264,8 @@ namespace FluentEditorShared.Utils
             {
                 return L == other.L && A == other.A && B == other.B;
             }
-            else
-            {
-                return base.Equals(obj);
-            }
+
+            return base.Equals(obj);
         }
 
         public override int GetHashCode()
@@ -334,10 +326,8 @@ namespace FluentEditorShared.Utils
             {
                 return L == other.L && C == other.C && H == other.H;
             }
-            else
-            {
-                return base.Equals(obj);
-            }
+
+            return base.Equals(obj);
         }
 
         public override int GetHashCode()
@@ -398,10 +388,8 @@ namespace FluentEditorShared.Utils
             {
                 return X == other.X && Y == other.Y && Z == other.Z;
             }
-            else
-            {
-                return base.Equals(obj);
-            }
+
+            return base.Equals(obj);
         }
 
         public override int GetHashCode()

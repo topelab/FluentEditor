@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 
 using System;
-using FluentEditorShared.Utils;
 using System.Collections.Generic;
-using Avalonia.Media;
 using System.Text.Json.Nodes;
+using Avalonia.Media;
+using FluentEditorShared.Utils;
 
 namespace FluentEditorShared.ColorPalette
 {
@@ -25,16 +25,16 @@ namespace FluentEditorShared.ColorPalette
                 color = default(Color);
             }
 
-            FluentEditorShared.Utils.ColorStringFormat activeColorStringFormat = FluentEditorShared.Utils.ColorStringFormat.PoundRGB;
+            ColorStringFormat activeColorStringFormat = ColorStringFormat.PoundRGB;
             if (data.ContainsKey("ActiveColorStringFormat"))
             {
-                activeColorStringFormat = data.GetEnum<FluentEditorShared.Utils.ColorStringFormat>();
+                activeColorStringFormat = data.GetEnum<ColorStringFormat>();
             }
 
             return new ColorPaletteEntry(color, data.GetOptionalString("Title"), data.GetOptionalString("Description"), activeColorStringFormat, contrastColors);
         }
 
-        public ColorPaletteEntry(Color color, string title, string description, FluentEditorShared.Utils.ColorStringFormat activeColorStringFormat, IReadOnlyList<ContrastColorWrapper> contrastColors)
+        public ColorPaletteEntry(Color color, string title, string description, ColorStringFormat activeColorStringFormat, IReadOnlyList<ContrastColorWrapper> contrastColors)
         {
             _activeColor = color;
             _title = title;
@@ -47,21 +47,21 @@ namespace FluentEditorShared.ColorPalette
         private string _title;
         public string Title
         {
-            get { return _title; }
-            set { _title = value; }
+            get => _title;
+            set => _title = value;
         }
 
         private string _description;
         public string Description
         {
-            get { return _description; }
-            set { _description = value; }
+            get => _description;
+            set => _description = value;
         }
 
         private Color _activeColor;
         public Color ActiveColor
         {
-            get { return _activeColor; }
+            get => _activeColor;
             set
             {
                 if (_activeColor != value)
@@ -74,26 +74,17 @@ namespace FluentEditorShared.ColorPalette
             }
         }
 
-        public string ActiveColorString
-        {
-            get
-            {
-                return FluentEditorShared.Utils.ColorUtils.FormatColorString(_activeColor, _activeColorStringFormat);
-            }
-        }
+        public string ActiveColorString => ColorUtils.FormatColorString(_activeColor, _activeColorStringFormat);
 
-        private FluentEditorShared.Utils.ColorStringFormat _activeColorStringFormat = FluentEditorShared.Utils.ColorStringFormat.PoundRGB;
-        public FluentEditorShared.Utils.ColorStringFormat ActiveColorStringFormat
-        {
-            get { return _activeColorStringFormat; }
-        }
+        private ColorStringFormat _activeColorStringFormat = ColorStringFormat.PoundRGB;
+        public ColorStringFormat ActiveColorStringFormat => _activeColorStringFormat;
 
         public event Action<IColorPaletteEntry> ActiveColorChanged;
 
         private IReadOnlyList<ContrastColorWrapper> _contrastColors;
         public IReadOnlyList<ContrastColorWrapper> ContrastColors
         {
-            get { return _contrastColors; }
+            get => _contrastColors;
             set
             {
                 if (_contrastColors != value)
@@ -127,10 +118,7 @@ namespace FluentEditorShared.ColorPalette
         }
 
         private ContrastColorWrapper _bestContrastColor;
-        public ContrastColorWrapper BestContrastColor
-        {
-            get { return _bestContrastColor; }
-        }
+        public ContrastColorWrapper BestContrastColor => _bestContrastColor;
 
         public double BestContrastValue
         {

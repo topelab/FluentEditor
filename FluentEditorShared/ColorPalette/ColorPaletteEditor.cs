@@ -3,19 +3,13 @@
 
 using System.Collections.Generic;
 using Avalonia;
+using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 
 namespace FluentEditorShared.ColorPalette
 {
     public class ColorPaletteEditor : TemplatedControl
     {
-        private double collapsedHeight = 56; // what
-        private double expandedHeight = 465;
-        public ColorPaletteEditor()
-        {
-            Height = collapsedHeight;
-        }
-
         #region ColorPaletteProperty
 
         public static readonly StyledProperty<ColorPalette> ColorPaletteProperty = AvaloniaProperty.Register<ColorPaletteEditor, ColorPalette>("ColorPalette");
@@ -34,8 +28,8 @@ namespace FluentEditorShared.ColorPalette
 
         public ColorPalette ColorPalette
         {
-            get { return GetValue(ColorPaletteProperty) as ColorPalette; }
-            set { SetValue(ColorPaletteProperty, value); }
+            get => GetValue(ColorPaletteProperty);
+            set => SetValue(ColorPaletteProperty, value);
         }
 
         #endregion
@@ -44,10 +38,7 @@ namespace FluentEditorShared.ColorPalette
 
         public static readonly StyledProperty<IReadOnlyList<IColorPaletteEntry>> PaletteEntriesProperty = AvaloniaProperty.Register<ColorPaletteEditor, IReadOnlyList<IColorPaletteEntry>>("PaletteEntries");
 
-        public IReadOnlyList<IColorPaletteEntry> PaletteEntries
-        {
-            get { return GetValue(PaletteEntriesProperty) as IReadOnlyList<IColorPaletteEntry>; }
-        }
+        public IReadOnlyList<IColorPaletteEntry> PaletteEntries => GetValue(PaletteEntriesProperty);
 
         #endregion
 
@@ -57,23 +48,8 @@ namespace FluentEditorShared.ColorPalette
 
         public bool IsExpanded
         {
-            get
-            {
-                return (bool)GetValue(IsExpandedProperty);
-            }
-            set
-            {
-                AdjustHeight(value);
-                SetValue(IsExpandedProperty, value);
-            }
-        }
-
-        private void AdjustHeight(bool isExpanded)
-        {
-            if (isExpanded)
-                this.Height = expandedHeight;
-            else
-                this.Height = collapsedHeight;
+            get => GetValue(IsExpandedProperty);
+            set => SetValue(IsExpandedProperty, value);
         }
 
         #endregion
@@ -86,6 +62,10 @@ namespace FluentEditorShared.ColorPalette
             {
                 var (oldValue, newValue) = change.GetOldAndNewValue<ColorPalette>();
                 OnColorPaletteChanged(oldValue, newValue);
+            }
+            else if (change.Property == IsExpandedProperty)
+            {
+                PseudoClasses.Set(":expanded", IsExpanded);
             }
         }
     }

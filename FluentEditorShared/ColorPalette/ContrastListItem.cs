@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using FluentEditorShared.Utils;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using Avalonia.Media;
+using FluentEditorShared.Utils;
 
 namespace FluentEditorShared.ColorPalette
 {
@@ -36,7 +36,7 @@ namespace FluentEditorShared.ColorPalette
         private double _contrast;
         public double Contrast
         {
-            get { return _contrast; }
+            get => _contrast;
             private set
             {
                 if (_contrast != value)
@@ -64,7 +64,7 @@ namespace FluentEditorShared.ColorPalette
         private IColorPaletteEntry _baseColor;
         public IColorPaletteEntry BaseColor
         {
-            get { return _baseColor; }
+            get => _baseColor;
             set
             {
                 if (_baseColor != value)
@@ -95,15 +95,12 @@ namespace FluentEditorShared.ColorPalette
         }
 
         private SolidColorBrush _baseColorBrush;
-        public SolidColorBrush BaseColorBrush
-        {
-            get { return _baseColorBrush; }
-        }
+        public SolidColorBrush BaseColorBrush => _baseColorBrush;
 
         private IColorPaletteEntry _contrastColor;
         public IColorPaletteEntry ContrastColor
         {
-            get { return _contrastColor; }
+            get => _contrastColor;
             set
             {
                 if (_contrastColor != value)
@@ -134,10 +131,7 @@ namespace FluentEditorShared.ColorPalette
         }
 
         private SolidColorBrush _contrastColorBrush;
-        public SolidColorBrush ContrastColorBrush
-        {
-            get { return _contrastColorBrush; }
-        }
+        public SolidColorBrush ContrastColorBrush => _contrastColorBrush;
 
         #region INotifyPropertyChanged
 

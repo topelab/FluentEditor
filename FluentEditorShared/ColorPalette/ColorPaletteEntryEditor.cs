@@ -11,7 +11,7 @@ using Avalonia.Styling;
 
 namespace FluentEditorShared.ColorPalette
 {
-    public enum ColorPaletteEntryCaptionMode { None, ActiveColorString, Title };
+    public enum ColorPaletteEntryCaptionMode { None, ActiveColorString, Title }
 
     public class ColorPaletteEntryEditor : Button
     {
@@ -21,7 +21,7 @@ namespace FluentEditorShared.ColorPalette
             ActiveColorBrush = new SolidColorBrush();
             ContrastColorBrush = new SolidColorBrush();
 
-            this.Click += ColorPaletteEntryEditor_Click;
+            Click += ColorPaletteEntryEditor_Click;
         }
 
         #region ColorPaletteEntryProperty
@@ -60,20 +60,20 @@ namespace FluentEditorShared.ColorPalette
 
         public IColorPaletteEntry ColorPaletteEntry
         {
-            get { return GetValue(ColorPaletteEntryProperty) as IColorPaletteEntry; }
-            set { SetValue(ColorPaletteEntryProperty, value); }
+            get => GetValue(ColorPaletteEntryProperty);
+            set => SetValue(ColorPaletteEntryProperty, value);
         }
 
         #endregion
 
         #region CaptionModeProperty
 
-        public static readonly StyledProperty<ColorPaletteEntryCaptionMode> CaptionModeProperty = AvaloniaProperty.Register<ColorPaletteEntryEditor, ColorPaletteEntryCaptionMode>("CaptionMode");
+        public static readonly StyledProperty<ColorPaletteEntryCaptionMode> CaptionModeProperty = AvaloniaProperty.Register<ColorPaletteEntryEditor, ColorPaletteEntryCaptionMode>("CaptionMode", ColorPaletteEntryCaptionMode.ActiveColorString);
 
         public ColorPaletteEntryCaptionMode CaptionMode
         {
-            get { return (ColorPaletteEntryCaptionMode)GetValue(CaptionModeProperty); }
-            set { SetValue(CaptionModeProperty, value); }
+            get => GetValue(CaptionModeProperty);
+            set => SetValue(CaptionModeProperty, value);
         }
 
         #endregion
@@ -84,8 +84,8 @@ namespace FluentEditorShared.ColorPalette
 
         public string Caption
         {
-            get { return GetValue(CaptionProperty) as string; }
-            private set { SetValue(CaptionProperty, value); }
+            get => GetValue(CaptionProperty);
+            private set => SetValue(CaptionProperty, value);
         }
 
         #endregion
@@ -96,8 +96,8 @@ namespace FluentEditorShared.ColorPalette
 
         public DataTemplate FlyoutTemplate
         {
-            get { return GetValue(FlyoutTemplateProperty) as DataTemplate; }
-            set { SetValue(FlyoutTemplateProperty, value); }
+            get => GetValue(FlyoutTemplateProperty);
+            set => SetValue(FlyoutTemplateProperty, value);
         }
 
         #endregion
@@ -108,8 +108,8 @@ namespace FluentEditorShared.ColorPalette
 
         public ControlTheme FlyoutPresenterStyle
         {
-            get { return GetValue(FlyoutPresenterStyleProperty) as ControlTheme; }
-            set { SetValue(FlyoutPresenterStyleProperty, value); }
+            get => GetValue(FlyoutPresenterStyleProperty);
+            set => SetValue(FlyoutPresenterStyleProperty, value);
         }
 
         #endregion
@@ -120,8 +120,8 @@ namespace FluentEditorShared.ColorPalette
 
         public SolidColorBrush ActiveColorBrush
         {
-            get { return GetValue(ActiveColorBrushProperty) as SolidColorBrush; }
-            private set { SetValue(ActiveColorBrushProperty, value); }
+            get => GetValue(ActiveColorBrushProperty);
+            private set => SetValue(ActiveColorBrushProperty, value);
         }
 
         #endregion
@@ -132,8 +132,8 @@ namespace FluentEditorShared.ColorPalette
 
         public SolidColorBrush ContrastColorBrush
         {
-            get { return GetValue(ContrastColorBrushProperty) as SolidColorBrush; }
-            private set { SetValue(ContrastColorBrushProperty, value); }
+            get => GetValue(ContrastColorBrushProperty);
+            private set => SetValue(ContrastColorBrushProperty, value);
         }
 
         #endregion

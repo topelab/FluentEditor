@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using FluentEditorShared.Utils;
 using System;
 using System.Collections.Generic;
-using Avalonia.Media;
 using System.Text.Json.Nodes;
+using Avalonia.Media;
+using FluentEditorShared.Utils;
 
 namespace FluentEditorShared.ColorPalette
 {
@@ -65,27 +65,18 @@ namespace FluentEditorShared.ColorPalette
         }
 
         protected readonly IColorPaletteEntry _baseColor;
-        public IColorPaletteEntry BaseColor
-        {
-            get { return _baseColor; }
-        }
+        public IColorPaletteEntry BaseColor => _baseColor;
 
         protected readonly int _steps = 11;
-        public int Steps
-        {
-            get { return _steps; }
-        }
+        public int Steps => _steps;
 
         protected readonly List<EditableColorPaletteEntry> _palette;
-        public IReadOnlyList<EditableColorPaletteEntry> Palette
-        {
-            get { return _palette; }
-        }
+        public IReadOnlyList<EditableColorPaletteEntry> Palette => _palette;
 
         protected ColorScaleInterpolationMode _interpolationMode = ColorScaleInterpolationMode.RGB;
         public ColorScaleInterpolationMode InterpolationMode
         {
-            get { return _interpolationMode; }
+            get => _interpolationMode;
             set
             {
                 if (_interpolationMode != value)
@@ -99,7 +90,7 @@ namespace FluentEditorShared.ColorPalette
         protected Color _scaleColorLight = Color.FromArgb(0xFF, 0xFF, 0xFF, 0xFF);
         public Color ScaleColorLight
         {
-            get { return _scaleColorLight; }
+            get => _scaleColorLight;
             set
             {
                 if (_scaleColorLight != value)
@@ -113,7 +104,7 @@ namespace FluentEditorShared.ColorPalette
         protected Color _scaleColorDark = Color.FromArgb(0xFF, 0x00, 0x00, 0x00);
         public Color ScaleColorDark
         {
-            get { return _scaleColorDark; }
+            get => _scaleColorDark;
             set
             {
                 if (_scaleColorDark != value)
@@ -127,7 +118,7 @@ namespace FluentEditorShared.ColorPalette
         protected double _clipLight = 0.185;
         public double ClipLight
         {
-            get { return _clipLight; }
+            get => _clipLight;
             set
             {
                 if (_clipLight != value)
@@ -141,7 +132,7 @@ namespace FluentEditorShared.ColorPalette
         protected double _clipDark = 0.160;
         public double ClipDark
         {
-            get { return _clipDark; }
+            get => _clipDark;
             set
             {
                 if (_clipDark != value)
@@ -155,7 +146,7 @@ namespace FluentEditorShared.ColorPalette
         protected double _saturationAdjustmentCutoff = 0.05;
         public double SaturationAdjustmentCutoff
         {
-            get { return _saturationAdjustmentCutoff; }
+            get => _saturationAdjustmentCutoff;
             set
             {
                 if (_saturationAdjustmentCutoff != value)
@@ -169,7 +160,7 @@ namespace FluentEditorShared.ColorPalette
         protected double _saturationLight = 0.35;
         public double SaturationLight
         {
-            get { return _saturationLight; }
+            get => _saturationLight;
             set
             {
                 if (_saturationLight != value)
@@ -183,7 +174,7 @@ namespace FluentEditorShared.ColorPalette
         protected double _saturationDark = 1.25;
         public double SaturationDark
         {
-            get { return _saturationDark; }
+            get => _saturationDark;
             set
             {
                 if (_saturationDark != value)
@@ -194,10 +185,10 @@ namespace FluentEditorShared.ColorPalette
             }
         }
 
-        protected double _overlayLight = 0.0;
+        protected double _overlayLight;
         public double OverlayLight
         {
-            get { return _overlayLight; }
+            get => _overlayLight;
             set
             {
                 if (_overlayLight != value)
@@ -211,7 +202,7 @@ namespace FluentEditorShared.ColorPalette
         protected double _overlayDark = 0.25;
         public double OverlayDark
         {
-            get { return _overlayDark; }
+            get => _overlayDark;
             set
             {
                 if (_overlayDark != value)
@@ -222,10 +213,10 @@ namespace FluentEditorShared.ColorPalette
             }
         }
 
-        protected double _multiplyLight = 0.0;
+        protected double _multiplyLight;
         public double MultiplyLight
         {
-            get { return _multiplyLight; }
+            get => _multiplyLight;
             set
             {
                 if (_multiplyLight != value)
@@ -236,10 +227,10 @@ namespace FluentEditorShared.ColorPalette
             }
         }
 
-        protected double _multiplyDark = 0.0;
+        protected double _multiplyDark;
         public double MultiplyDark
         {
-            get { return _multiplyDark; }
+            get => _multiplyDark;
             set
             {
                 if (_multiplyDark != value)
@@ -309,7 +300,7 @@ namespace FluentEditorShared.ColorPalette
             var baseColorHSL = ColorUtils.RGBToHSL(baseColorRGB);
             var baseColorNormalized = new NormalizedRGB(baseColorRGB);
 
-            var baseScale = new ColorScale(new Color[] { _scaleColorLight, baseColorRGB, _scaleColorDark, });
+            var baseScale = new ColorScale(new[] { _scaleColorLight, baseColorRGB, _scaleColorDark, });
 
             var trimmedScale = baseScale.Trim(_clipLight, 1.0 - _clipDark);
             var trimmedLight = new NormalizedRGB(trimmedScale.GetColor(0, _interpolationMode));
@@ -349,7 +340,7 @@ namespace FluentEditorShared.ColorPalette
                 adjustedDark = ColorUtils.InterpolateColor(adjustedDark, overlay, _overlayDark, _interpolationMode);
             }
 
-            var finalScale = new ColorScale(new Color[] { adjustedLight.Denormalize(), baseColorRGB, adjustedDark.Denormalize() });
+            var finalScale = new ColorScale(new[] { adjustedLight.Denormalize(), baseColorRGB, adjustedDark.Denormalize() });
             return finalScale;
         }
 
@@ -359,7 +350,7 @@ namespace FluentEditorShared.ColorPalette
 
             for (int i = 0; i < _steps; i++)
             {
-                var c = scale.GetColor((double)i / (double)(_steps - 1), _interpolationMode);
+                var c = scale.GetColor(i / (double)(_steps - 1), _interpolationMode);
                 _palette[i].SourceColor = new ColorPaletteEntry(c, null, null, ColorStringFormat.PoundRGB, null);
             }
         }
@@ -367,7 +358,7 @@ namespace FluentEditorShared.ColorPalette
         private IReadOnlyList<ContrastColorWrapper> _contrastColors;
         public IReadOnlyList<ContrastColorWrapper> ContrastColors
         {
-            get { return _contrastColors; }
+            get => _contrastColors;
             set
             {
                 if(_contrastColors != value)

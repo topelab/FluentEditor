@@ -14,11 +14,13 @@ namespace FluentEditorShared.Utils
             {
                 return 0;
             }
-            else if (double.IsPositiveInfinity(c))
+
+            if (double.IsPositiveInfinity(c))
             {
                 return 255;
             }
-            else if (double.IsNegativeInfinity(c))
+
+            if (double.IsNegativeInfinity(c))
             {
                 return 0;
             }
@@ -27,14 +29,13 @@ namespace FluentEditorShared.Utils
             {
                 return 0;
             }
-            else if (c >= 255)
+
+            if (c >= 255)
             {
                 return 255;
             }
-            else
-            {
-                return (byte)c;
-            }
+
+            return (byte)c;
         }
 
         public static double ClampToUnit(double c)
@@ -43,11 +44,13 @@ namespace FluentEditorShared.Utils
             {
                 return 0;
             }
-            else if (double.IsPositiveInfinity(c))
+
+            if (double.IsPositiveInfinity(c))
             {
                 return 1;
             }
-            else if (double.IsNegativeInfinity(c))
+
+            if (double.IsNegativeInfinity(c))
             {
                 return 0;
             }
@@ -55,14 +58,13 @@ namespace FluentEditorShared.Utils
             {
                 return 0;
             }
-            else if (c >= 1)
+
+            if (c >= 1)
             {
                 return 1;
             }
-            else
-            {
-                return c;
-            }
+
+            return c;
         }
 
         public static double DegreesToRadians(double degrees)
@@ -81,7 +83,8 @@ namespace FluentEditorShared.Utils
             {
                 return left;
             }
-            else if (scale >= 1)
+
+            if (scale >= 1)
             {
                 return right;
             }
@@ -94,16 +97,18 @@ namespace FluentEditorShared.Utils
             {
                 return left;
             }
-            else if (scale >= 1)
+
+            if (scale >= 1)
             {
                 return right;
             }
-            else if (left == right)
+
+            if (left == right)
             {
                 return left;
             }
-            double l = (double)left;
-            double r = (double)right;
+            double l = left;
+            double r = right;
             return (byte)Math.Round(l + scale * (r - l));
         }
 
@@ -113,7 +118,8 @@ namespace FluentEditorShared.Utils
             {
                 return left;
             }
-            else if (scale >= 1)
+
+            if (scale >= 1)
             {
                 return right;
             }
@@ -123,10 +129,8 @@ namespace FluentEditorShared.Utils
             {
                 return (left - a * scale + 360.0) % 360.0;
             }
-            else
-            {
-                return (left + a * scale + 360.0) % 360.0;
-            }
+
+            return (left + a * scale + 360.0) % 360.0;
         }
 
         public static double Interpolate(double start, double end, double progress, Func<double, double> easing = null)
@@ -135,7 +139,8 @@ namespace FluentEditorShared.Utils
             {
                 return start;
             }
-            else if (progress >= 1)
+
+            if (progress >= 1)
             {
                 return end;
             }
@@ -152,7 +157,8 @@ namespace FluentEditorShared.Utils
             {
                 return start;
             }
-            else if (progress >= 1)
+
+            if (progress >= 1)
             {
                 return end;
             }
@@ -169,7 +175,8 @@ namespace FluentEditorShared.Utils
             {
                 return start;
             }
-            else if (progress >= 1)
+
+            if (progress >= 1)
             {
                 return end;
             }

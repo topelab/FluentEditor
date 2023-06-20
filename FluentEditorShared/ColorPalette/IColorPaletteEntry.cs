@@ -4,6 +4,7 @@
 using System;
 using System.Collections.Generic;
 using Avalonia.Media;
+using FluentEditorShared.Utils;
 
 namespace FluentEditorShared.ColorPalette
 {
@@ -20,7 +21,7 @@ namespace FluentEditorShared.ColorPalette
             set;
         }
         string ActiveColorString { get; }
-        FluentEditorShared.Utils.ColorStringFormat ActiveColorStringFormat { get; }
+        ColorStringFormat ActiveColorStringFormat { get; }
 
         event Action<IColorPaletteEntry> ActiveColorChanged;
 

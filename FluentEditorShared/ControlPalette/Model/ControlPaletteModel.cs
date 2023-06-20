@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using FluentEditorShared;
-using FluentEditorShared.ColorPalette;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +9,10 @@ using System.Threading.Tasks;
 using Avalonia.Collections;
 using Avalonia.Media;
 using Avalonia.Platform;
+using Avalonia.Threading;
+using FluentEditorShared;
+using FluentEditorShared.ColorPalette;
+using FluentEditorShared.Utils;
 
 namespace FluentEditor.ControlPalette.Model
 {
@@ -24,6 +26,7 @@ namespace FluentEditor.ControlPalette.Model
         AvaloniaList<Preset> Presets { get; }
         Preset ActivePreset { get; }
         event Action<IControlPaletteModel> ActivePresetChanged;
+        event EventHandler PaletteUpdated;
 
         IReadOnlyList<ColorMapping> LightColorMapping { get; }
         IReadOnlyList<ColorMapping> DarkColorMapping { get; }
@@ -44,8 +47,8 @@ namespace FluentEditor.ControlPalette.Model
             var stream = AssetLoader.Open(new Uri(dataPath));
             var rootObject = JsonObject.Parse(stream).AsObject();
 
-            _whiteColor = new ColorPaletteEntry(Colors.White, _stringProvider.GetString("DarkThemeTextContrastTitle"), null, FluentEditorShared.Utils.ColorStringFormat.PoundRGB, null);
-            _blackColor = new ColorPaletteEntry(Colors.Black, _stringProvider.GetString("LightThemeTextContrastTitle"), null, FluentEditorShared.Utils.ColorStringFormat.PoundRGB, null);
+            _whiteColor = new ColorPaletteEntry(Colors.White, _stringProvider.GetString("DarkThemeTextContrastTitle"), null, ColorStringFormat.PoundRGB, null);
+            _blackColor = new ColorPaletteEntry(Colors.Black, _stringProvider.GetString("LightThemeTextContrastTitle"), null, ColorStringFormat.PoundRGB, null);
 
             var lightRegionNode = rootObject["LightRegion"].AsObject();
             _lightRegion = ColorPaletteEntry.Parse(lightRegionNode, null);
@@ -81,12 +84,12 @@ namespace FluentEditor.ControlPalette.Model
 
             UpdateActivePreset();
 
-            _lightRegion.ContrastColors = new List<ContrastColorWrapper>() { new ContrastColorWrapper(_whiteColor, false, false), new ContrastColorWrapper(_blackColor, true, true), new ContrastColorWrapper(_lightBase.BaseColor, true, false), new ContrastColorWrapper(_lightPrimary.BaseColor, true, false) };
-            _darkRegion.ContrastColors = new List<ContrastColorWrapper>() { new ContrastColorWrapper(_whiteColor, true, true), new ContrastColorWrapper(_blackColor, false, false), new ContrastColorWrapper(_darkBase.BaseColor, true, false), new ContrastColorWrapper(_darkPrimary.BaseColor, true, false) };
-            _lightBase.ContrastColors = new List<ContrastColorWrapper>() { new ContrastColorWrapper(_whiteColor, false, false), new ContrastColorWrapper(_blackColor, true, true), new ContrastColorWrapper(_lightRegion, true, false), new ContrastColorWrapper(_lightPrimary.BaseColor, true, false) };
-            _darkBase.ContrastColors = new List<ContrastColorWrapper>() { new ContrastColorWrapper(_whiteColor, true, true), new ContrastColorWrapper(_blackColor, false, false), new ContrastColorWrapper(_darkRegion, true, false), new ContrastColorWrapper(_darkPrimary.BaseColor, true, false) };
-            _lightPrimary.ContrastColors = new List<ContrastColorWrapper>() { new ContrastColorWrapper(_whiteColor, true, true), new ContrastColorWrapper(_blackColor, false, false), new ContrastColorWrapper(_lightRegion, true, false), new ContrastColorWrapper(_lightBase.BaseColor, true, false) };
-            _darkPrimary.ContrastColors = new List<ContrastColorWrapper>() { new ContrastColorWrapper(_whiteColor, true, true), new ContrastColorWrapper(_blackColor, false, false), new ContrastColorWrapper(_darkRegion, true, false), new ContrastColorWrapper(_darkBase.BaseColor, true, false) };
+            _lightRegion.ContrastColors = new List<ContrastColorWrapper> { new ContrastColorWrapper(_whiteColor, false, false), new ContrastColorWrapper(_blackColor, true, true), new ContrastColorWrapper(_lightBase.BaseColor, true, false), new ContrastColorWrapper(_lightPrimary.BaseColor, true, false) };
+            _darkRegion.ContrastColors = new List<ContrastColorWrapper> { new ContrastColorWrapper(_whiteColor, true, true), new ContrastColorWrapper(_blackColor, false, false), new ContrastColorWrapper(_darkBase.BaseColor, true, false), new ContrastColorWrapper(_darkPrimary.BaseColor, true, false) };
+            _lightBase.ContrastColors = new List<ContrastColorWrapper> { new ContrastColorWrapper(_whiteColor, false, false), new ContrastColorWrapper(_blackColor, true, true), new ContrastColorWrapper(_lightRegion, true, false), new ContrastColorWrapper(_lightPrimary.BaseColor, true, false) };
+            _darkBase.ContrastColors = new List<ContrastColorWrapper> { new ContrastColorWrapper(_whiteColor, true, true), new ContrastColorWrapper(_blackColor, false, false), new ContrastColorWrapper(_darkRegion, true, false), new ContrastColorWrapper(_darkPrimary.BaseColor, true, false) };
+            _lightPrimary.ContrastColors = new List<ContrastColorWrapper> { new ContrastColorWrapper(_whiteColor, true, true), new ContrastColorWrapper(_blackColor, false, false), new ContrastColorWrapper(_lightRegion, true, false), new ContrastColorWrapper(_lightBase.BaseColor, true, false) };
+            _darkPrimary.ContrastColors = new List<ContrastColorWrapper> { new ContrastColorWrapper(_whiteColor, true, true), new ContrastColorWrapper(_blackColor, false, false), new ContrastColorWrapper(_darkRegion, true, false), new ContrastColorWrapper(_darkBase.BaseColor, true, false) };
 
             _lightColorMappings = ColorMapping.ParseList(rootObject["LightPaletteMapping"].AsArray(), _lightRegion, _darkRegion, _lightBase, _darkBase, _lightPrimary, _darkPrimary, _whiteColor, _blackColor);
             _lightColorMappings.Sort((a, b) =>
@@ -160,7 +163,7 @@ namespace FluentEditor.ControlPalette.Model
                 }
             }
         }
-
+        
         private string GenerateMappingDescription(IColorPaletteEntry paletteEntry, List<ColorMapping> mappings)
         {
             string retVal = string.Empty;
@@ -181,10 +184,8 @@ namespace FluentEditor.ControlPalette.Model
             {
                 return string.Format(_stringProvider.GetString("ColorFlyoutMappingDescription"), retVal);
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
 
         public Task HandleAppSuspend()
@@ -193,9 +194,14 @@ namespace FluentEditor.ControlPalette.Model
             return Task.CompletedTask;
         }
 
+        private DispatcherOperation _operation;
         private void PaletteEntry_ActiveColorChanged(IColorPaletteEntry obj)
         {
             UpdateActivePreset();
+
+            _operation?.Abort();
+            _operation = Dispatcher.UIThread.InvokeAsync(() => PaletteUpdated?.Invoke(this, EventArgs.Empty),
+                DispatcherPriority.Background);
         }
 
         private void UpdateActivePreset()
@@ -220,7 +226,7 @@ namespace FluentEditor.ControlPalette.Model
         {
             if (!string.IsNullOrEmpty(preset.Name))
             {
-                var oldPreset = _presets.FirstOrDefault<Preset>((a) => a.Id == preset.Id);
+                var oldPreset = _presets.FirstOrDefault(a => a.Id == preset.Id);
                 if (oldPreset != null)
                 {
                     _presets.Remove(oldPreset);
@@ -271,15 +277,12 @@ namespace FluentEditor.ControlPalette.Model
         }
 
         private AvaloniaList<Preset> _presets;
-        public AvaloniaList<Preset> Presets
-        {
-            get { return _presets; }
-        }
+        public AvaloniaList<Preset> Presets => _presets;
 
         private Preset _activePreset;
         public Preset ActivePreset
         {
-            get { return _activePreset; }
+            get => _activePreset;
             private set
             {
                 if (_activePreset != value)
@@ -291,56 +294,33 @@ namespace FluentEditor.ControlPalette.Model
         }
 
         public event Action<IControlPaletteModel> ActivePresetChanged;
+        public event EventHandler PaletteUpdated;
 
         private List<ColorMapping> _lightColorMappings;
-        public IReadOnlyList<ColorMapping> LightColorMapping
-        {
-            get { return _lightColorMappings; }
-        }
+        public IReadOnlyList<ColorMapping> LightColorMapping => _lightColorMappings;
 
         private List<ColorMapping> _darkColorMappings;
-        public IReadOnlyList<ColorMapping> DarkColorMapping
-        {
-            get { return _darkColorMappings; }
-        }
+        public IReadOnlyList<ColorMapping> DarkColorMapping => _darkColorMappings;
 
         private ColorPaletteEntry _whiteColor;
         private ColorPaletteEntry _blackColor;
 
         private ColorPaletteEntry _lightRegion;
-        public ColorPaletteEntry LightRegion
-        {
-            get { return _lightRegion; }
-        }
+        public ColorPaletteEntry LightRegion => _lightRegion;
 
         private ColorPaletteEntry _darkRegion;
-        public ColorPaletteEntry DarkRegion
-        {
-            get { return _darkRegion; }
-        }
+        public ColorPaletteEntry DarkRegion => _darkRegion;
 
         private ColorPalette _lightBase;
-        public ColorPalette LightBase
-        {
-            get { return _lightBase; }
-        }
+        public ColorPalette LightBase => _lightBase;
 
         private ColorPalette _darkBase;
-        public ColorPalette DarkBase
-        {
-            get { return _darkBase; }
-        }
+        public ColorPalette DarkBase => _darkBase;
 
         private ColorPalette _lightPrimary;
-        public ColorPalette LightPrimary
-        {
-            get { return _lightPrimary; }
-        }
+        public ColorPalette LightPrimary => _lightPrimary;
 
         private ColorPalette _darkPrimary;
-        public ColorPalette DarkPrimary
-        {
-            get { return _darkPrimary; }
-        }
+        public ColorPalette DarkPrimary => _darkPrimary;
     }
 }

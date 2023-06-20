@@ -7,8 +7,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:controlPalette="clr-namespace:FluentEditor.ControlPalette"
-             xmlns:export="clr-namespace:FluentEditor.ControlPalette.Export"
+             xmlns:controlPalette="using:FluentEditor.ControlPalette"
+             xmlns:export="using:FluentEditor.ControlPalette.Export"
              Background="{DynamicResource AppBackgroundBrush}"
              mc:Ignorable="d">
 
@@ -25,7 +25,7 @@
         </DataTemplate>
       </ContentControl.DataTemplates>
     </ContentControl>
-    <Border Background="#20000000"
+    <Border Background="#60000000"
             IsVisible="{Binding #OverlayContainer.Content, Converter={x:Static ObjectConverters.IsNotNull}}">
       <ContentControl x:Name="OverlayContainer"
                       x:FieldModifier="public"

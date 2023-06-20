@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using FluentEditorShared.ColorPalette;
 using System;
 using System.Collections.Generic;
 using System.Text.Json.Nodes;
 using Avalonia.Themes.Fluent;
+using FluentEditorShared.ColorPalette;
 using FluentEditorShared.Utils;
 
 namespace FluentEditor.ControlPalette
@@ -53,7 +53,7 @@ namespace FluentEditor.ControlPalette
             List<ColorMapping> retVal = new List<ColorMapping>();
             foreach (var node in data)
             {
-                retVal.Add(ColorMapping.Parse(node.AsObject(), lightRegion, darkRegion, lightBase, darkBase, lightPrimary, darkPrimary, white, black));
+                retVal.Add(Parse(node.AsObject(), lightRegion, darkRegion, lightBase, darkBase, lightPrimary, darkPrimary, white, black));
             }
             return retVal;
         }
@@ -65,173 +65,9 @@ namespace FluentEditor.ControlPalette
         }
 
         private readonly IColorPaletteEntry _source;
-        public IColorPaletteEntry Source
-        {
-            get { return _source; }
-        }
+        public IColorPaletteEntry Source => _source;
 
         private readonly ColorTarget _targetColor;
-        public ColorTarget Target
-        {
-            get { return _targetColor; }
-        }
-
-        public ColorMappingInstance CreateInstance(ColorPaletteResources targetResources)
-        {
-            return new ColorMappingInstance(_source, _targetColor, targetResources);
-        }
-    }
-
-    public class ColorMappingInstance : IDisposable
-    {
-        public ColorMappingInstance(IColorPaletteEntry source, ColorTarget targetColor, ColorPaletteResources targetResources)
-        {
-            _source = source;
-            _targetColor = targetColor;
-            _targetResources = targetResources;
-
-            Apply();
-
-            _source.ActiveColorChanged += Source_ActiveColorChanged;
-        }
-
-        private readonly IColorPaletteEntry _source;
-        private readonly ColorTarget _targetColor;
-        private readonly ColorPaletteResources _targetResources;
-        
-        private void Source_ActiveColorChanged(IColorPaletteEntry obj)
-        {
-            Apply();
-        }
-
-        private void UpdateAcrylicSurfaceVisual()
-        {
-            if (_targetResources == null || _targetResources.BaseLow == null || _targetResources.ChromeMediumLow == null)
-            {
-                return;
-            }
-
-            App.Current.Resources["SystemAccentColor"] = _targetResources.Accent;
-
-            if (IsSettingDarkColors(_source.Title, "Light Base"))
-            {
-                App.Current.Resources["SystemChromeAltHighColor"] = _targetResources.ChromeLow;
-                App.Current.Resources["SystemChromeMediumColor"] = _targetResources.ChromeMedium;
-            }
-
-            if (IsSettingDarkColors(_source.Title, "Dark Base"))
-            {
-                App.Current.Resources["SystemChromeAltHighColor_Dark"] = _targetResources.ChromeMedium;
-                App.Current.Resources["SystemChromeMediumColor_Dark"] = _targetResources.ChromeMedium;
-            }
-        }
-
-        private bool IsSettingDarkColors(string title, string themeType)
-        {
-            string[] splitTitle = title.Split(new string[] { themeType }, StringSplitOptions.None);
-
-            if (splitTitle[0] == "")
-                return true;
-            return false;
-        }
-
-        public void Dispose()
-        {
-            _source.ActiveColorChanged -= Source_ActiveColorChanged;
-        }
-
-        public void Apply()
-        {
-            if (_targetResources == null)
-            {
-                return;
-            }
-            switch (_targetColor)
-            {
-                case ColorTarget.Accent:
-                    _targetResources.Accent = _source.ActiveColor;
-                    break;
-                case ColorTarget.ErrorText:
-                    _targetResources.ErrorText = _source.ActiveColor;
-                    break;
-                case ColorTarget.AltHigh:
-                    _targetResources.AltHigh = _source.ActiveColor;
-                    break;
-                case ColorTarget.AltLow:
-                    _targetResources.AltLow = _source.ActiveColor;
-                    break;
-                case ColorTarget.AltMedium:
-                    _targetResources.AltMedium = _source.ActiveColor;                    
-                    break;
-                case ColorTarget.AltMediumHigh:
-                    _targetResources.AltMediumHigh = _source.ActiveColor;
-                    break;
-                case ColorTarget.AltMediumLow:
-                    _targetResources.AltMediumLow = _source.ActiveColor;
-                    break;
-                case ColorTarget.BaseHigh:
-                    _targetResources.BaseHigh = _source.ActiveColor;
-                    break;
-                case ColorTarget.BaseLow:
-                    _targetResources.BaseLow = _source.ActiveColor;
-                    break;
-                case ColorTarget.BaseMedium:
-                    _targetResources.BaseMedium = _source.ActiveColor;
-                    break;
-                case ColorTarget.BaseMediumHigh:
-                    _targetResources.BaseMediumHigh = _source.ActiveColor;
-                    break;
-                case ColorTarget.BaseMediumLow:
-                    _targetResources.BaseMediumLow = _source.ActiveColor;
-                    break;
-                case ColorTarget.ChromeAltLow:
-                    _targetResources.ChromeAltLow = _source.ActiveColor;
-                    break;
-                case ColorTarget.ChromeBlackHigh:
-                    _targetResources.ChromeBlackHigh = _source.ActiveColor;
-                    break;
-                case ColorTarget.ChromeBlackLow:
-                    _targetResources.ChromeBlackLow = _source.ActiveColor;
-                    break;
-                case ColorTarget.ChromeBlackMedium:
-                    _targetResources.ChromeBlackMedium = _source.ActiveColor;
-                    break;
-                case ColorTarget.ChromeBlackMediumLow:
-                    _targetResources.ChromeBlackMediumLow = _source.ActiveColor;
-                    break;
-                case ColorTarget.ChromeDisabledHigh:
-                    _targetResources.ChromeDisabledHigh = _source.ActiveColor;
-                    break;
-                case ColorTarget.ChromeDisabledLow:
-                    _targetResources.ChromeDisabledLow = _source.ActiveColor;
-                    break;
-                case ColorTarget.ChromeGray:
-                    _targetResources.ChromeGray = _source.ActiveColor;
-                    break;
-                case ColorTarget.ChromeHigh:
-                    _targetResources.ChromeHigh = _source.ActiveColor;
-                    break;
-                case ColorTarget.ChromeLow:
-                    _targetResources.ChromeLow = _source.ActiveColor;
-                    break;
-                case ColorTarget.ChromeMedium:
-                    _targetResources.ChromeMedium = _source.ActiveColor;
-                    break;
-                case ColorTarget.ChromeMediumLow:
-                    _targetResources.ChromeMediumLow = _source.ActiveColor;
-                    break;
-                case ColorTarget.ChromeWhite:
-                    _targetResources.ChromeWhite = _source.ActiveColor;
-                    break;
-                case ColorTarget.ListLow:
-                    _targetResources.ListLow = _source.ActiveColor;
-                    break;
-                case ColorTarget.ListMedium:
-                    _targetResources.ListMedium = _source.ActiveColor;
-                    break;
-            }
-
-            UpdateAcrylicSurfaceVisual();
-        }
+        public ColorTarget Target => _targetColor;
     }
 }

@@ -10,15 +10,15 @@ namespace FluentEditor.ControlPalette
     {
         public ControlPaletteTestContent()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         public static readonly StyledProperty<string> TitleProperty = AvaloniaProperty.Register<ControlPaletteTestContent, string>("Title");
 
         public string Title
         {
-            get { return GetValue(TitleProperty) as string; }
-            set { SetValue(TitleProperty, value); }
+            get => GetValue(TitleProperty);
+            set => SetValue(TitleProperty, value);
         }
     }
 }

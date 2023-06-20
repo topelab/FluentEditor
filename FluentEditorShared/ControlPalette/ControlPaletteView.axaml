@@ -9,12 +9,11 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:FluentEditor.ControlPalette"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:shared="clr-namespace:FluentEditorShared;assembly=FluentEditorShared"
-    xmlns:colorPalette="clr-namespace:FluentEditorShared.ColorPalette;assembly=FluentEditorShared"
+    xmlns:shared="using:FluentEditorShared"
+    xmlns:colorPalette="using:FluentEditorShared.ColorPalette"
     mc:Ignorable="d"
     x:Name="ThisControl"
     x:DataType="local:ControlPaletteViewModel"
-    x:CompileBindings="True"
     ViewModel="{Binding}">
     
     <Grid>
@@ -39,19 +38,6 @@
                 <ColumnDefinition />
             </Grid.ColumnDefinitions>
 
-            <Border
-                Grid.Column="0"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                Background="{Binding LightRegionBrush, Mode=OneWay}"
-                CornerRadius="2 0 0 2" />
-            <Border
-                Grid.Column="1"
-                HorizontalAlignment="Stretch"
-                VerticalAlignment="Stretch"
-                Background="{Binding DarkRegionBrush, Mode=OneWay}"
-                CornerRadius="0 2 2 0" />
-
             <ScrollViewer
                 Grid.Column="0"
                 Grid.ColumnSpan="2"
@@ -70,28 +56,18 @@
 
                     <ThemeVariantScope
                         Grid.Column="0"
+                        x:Name="LightTestContentContainer"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Top"
                         RequestedThemeVariant="Light">
-                        <local:ControlPaletteTestContent
-                            x:Name="LightTestContent"
-                            Title="{shared:Loc ControlPaletteLightTestContent}"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Top">
-                        </local:ControlPaletteTestContent>
                     </ThemeVariantScope>
 
                     <ThemeVariantScope
                         Grid.Column="1"
+                        x:Name="DarkTestContentContainer"
                         HorizontalAlignment="Stretch"
                         VerticalAlignment="Top"
                         RequestedThemeVariant="Dark">
-                        <local:ControlPaletteTestContent
-                            x:Name="DarkTestContent"
-                            Title="{shared:Loc ControlPaletteDarkTestContent}"
-                            HorizontalAlignment="Stretch"
-                            VerticalAlignment="Top">
-                        </local:ControlPaletteTestContent>
                     </ThemeVariantScope>
                 </Grid>
             </ScrollViewer>
@@ -129,24 +105,20 @@
                             DisplayMemberBinding="{Binding Name}"
                             ItemsSource="{Binding Presets, Mode=OneWay}"
                             SelectedValue="{Binding ActivePreset, Mode=TwoWay}" />
-                        <Grid Margin="0,28,0,0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                        
+                        <Grid Margin="0,28,0,0" ColumnDefinitions="*,12,*">
+
                             <Button
                                 Content="{shared:Loc ControlPaletteLoadButton}"
                                 Grid.Column="0"
-                                Margin="0,0,6,0"
                                 HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Center"
                                 Command="{Binding OnLoadDataRequested}" />
 
                             <Button
                                 Content="{shared:Loc ControlPaletteSaveButton}"
-                                Grid.Column="1"
-                                Margin="6,0,0,0"
+                                Grid.Column="2"
                                 HorizontalAlignment="Stretch"
+                                HorizontalContentAlignment="Center"
                                 Command="{Binding OnSaveDataRequested}" />
                         </Grid>
                         <TextBlock
@@ -373,6 +345,7 @@
                     Grid.Column="0"
                     CornerRadius="2"
                     Margin="0,0,6,0"
+                    HorizontalContentAlignment="Center"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Bottom"
                     Command="{Binding OnExportRequested}"

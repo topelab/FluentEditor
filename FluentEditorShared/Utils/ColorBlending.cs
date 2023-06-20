@@ -6,7 +6,7 @@ using Avalonia.Media;
 
 namespace FluentEditorShared.Utils
 {
-    public enum ColorBlendMode { Burn, Darken, Dodge, Lighten, Multiply, Overlay, Screen };
+    public enum ColorBlendMode { Burn, Darken, Dodge, Lighten, Multiply, Overlay, Screen }
 
     public static class ColorBlending
     {
@@ -145,10 +145,8 @@ namespace FluentEditorShared.Utils
             {
                 return MathUtils.ClampToUnit(2.0 * top * bottom);
             }
-            else
-            {
-                return MathUtils.ClampToUnit(1.0 - 2.0 * (1.0 - top) * (1.0 - bottom));
-            }
+
+            return MathUtils.ClampToUnit(1.0 - 2.0 * (1.0 - top) * (1.0 - bottom));
         }
 
         public static NormalizedRGB BlendScreen(in NormalizedRGB bottom, in NormalizedRGB top)
@@ -178,14 +176,14 @@ namespace FluentEditorShared.Utils
                 return Color.FromArgb(255, background.R, background.G, background.B);
             }
 
-            double fr = (double)foreground.R / 255.0;
-            double fg = (double)foreground.G / 255.0;
-            double fb = (double)foreground.B / 255.0;
-            double fa = (double)foreground.A / 255.0;
+            double fr = foreground.R / 255.0;
+            double fg = foreground.G / 255.0;
+            double fb = foreground.B / 255.0;
+            double fa = foreground.A / 255.0;
 
-            double br = (double)background.R / 255.0;
-            double bg = (double)background.G / 255.0;
-            double bb = (double)background.B / 255.0;
+            double br = background.R / 255.0;
+            double bg = background.G / 255.0;
+            double bb = background.B / 255.0;
 
             double finalr = fa * fr + (1.0 - fa) * br;
             double finalg = fa * fg + (1.0 - fa) * bg;

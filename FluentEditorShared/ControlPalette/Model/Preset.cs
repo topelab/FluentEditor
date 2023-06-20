@@ -214,40 +214,40 @@ namespace FluentEditor.ControlPalette.Model
         }
 
         private readonly string _id;
-        public string Id { get { return _id; } }
+        public string Id => _id;
 
         private readonly string _name;
-        public string Name { get { return _name; } }
+        public string Name => _name;
 
         private readonly Color _lightRegionColor;
-        public Color LightRegionColor { get { return _lightRegionColor; } }
+        public Color LightRegionColor => _lightRegionColor;
 
         private readonly Color _darkRegionColor;
-        public Color DarkRegionColor { get { return _darkRegionColor; } }
+        public Color DarkRegionColor => _darkRegionColor;
 
         private readonly Color _lightBaseColor;
-        public Color LightBaseColor { get { return _lightBaseColor; } }
+        public Color LightBaseColor => _lightBaseColor;
 
         private readonly Dictionary<int, Color> _lightBaseOverrides;
-        public Dictionary<int, Color> LightBaseOverrides { get { return _lightBaseOverrides; } }
+        public Dictionary<int, Color> LightBaseOverrides => _lightBaseOverrides;
 
         private readonly Color _darkBaseColor;
-        public Color DarkBaseColor { get { return _darkBaseColor; } }
+        public Color DarkBaseColor => _darkBaseColor;
 
         private readonly Dictionary<int, Color> _darkBaseOverrides;
-        public Dictionary<int, Color> DarkBaseOverrides { get { return _darkBaseOverrides; } }
+        public Dictionary<int, Color> DarkBaseOverrides => _darkBaseOverrides;
 
         private readonly Color _lightPrimaryColor;
-        public Color LightPrimaryColor { get { return _lightPrimaryColor; } }
+        public Color LightPrimaryColor => _lightPrimaryColor;
 
         private readonly Dictionary<int, Color> _lightPrimaryOverrides;
-        public Dictionary<int, Color> LightPrimaryOverrides { get { return _lightPrimaryOverrides; } }
+        public Dictionary<int, Color> LightPrimaryOverrides => _lightPrimaryOverrides;
 
         private readonly Color _darkPrimaryColor;
-        public Color DarkPrimaryColor { get { return _darkPrimaryColor; } }
+        public Color DarkPrimaryColor => _darkPrimaryColor;
 
         private readonly Dictionary<int, Color> _darkPrimaryOverrides;
-        public Dictionary<int, Color> DarkPrimaryOverrides { get { return _darkPrimaryOverrides; } }
+        public Dictionary<int, Color> DarkPrimaryOverrides => _darkPrimaryOverrides;
 
         public bool IsPresetActive(IControlPaletteModel model)
         {

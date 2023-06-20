@@ -16,10 +16,8 @@ namespace FluentEditorShared
             {
                 return c.ToString();
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo language)
@@ -30,10 +28,8 @@ namespace FluentEditorShared
                 {
                     return c;
                 }
-                else
-                {
-                    return Colors.White;
-                }
+
+                return Colors.White;
             }
             catch
             {
@@ -46,22 +42,18 @@ namespace FluentEditorShared
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo language)
         {
-            if (value is Nullable<Color>)
+            if (value is Color?)
             {
                 var c = (Color?)value;
                 if(c.HasValue)
                 {
                     return c.Value.ToString();
                 }
-                else
-                {
-                    return null;
-                }
-            }
-            else
-            {
+
                 return null;
             }
+
+            return null;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo language)
@@ -72,10 +64,8 @@ namespace FluentEditorShared
                 {
                     return c;
                 }
-                else
-                {
-                    return Colors.White;
-                }
+
+                return Colors.White;
             }
             catch
             {

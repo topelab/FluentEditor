@@ -4,9 +4,8 @@
 using System;
 using Avalonia;
 using Avalonia.Controls;
-using Avalonia.Input;
-using Avalonia.Interactivity;
-using Avalonia.Media;
+using Avalonia.Styling;
+using Avalonia.Themes.Fluent;
 
 namespace FluentEditor.ControlPalette
 {
@@ -14,7 +13,7 @@ namespace FluentEditor.ControlPalette
     {
         public ControlPaletteView()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         #region ViewModelProperty
@@ -23,10 +22,44 @@ namespace FluentEditor.ControlPalette
 
         public ControlPaletteViewModel ViewModel
         {
-            get { return GetValue(ViewModelProperty) as ControlPaletteViewModel; }
-            set { SetValue(ViewModelProperty, value); }
+            get => GetValue(ViewModelProperty);
+            set => SetValue(ViewModelProperty, value);
         }
 
         #endregion
+
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        {
+            base.OnPropertyChanged(change);
+
+            if (change.Property == ViewModelProperty)
+            {
+                ViewModel.RebuldPreviews += ViewModelOnRebuldPreviews;
+                ViewModelOnRebuldPreviews(this, EventArgs.Empty);
+            }
+        }
+
+        private void ViewModelOnRebuldPreviews(object sender, EventArgs e)
+        {
+            TestContentContainer.Styles.Clear();
+            TestContentContainer.Styles.Add(new FluentTheme
+            {
+                Palettes =
+                {
+                    [ThemeVariant.Default] = ViewModel.CreateResources(false),
+                    [ThemeVariant.Light] = ViewModel.CreateResources(false),
+                    [ThemeVariant.Dark] = ViewModel.CreateResources(true)
+                }
+            });
+            
+            LightTestContentContainer.Child = new ControlPaletteTestContent
+            {
+                Title = App.StringProvider.GetString("ControlPaletteLightTestContent")
+            };
+            DarkTestContentContainer.Child = new ControlPaletteTestContent
+            {
+                Title = App.StringProvider.GetString("ControlPaletteDarkTestContent")
+            };
+        }
     }
 }

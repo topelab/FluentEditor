@@ -109,8 +109,8 @@ namespace FluentEditorShared.ColorPalette
 
         public IColorPaletteEntry ColorPaletteEntry
         {
-            get { return GetValue(ColorPaletteEntryProperty) as IColorPaletteEntry; }
-            set { SetValue(ColorPaletteEntryProperty, value); }
+            get => GetValue(ColorPaletteEntryProperty);
+            set => SetValue(ColorPaletteEntryProperty, value);
         }
 
         #endregion
@@ -119,10 +119,7 @@ namespace FluentEditorShared.ColorPalette
 
         public static readonly StyledProperty<List<ContrastListItem>> ContrastListProperty = AvaloniaProperty.Register<ExpandedColorPaletteEntryEditor, List<ContrastListItem>>("ContrastList");
 
-        public List<ContrastListItem> ContrastList
-        {
-            get { return GetValue(ContrastListProperty) as List<ContrastListItem>; }
-        }
+        public List<ContrastListItem> ContrastList => GetValue(ContrastListProperty);
 
         #endregion
 

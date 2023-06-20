@@ -2,81 +2,62 @@
     Copyright (c) Microsoft Corporation. All rights reserved.
     Licensed under the MIT License.
 -->
-<UserControl
-    x:Class="FluentEditor.ControlPalette.Export.ExportView"
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:shared="clr-namespace:FluentEditorShared;assembly=FluentEditorShared"
-    Background="{DynamicResource AppContentBackgroundBrush}"
-    mc:Ignorable="d">
+<UserControl x:Class="FluentEditor.ControlPalette.Export.ExportView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:shared="using:FluentEditorShared"
+             xmlns:export="using:FluentEditor.ControlPalette.Export"
+             Background="{DynamicResource SystemRegionColor}"
+             mc:Ignorable="d"
+             x:DataType="export:ExportViewModel"
+             MaxWidth="600"
+             MaxHeight="600"
+             Margin="20">
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="48" />
-        </Grid.RowDefinitions>
+  <Grid RowDefinitions="*,48">
 
-        <ScrollViewer
-            Grid.Row="0"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Stretch"
-            HorizontalScrollBarVisibility="Auto"
-            VerticalScrollBarVisibility="Auto">
+    <ScrollViewer Grid.Row="0"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch"
+                  HorizontalScrollBarVisibility="Auto"
+                  VerticalScrollBarVisibility="Auto">
 
-            <SelectableTextBlock
-                Margin="24"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Top"
-                FontFamily="Consolas"
-                FontSize="15"
-                Text="{Binding ExportText, Mode=OneWay}"
-                TextWrapping="NoWrap" />
+      <SelectableTextBlock Background="Transparent"
+                           Margin="24"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           FontSize="15"
+                           Text="{Binding ExportText, Mode=OneWay}"
+                           TextWrapping="NoWrap" />
 
-        </ScrollViewer>
+    </ScrollViewer>
 
-        <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-            </Grid.ColumnDefinitions>
+    <Grid Grid.Row="1" ColumnDefinitions="Auto,*,Auto,8,Auto"
+          Margin="8,0">
 
-            <Button
-                Content="{shared:Loc ExportLearnMoreButton}"
-                Grid.Column="0"
-                Click="LearnMoreClick"
-                Margin="8,0,0,0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Center" />
+      <!-- <Button -->
+      <!--     Content="{shared:Loc ExportLearnMoreButton}" -->
+      <!--     Grid.Column="0" -->
+      <!--     Click="LearnMoreClick" -->
+      <!--     HorizontalAlignment="Left" -->
+      <!--     VerticalAlignment="Center" /> -->
 
-            <Button
-                Content="{shared:Loc ExportCopyButton}"
-                Grid.Column="1"
-                MinHeight="32"
-                Margin="8,0,8,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Click="ExportClick"
-                IsEnabled="{Binding ReadyToCopy, Mode=OneWay}"
-                Classes="accent"/>
-            
-            <Button
-                Content="OK"
-                Grid.Column="1"
-                MinHeight="32"
-                Margin="8,0,8,0"
-                HorizontalAlignment="Right"
-                VerticalAlignment="Center"
-                Click="Close"
-                Classes="accent"/>
-        </Grid>
+      <Button Content="{shared:Loc ExportCopyButton}"
+              Grid.Column="2"
+              MinWidth="64"
+              HorizontalContentAlignment="Center"
+              Click="ExportClick"
+              IsEnabled="{Binding ReadyToCopy, Mode=OneWay}"
+              Classes="accent" />
 
-        <Rectangle
-            Grid.Row="1"
-            Height="1"
-            HorizontalAlignment="Stretch"
-            VerticalAlignment="Top"
-            Fill="{DynamicResource ContentSpacerBrush}" />
+      <Button Content="OK"
+              Grid.Column="4"
+              MinWidth="64"
+              HorizontalContentAlignment="Center"
+              Click="Close"
+              Classes="accent" />
     </Grid>
+  </Grid>
 </UserControl>

@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using FluentEditor.ControlPalette.Export;
-using System;
 using System.Text;
 using System.Threading.Tasks;
+using FluentEditor.ControlPalette.Export;
+using FluentEditorShared.ColorPalette;
 
 namespace FluentEditor.ControlPalette.Model
 {
@@ -35,13 +35,10 @@ namespace FluentEditor.ControlPalette.Model
             {
                 foreach (var m in model.LightColorMapping)
                 {
-                    sb.Append(" ");
-                    sb.Append(m.Target.ToString());
-                    sb.Append("=\"");
-                    sb.Append(m.Source.ActiveColor.ToString());
-                    sb.Append("\"");
+                    AppendColor(m.Target.ToString(), m.Source);
                 }
             }
+            AppendColor("RegionColor", model.LightRegion);
 
             sb.AppendLine(" />");
             sb.Append("    <ColorPaletteResources x:Key=\"Dark\"");
@@ -49,13 +46,10 @@ namespace FluentEditor.ControlPalette.Model
             {
                 foreach (var m in model.DarkColorMapping)
                 {
-                    sb.Append(" ");
-                    sb.Append(m.Target.ToString());
-                    sb.Append("=\"");
-                    sb.Append(m.Source.ActiveColor.ToString());
-                    sb.Append("\"");
+                    AppendColor(m.Target.ToString(), m.Source);
                 }
             }
+            AppendColor("RegionColor", model.DarkRegion);
 
             sb.AppendLine(" />");
 
@@ -64,13 +58,23 @@ namespace FluentEditor.ControlPalette.Model
 
             var retVal = sb.ToString();
             return retVal;
+
+            void AppendColor(string name, IColorPaletteEntry entry)
+            {
+                sb.Append(" ");
+                sb.Append(name);
+                sb.Append("=\"");
+                sb.Append(entry.ActiveColor.ToString());
+                sb.Append("\"");
+            }
         }
 
         public async Task ShowExportView(string exportData)
         {
             _exportViewModel = new ExportViewModel(exportData);
             var exportView = new ExportView(_exportViewModel);
-            App.NavPage.NavigationFrame.Content = exportView;
+            exportView.DataContext = _exportViewModel;
+            App.NavPage.OverlayContainer.Content = exportView;
         }
     }
 }

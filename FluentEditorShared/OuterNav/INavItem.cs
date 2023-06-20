@@ -9,6 +9,5 @@ namespace FluentEditor.OuterNav
     {
         string Id { get; }
         string Title { get; }
-        string Glyph { get; }
     }
 }

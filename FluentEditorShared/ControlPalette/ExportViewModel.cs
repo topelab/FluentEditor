@@ -19,7 +19,7 @@ namespace FluentEditor.ControlPalette.Export
         private string _exportText;
         public string ExportText
         {
-            get { return _exportText; }
+            get => _exportText;
             set
             {
                 if(_exportText != value)
@@ -31,13 +31,7 @@ namespace FluentEditor.ControlPalette.Export
             }
         }
 
-        public bool ReadyToCopy
-        {
-            get
-            {
-                return !string.IsNullOrEmpty(_exportText);
-            }
-        }
+        public bool ReadyToCopy => !string.IsNullOrEmpty(_exportText);
 
         #region INotifyPropertyChanged
 

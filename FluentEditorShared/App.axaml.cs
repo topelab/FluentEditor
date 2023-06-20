@@ -1,20 +1,20 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using FluentEditor.ControlPalette.Model;
-using FluentEditor.Model;
-using FluentEditor.OuterNav;
-using FluentEditorShared;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
+using FluentEditor.ControlPalette.Model;
+using FluentEditor.Model;
+using FluentEditor.OuterNav;
+using FluentEditorShared;
 
 namespace FluentEditor
 {
-    public sealed partial class App : Application
+    public sealed class App : Application
     {
         public static FilePickerFileType JsonFileType { get; } = new("JSON")
         {

@@ -1,16 +1,17 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-using FluentEditor.OuterNav;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using Avalonia.Platform;
-using FluentEditorShared.Utils;
+using FluentEditor.ControlPalette;
 using FluentEditor.ControlPalette.Model;
+using FluentEditor.OuterNav;
 using FluentEditorShared;
+using FluentEditorShared.Utils;
 
 namespace FluentEditor.Model
 {
@@ -51,7 +52,7 @@ namespace FluentEditor.Model
             string defaultDemoId = rootObject.GetOptionalString("DefaultDemoId");
             if (!string.IsNullOrEmpty(defaultDemoId))
             {
-                _defaultNavItem = navItems.FirstOrDefault((a) => a.Id == defaultDemoId);
+                _defaultNavItem = navItems.FirstOrDefault(a => a.Id == defaultDemoId);
             }
             
             _navItems = navItems;
@@ -70,22 +71,16 @@ namespace FluentEditor.Model
             switch (type)
             {
                 case "ControlPalette":
-                    return ControlPalette.ControlPaletteViewModel.Parse(_stringProvider, data, paletteModel, controlPaletteExportProvider);
+                    return ControlPaletteViewModel.Parse(_stringProvider, data, paletteModel, controlPaletteExportProvider);
                 default:
                     throw new Exception(string.Format("Unknown nav item type {0}", type));
             }
         }
 
-        private List<INavItem> _navItems = null;
-        public IReadOnlyList<INavItem> NavItems
-        {
-            get { return _navItems; }
-        }
+        private List<INavItem> _navItems;
+        public IReadOnlyList<INavItem> NavItems => _navItems;
 
-        private INavItem _defaultNavItem = null;
-        public INavItem DefaultNavItem
-        {
-            get { return _defaultNavItem; }
-        }
+        private INavItem _defaultNavItem;
+        public INavItem DefaultNavItem => _defaultNavItem;
     }
 }

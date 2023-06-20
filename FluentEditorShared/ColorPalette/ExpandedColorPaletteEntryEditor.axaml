@@ -9,7 +9,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="using:FluentEditorShared.ColorPalette"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:shared="clr-namespace:FluentEditorShared"
+    xmlns:shared="using:FluentEditorShared"
     d:DesignHeight="300"
     d:DesignWidth="400"
     mc:Ignorable="d"
@@ -95,13 +95,12 @@
             </ItemsControl>
         </StackPanel>
 
-        <ColorPicker
+        <ColorView
             x:Name="ColorPicker"
             Grid.Row="0"
             Grid.Column="2"
             Margin="0,12,12,12"
-            ColorChanged="ColorPicker_ColorChanged"
-            Color="{Binding ColorPaletteEntry.ActiveColor, Mode=OneWay}"/>
+            ColorChanged="ColorPicker_ColorChanged" />
 
         <Button
             x:Name="RevertButton"

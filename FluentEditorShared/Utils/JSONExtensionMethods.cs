@@ -3,9 +3,9 @@
 
 using System;
 using System.Globalization;
-using Avalonia.Media;
 using System.Numerics;
 using System.Text.Json.Nodes;
+using Avalonia.Media;
 
 namespace FluentEditorShared.Utils
 {
@@ -21,10 +21,8 @@ namespace FluentEditorShared.Utils
             {
                 return data[key].GetOptionalString();
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
 
         public static string GetOptionalString(this JsonNode data)
@@ -59,7 +57,8 @@ namespace FluentEditorShared.Utils
 
                     return retVal;
                 }
-                else if (value.TryGetValue<int>(out var number))
+
+                if (value.TryGetValue<int>(out var number))
                 {
                     return number;
                 }
@@ -86,7 +85,8 @@ namespace FluentEditorShared.Utils
 
                     return true;
                 }
-                else if (value.TryGetValue<int>(out retVal))
+
+                if (value.TryGetValue(out retVal))
                 {
                     return true;
                 }
@@ -114,7 +114,8 @@ namespace FluentEditorShared.Utils
 
                     return true;
                 }
-                else if (value.TryGetValue<float>(out retVal))
+
+                if (value.TryGetValue(out retVal))
                 {
                     return true;
                 }
@@ -240,7 +241,7 @@ namespace FluentEditorShared.Utils
                 && value.TryGetValue<string>(out var str))
             {
                 Color retVal;
-                if (!FluentEditorShared.Utils.ColorUtils.TryParseColorString(str, out retVal))
+                if (!ColorUtils.TryParseColorString(str, out retVal))
                 {
                     throw new Exception("JsonObject is type string but cannot be parsed to Color");
                 }
@@ -253,14 +254,12 @@ namespace FluentEditorShared.Utils
         public static T GetEnum<T>(this JsonNode data) where T : struct
         {
             string dataString = data.GetOptionalString();
-            if (Enum.TryParse<T>(dataString, out T retVal))
+            if (Enum.TryParse(dataString, out T retVal))
             {
                 return retVal;
             }
-            else
-            {
-                throw new Exception(string.Format("Unable to parse {0} into enum of type {1}", dataString, typeof(T).ToString()));
-            }
+
+            throw new Exception(string.Format("Unable to parse {0} into enum of type {1}", dataString, typeof(T)));
         }
     }
 }
