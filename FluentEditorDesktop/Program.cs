@@ -13,7 +13,10 @@ internal class Program
 
     public static AppBuilder BuildAvaloniaApp()
     {
-        return AppBuilder.Configure<App>().UsePlatformDetect().AfterSetup(_ =>
+        return AppBuilder.Configure<App>()
+            .UsePlatformDetect()
+            .WithInterFont()
+            .AfterSetup(_ =>
         {
 #if DEBUG
             Application.Current!.AttachDevTools();

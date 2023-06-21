@@ -13,6 +13,7 @@ internal class Program
     private static Task Main(string[] args)
     {
         return BuildAvaloniaApp()
+            .WithInterFont()
             .StartBrowserAppAsync("out");
     }
 
