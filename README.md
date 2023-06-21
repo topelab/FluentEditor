@@ -5,6 +5,8 @@ This repo contains the full solution and source code to the Fluent XAML Theme Ed
 
 It is a fork of [UWP Fluent XAML Theme Editor](https://github.com/microsoft/fluent-xaml-theme-editor/tree/97321946cf1f03128c98251f03da62b7334671af) by Microsoft, modified to work with Avalonia.
 
+Browser version is accessible from https://theme.xaml.live/
+
 ![color properties window](README_Images/App.png)
 
 How to use the tool
