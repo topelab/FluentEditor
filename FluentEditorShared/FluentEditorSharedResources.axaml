@@ -4,7 +4,7 @@
                     xmlns:local="using:FluentEditorShared">
 
   <ResourceDictionary.ThemeDictionaries>
-    <ResourceDictionary x:Key="Default">
+    <ResourceDictionary x:Key="Dark">
       <SolidColorBrush x:Key="PaletteEditorDividerBrush" Color="#FF424242" />
       <SolidColorBrush x:Key="PaletteEntryEditorBorderBrush" Color="Transparent" />
       <Thickness x:Key="PaletteEntryEditorBorderThickness">0 0 0 0</Thickness>
@@ -23,7 +23,7 @@
       <SolidColorBrush x:Key="ComboBoxDropDownBackground" Color="{DynamicResource SystemChromeMediumColor_Dark}" />
       <SolidColorBrush x:Key="SystemControlAcrylicWindowBrush" Color="{DynamicResource SystemChromeMediumColor_Dark}" />
     </ResourceDictionary>
-    <ResourceDictionary x:Key="Light">
+    <ResourceDictionary x:Key="Default">
       <SolidColorBrush x:Key="PaletteEditorDividerBrush" Color="#FF424242" />
       <SolidColorBrush x:Key="PaletteEntryEditorBorderBrush" Color="Transparent" />
       <Thickness x:Key="PaletteEntryEditorBorderThickness">0 0 0 0</Thickness>

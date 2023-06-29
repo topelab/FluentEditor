@@ -30,7 +30,7 @@ namespace FluentEditor.ControlPalette.Model
 
             sb.AppendLine("<FluentTheme>");
             sb.AppendLine("  <FluentTheme.Palettes>");
-            sb.Append("    <ColorPaletteResources x:Key=\"Default\"");
+            sb.Append("    <ColorPaletteResources x:Key=\"Light\"");
             if (model.LightColorMapping != null)
             {
                 foreach (var m in model.LightColorMapping)
