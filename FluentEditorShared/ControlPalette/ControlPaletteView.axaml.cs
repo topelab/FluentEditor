@@ -41,12 +41,18 @@ namespace FluentEditor.ControlPalette
 
         private void ViewModelOnRebuldPreviews(object sender, EventArgs e)
         {
-            TestContentContainer.Styles.Clear();
+            try
+            {
+                TestContentContainer.Styles.Clear();
+            }
+            catch
+            {
+            }
+
             TestContentContainer.Styles.Add(new FluentTheme
             {
                 Palettes =
                 {
-                    [ThemeVariant.Default] = ViewModel.CreateResources(false),
                     [ThemeVariant.Light] = ViewModel.CreateResources(false),
                     [ThemeVariant.Dark] = ViewModel.CreateResources(true)
                 }

@@ -1,22 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <RuntimeIdentifier>browser-wasm</RuntimeIdentifier>
     <WasmMainJSPath>AppBundle\main.js</WasmMainJSPath>
     <OutputType>Exe</OutputType>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <PublishTrimmd>true</PublishTrimmd>
     <AssemblyName>FluentEditor</AssemblyName>
+    <UserSecretsId>8c0690aa-a9a7-4dec-983b-0645d93be8e7</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <WasmExtraFilesToDeploy Include="AppBundle\app.css"/>
-    <WasmExtraFilesToDeploy Include="AppBundle\favicon.ico"/>
-    <WasmExtraFilesToDeploy Include="AppBundle\index.html"/>
-    <WasmExtraFilesToDeploy Include="AppBundle\Logo.svg"/>
-    <WasmExtraFilesToDeploy Include="AppBundle\main.js"/>
-    <WasmExtraFilesToDeploy Include="AppBundle\staticwebapp.config.json"/>
+    <WasmExtraFilesToDeploy Include="AppBundle\app.css" />
+    <WasmExtraFilesToDeploy Include="AppBundle\favicon.ico" />
+    <WasmExtraFilesToDeploy Include="AppBundle\index.html" />
+    <WasmExtraFilesToDeploy Include="AppBundle\Logo.svg" />
+    <WasmExtraFilesToDeploy Include="AppBundle\main.js" />
+    <WasmExtraFilesToDeploy Include="AppBundle\staticwebapp.config.json" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,6 +25,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FluentEditorShared\FluentEditorShared.csproj"/>
+    <ProjectReference Include="..\FluentEditorShared\FluentEditorShared.csproj" />
   </ItemGroup>
 </Project>

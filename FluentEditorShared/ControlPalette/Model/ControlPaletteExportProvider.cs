@@ -10,7 +10,7 @@ namespace FluentEditor.ControlPalette.Model
 {
     public interface IControlPaletteExportProvider
     {
-        Task ShowExportView(string exportData);
+        void ShowExportView(string exportData);
 
         string GenerateExportData(IControlPaletteModel model, ControlPaletteViewModel viewModel,
             bool showAllColors = false);
@@ -69,7 +69,7 @@ namespace FluentEditor.ControlPalette.Model
             }
         }
 
-        public async Task ShowExportView(string exportData)
+        public void ShowExportView(string exportData)
         {
             _exportViewModel = new ExportViewModel(exportData);
             var exportView = new ExportView(_exportViewModel);

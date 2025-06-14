@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29324.140
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36203.30
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentEditorShared", "FluentEditorShared\FluentEditorShared.csproj", "{42A312EF-7C4A-4661-A684-DB14E40A2A90}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentEditorBrowser", "FluentEditorBrowser\FluentEditorBrowser.csproj", "{B52910F3-58C8-4253-8B1F-952A7DDBE2AE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentEditorDesktop", "FluentEditorDesktop\FluentEditorDesktop.csproj", "{9A8C8058-E145-4644-A7A9-FA0792ACCDCE}"
 EndProject
@@ -15,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Directory.Build.props = Directory.Build.props
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FluentEditorBrowser", "FluentEditorBrowser\FluentEditorBrowser.csproj", "{B451BFFC-F0AC-D3C1-3810-FB78A7F2AE7E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,22 +44,6 @@ Global
 		{42A312EF-7C4A-4661-A684-DB14E40A2A90}.Release|x64.Build.0 = Release|x64
 		{42A312EF-7C4A-4661-A684-DB14E40A2A90}.Release|x86.ActiveCfg = Release|x86
 		{42A312EF-7C4A-4661-A684-DB14E40A2A90}.Release|x86.Build.0 = Release|x86
-		{B52910F3-58C8-4253-8B1F-952A7DDBE2AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B52910F3-58C8-4253-8B1F-952A7DDBE2AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B52910F3-58C8-4253-8B1F-952A7DDBE2AE}.Debug|ARM.ActiveCfg = Debug|Any CPU
-		{B52910F3-58C8-4253-8B1F-952A7DDBE2AE}.Debug|ARM.Build.0 = Debug|Any CPU
-		{B52910F3-58C8-4253-8B1F-952A7DDBE2AE}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{B52910F3-58C8-4253-8B1F-952A7DDBE2AE}.Debug|x64.Build.0 = Debug|Any CPU
-		{B52910F3-58C8-4253-8B1F-952A7DDBE2AE}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{B52910F3-58C8-4253-8B1F-952A7DDBE2AE}.Debug|x86.Build.0 = Debug|Any CPU
-		{B52910F3-58C8-4253-8B1F-952A7DDBE2AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B52910F3-58C8-4253-8B1F-952A7DDBE2AE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B52910F3-58C8-4253-8B1F-952A7DDBE2AE}.Release|ARM.ActiveCfg = Release|Any CPU
-		{B52910F3-58C8-4253-8B1F-952A7DDBE2AE}.Release|ARM.Build.0 = Release|Any CPU
-		{B52910F3-58C8-4253-8B1F-952A7DDBE2AE}.Release|x64.ActiveCfg = Release|Any CPU
-		{B52910F3-58C8-4253-8B1F-952A7DDBE2AE}.Release|x64.Build.0 = Release|Any CPU
-		{B52910F3-58C8-4253-8B1F-952A7DDBE2AE}.Release|x86.ActiveCfg = Release|Any CPU
-		{B52910F3-58C8-4253-8B1F-952A7DDBE2AE}.Release|x86.Build.0 = Release|Any CPU
 		{9A8C8058-E145-4644-A7A9-FA0792ACCDCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9A8C8058-E145-4644-A7A9-FA0792ACCDCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9A8C8058-E145-4644-A7A9-FA0792ACCDCE}.Debug|ARM.ActiveCfg = Debug|Any CPU
@@ -76,6 +60,22 @@ Global
 		{9A8C8058-E145-4644-A7A9-FA0792ACCDCE}.Release|x64.Build.0 = Release|Any CPU
 		{9A8C8058-E145-4644-A7A9-FA0792ACCDCE}.Release|x86.ActiveCfg = Release|Any CPU
 		{9A8C8058-E145-4644-A7A9-FA0792ACCDCE}.Release|x86.Build.0 = Release|Any CPU
+		{B451BFFC-F0AC-D3C1-3810-FB78A7F2AE7E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B451BFFC-F0AC-D3C1-3810-FB78A7F2AE7E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B451BFFC-F0AC-D3C1-3810-FB78A7F2AE7E}.Debug|ARM.ActiveCfg = Debug|Any CPU
+		{B451BFFC-F0AC-D3C1-3810-FB78A7F2AE7E}.Debug|ARM.Build.0 = Debug|Any CPU
+		{B451BFFC-F0AC-D3C1-3810-FB78A7F2AE7E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B451BFFC-F0AC-D3C1-3810-FB78A7F2AE7E}.Debug|x64.Build.0 = Debug|Any CPU
+		{B451BFFC-F0AC-D3C1-3810-FB78A7F2AE7E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B451BFFC-F0AC-D3C1-3810-FB78A7F2AE7E}.Debug|x86.Build.0 = Debug|Any CPU
+		{B451BFFC-F0AC-D3C1-3810-FB78A7F2AE7E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B451BFFC-F0AC-D3C1-3810-FB78A7F2AE7E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B451BFFC-F0AC-D3C1-3810-FB78A7F2AE7E}.Release|ARM.ActiveCfg = Release|Any CPU
+		{B451BFFC-F0AC-D3C1-3810-FB78A7F2AE7E}.Release|ARM.Build.0 = Release|Any CPU
+		{B451BFFC-F0AC-D3C1-3810-FB78A7F2AE7E}.Release|x64.ActiveCfg = Release|Any CPU
+		{B451BFFC-F0AC-D3C1-3810-FB78A7F2AE7E}.Release|x64.Build.0 = Release|Any CPU
+		{B451BFFC-F0AC-D3C1-3810-FB78A7F2AE7E}.Release|x86.ActiveCfg = Release|Any CPU
+		{B451BFFC-F0AC-D3C1-3810-FB78A7F2AE7E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,11 +1,13 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
+using System.IO;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media.Imaging;
 using Avalonia.Platform.Storage;
 using FluentEditor.ControlPalette.Model;
 using FluentEditor.Model;
@@ -45,6 +47,7 @@ namespace FluentEditor
                 {
                     Content = NavPage
                 };
+                window.Icon = new WindowIcon(GetBitmapFromFile("paleta-de-colores.ico"));
                 classicDesktopStyleApplicationLifetime.MainWindow = window;
                 classicDesktopStyleApplicationLifetime.Exit += (sender, args) =>
                 {
@@ -56,6 +59,12 @@ namespace FluentEditor
             {
                 singleViewApplicationLifetime.MainView = NavPage;
             }
+        }
+
+        private Bitmap GetBitmapFromFile(string path)
+        {
+            using var stream = new FileStream(path, FileMode.Open);
+            return new Bitmap(stream);
         }
 
         private async Task SuspendApp(IMainNavModel mainModel, IControlPaletteModel controlPaletteModel)

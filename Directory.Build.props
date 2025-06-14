@@ -1,7 +1,7 @@
-<Project>
+﻿<Project>
   <PropertyGroup>
     <IsPackable>false</IsPackable>
-    <AvaloniaVersion>11.0-rc1.1</AvaloniaVersion>
+    <AvaloniaVersion>11.3.1</AvaloniaVersion>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
   </PropertyGroup>
 
