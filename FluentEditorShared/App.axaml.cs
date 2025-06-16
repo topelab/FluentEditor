@@ -13,6 +13,7 @@ using FluentEditor.ControlPalette.Model;
 using FluentEditor.Model;
 using FluentEditor.OuterNav;
 using FluentEditorShared;
+using FluentEditorShared.ControlPalette.Model;
 
 namespace FluentEditor
 {
@@ -76,7 +77,7 @@ namespace FluentEditor
         private async Task SetupDependencies()
         {
             var stringProvider = new StringProvider();
-            var exportProvider = new ControlPaletteExportProvider();
+            var exportProvider = new SpecialPaletteExportProvider();
 
             var paletteModel = new ControlPaletteModel();
             await paletteModel.InitializeData(stringProvider, stringProvider.GetString("ControlPaletteDataPath"));
@@ -95,7 +96,7 @@ namespace FluentEditor
         }
 
         private StringProvider _stringProvider;
-        private ControlPaletteExportProvider _exportProvider;
+        private IControlPaletteExportProvider _exportProvider;
         private IMainNavModel _mainNavModel;
         private IControlPaletteModel _paletteModel;
 

@@ -17,7 +17,7 @@ namespace FluentEditor.Model
 {
     public interface IMainNavModel
     {
-        Task InitializeData(string dataPath, IControlPaletteModel paletteModel, ControlPaletteExportProvider controlPaletteExportProvider);
+        Task InitializeData(string dataPath, IControlPaletteModel paletteModel, IControlPaletteExportProvider controlPaletteExportProvider);
         Task HandleAppSuspend();
 
         IReadOnlyList<INavItem> NavItems { get; }
@@ -33,29 +33,33 @@ namespace FluentEditor.Model
 
         private IStringProvider _stringProvider;
 
-        public async Task InitializeData(string dataPath, IControlPaletteModel paletteModel, ControlPaletteExportProvider controlPaletteExportProvider)
+        public async Task InitializeData(string dataPath, IControlPaletteModel paletteModel, IControlPaletteExportProvider controlPaletteExportProvider)
         {
-            var asset = AssetLoader.Open(new Uri(dataPath));
-            var rootObject = JsonObject.Parse(asset).AsObject();
-            
-            List<INavItem> navItems = new List<INavItem>();
-            
-            if (rootObject.ContainsKey("Demos"))
+            // Use Task.Run to ensure the method runs asynchronously
+            await Task.Run(() =>
             {
-                JsonArray demoDataList = rootObject["Demos"].AsArray();
-                foreach (var demoData in demoDataList)
+                var asset = AssetLoader.Open(new Uri(dataPath));
+                var rootObject = JsonObject.Parse(asset).AsObject();
+
+                List<INavItem> navItems = new List<INavItem>();
+
+                if (rootObject.ContainsKey("Demos"))
                 {
-                    navItems.Add(ParseNavItem(demoData.AsObject(), paletteModel, controlPaletteExportProvider));
+                    JsonArray demoDataList = rootObject["Demos"].AsArray();
+                    foreach (var demoData in demoDataList)
+                    {
+                        navItems.Add(ParseNavItem(demoData.AsObject(), paletteModel, controlPaletteExportProvider));
+                    }
                 }
-            }
-            
-            string defaultDemoId = rootObject.GetOptionalString("DefaultDemoId");
-            if (!string.IsNullOrEmpty(defaultDemoId))
-            {
-                _defaultNavItem = navItems.FirstOrDefault(a => a.Id == defaultDemoId);
-            }
-            
-            _navItems = navItems;
+
+                string defaultDemoId = rootObject.GetOptionalString("DefaultDemoId");
+                if (!string.IsNullOrEmpty(defaultDemoId))
+                {
+                    _defaultNavItem = navItems.FirstOrDefault(a => a.Id == defaultDemoId);
+                }
+
+                _navItems = navItems;
+            });
         }
 
         public Task HandleAppSuspend()
@@ -64,7 +68,7 @@ namespace FluentEditor.Model
             return Task.CompletedTask;
         }
 
-        private INavItem ParseNavItem(JsonObject data, IControlPaletteModel paletteModel, ControlPaletteExportProvider controlPaletteExportProvider)
+        private INavItem ParseNavItem(JsonObject data, IControlPaletteModel paletteModel, IControlPaletteExportProvider controlPaletteExportProvider)
         {
             string type = data.GetOptionalString("Type");
 

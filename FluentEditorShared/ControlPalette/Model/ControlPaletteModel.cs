@@ -44,124 +44,127 @@ namespace FluentEditor.ControlPalette.Model
         {
             _stringProvider = stringProvider;
 
-            var stream = AssetLoader.Open(new Uri(dataPath));
-            var rootObject = JsonObject.Parse(stream).AsObject();
-
-            _whiteColor = new ColorPaletteEntry(Colors.White, _stringProvider.GetString("DarkThemeTextContrastTitle"), null, ColorStringFormat.PoundRGB, null);
-            _blackColor = new ColorPaletteEntry(Colors.Black, _stringProvider.GetString("LightThemeTextContrastTitle"), null, ColorStringFormat.PoundRGB, null);
-
-            var lightRegionNode = rootObject["LightRegion"].AsObject();
-            _lightRegion = ColorPaletteEntry.Parse(lightRegionNode, null);
-
-            var darkRegionNode = rootObject["DarkRegion"].AsObject();
-            _darkRegion = ColorPaletteEntry.Parse(darkRegionNode, null);
-
-            var lightBaseNode = rootObject["LightBase"].AsObject();
-            _lightBase = ColorPalette.Parse(lightBaseNode, null);
-
-            var darkBaseNode = rootObject["DarkBase"].AsObject();
-            _darkBase = ColorPalette.Parse(darkBaseNode, null);
-
-            var lightPrimaryNode = rootObject["LightPrimary"].AsObject();
-            _lightPrimary = ColorPalette.Parse(lightPrimaryNode, null);
-
-            var darkPrimaryNode = rootObject["DarkPrimary"].AsObject();
-            _darkPrimary = ColorPalette.Parse(darkPrimaryNode, null);
-
-            _presets = new AvaloniaList<Preset>();
-            if (rootObject.ContainsKey("Presets"))
+            await Task.Run(() =>
             {
-                var presetsNode = rootObject["Presets"].AsArray();
-                foreach (var presetNode in presetsNode)
+                var stream = AssetLoader.Open(new Uri(dataPath));
+                var rootObject = JsonObject.Parse(stream).AsObject();
+
+                _whiteColor = new ColorPaletteEntry(Colors.White, _stringProvider.GetString("DarkThemeTextContrastTitle"), null, ColorStringFormat.PoundRGB, null);
+                _blackColor = new ColorPaletteEntry(Colors.Black, _stringProvider.GetString("LightThemeTextContrastTitle"), null, ColorStringFormat.PoundRGB, null);
+
+                var lightRegionNode = rootObject["LightRegion"].AsObject();
+                _lightRegion = ColorPaletteEntry.Parse(lightRegionNode, null);
+
+                var darkRegionNode = rootObject["DarkRegion"].AsObject();
+                _darkRegion = ColorPaletteEntry.Parse(darkRegionNode, null);
+
+                var lightBaseNode = rootObject["LightBase"].AsObject();
+                _lightBase = ColorPalette.Parse(lightBaseNode, null);
+
+                var darkBaseNode = rootObject["DarkBase"].AsObject();
+                _darkBase = ColorPalette.Parse(darkBaseNode, null);
+
+                var lightPrimaryNode = rootObject["LightPrimary"].AsObject();
+                _lightPrimary = ColorPalette.Parse(lightPrimaryNode, null);
+
+                var darkPrimaryNode = rootObject["DarkPrimary"].AsObject();
+                _darkPrimary = ColorPalette.Parse(darkPrimaryNode, null);
+
+                _presets = new AvaloniaList<Preset>();
+                if (rootObject.ContainsKey("Presets"))
                 {
-                    _presets.Add(Preset.Parse(presetNode.AsObject()));
+                    var presetsNode = rootObject["Presets"].AsArray();
+                    foreach (var presetNode in presetsNode)
+                    {
+                        _presets.Add(Preset.Parse(presetNode.AsObject()));
+                    }
                 }
-            }
-            if (_presets.Count >= 1)
-            {
-                ApplyPreset(_presets[0]);
-            }
+                if (_presets.Count >= 1)
+                {
+                    ApplyPreset(_presets[0]);
+                }
 
-            UpdateActivePreset();
+                UpdateActivePreset();
 
-            _lightRegion.ContrastColors = new List<ContrastColorWrapper> { new ContrastColorWrapper(_whiteColor, false, false), new ContrastColorWrapper(_blackColor, true, true), new ContrastColorWrapper(_lightBase.BaseColor, true, false), new ContrastColorWrapper(_lightPrimary.BaseColor, true, false) };
-            _darkRegion.ContrastColors = new List<ContrastColorWrapper> { new ContrastColorWrapper(_whiteColor, true, true), new ContrastColorWrapper(_blackColor, false, false), new ContrastColorWrapper(_darkBase.BaseColor, true, false), new ContrastColorWrapper(_darkPrimary.BaseColor, true, false) };
-            _lightBase.ContrastColors = new List<ContrastColorWrapper> { new ContrastColorWrapper(_whiteColor, false, false), new ContrastColorWrapper(_blackColor, true, true), new ContrastColorWrapper(_lightRegion, true, false), new ContrastColorWrapper(_lightPrimary.BaseColor, true, false) };
-            _darkBase.ContrastColors = new List<ContrastColorWrapper> { new ContrastColorWrapper(_whiteColor, true, true), new ContrastColorWrapper(_blackColor, false, false), new ContrastColorWrapper(_darkRegion, true, false), new ContrastColorWrapper(_darkPrimary.BaseColor, true, false) };
-            _lightPrimary.ContrastColors = new List<ContrastColorWrapper> { new ContrastColorWrapper(_whiteColor, true, true), new ContrastColorWrapper(_blackColor, false, false), new ContrastColorWrapper(_lightRegion, true, false), new ContrastColorWrapper(_lightBase.BaseColor, true, false) };
-            _darkPrimary.ContrastColors = new List<ContrastColorWrapper> { new ContrastColorWrapper(_whiteColor, true, true), new ContrastColorWrapper(_blackColor, false, false), new ContrastColorWrapper(_darkRegion, true, false), new ContrastColorWrapper(_darkBase.BaseColor, true, false) };
+                _lightRegion.ContrastColors = new List<ContrastColorWrapper> { new ContrastColorWrapper(_whiteColor, false, false), new ContrastColorWrapper(_blackColor, true, true), new ContrastColorWrapper(_lightBase.BaseColor, true, false), new ContrastColorWrapper(_lightPrimary.BaseColor, true, false) };
+                _darkRegion.ContrastColors = new List<ContrastColorWrapper> { new ContrastColorWrapper(_whiteColor, true, true), new ContrastColorWrapper(_blackColor, false, false), new ContrastColorWrapper(_darkBase.BaseColor, true, false), new ContrastColorWrapper(_darkPrimary.BaseColor, true, false) };
+                _lightBase.ContrastColors = new List<ContrastColorWrapper> { new ContrastColorWrapper(_whiteColor, false, false), new ContrastColorWrapper(_blackColor, true, true), new ContrastColorWrapper(_lightRegion, true, false), new ContrastColorWrapper(_lightPrimary.BaseColor, true, false) };
+                _darkBase.ContrastColors = new List<ContrastColorWrapper> { new ContrastColorWrapper(_whiteColor, true, true), new ContrastColorWrapper(_blackColor, false, false), new ContrastColorWrapper(_darkRegion, true, false), new ContrastColorWrapper(_darkPrimary.BaseColor, true, false) };
+                _lightPrimary.ContrastColors = new List<ContrastColorWrapper> { new ContrastColorWrapper(_whiteColor, true, true), new ContrastColorWrapper(_blackColor, false, false), new ContrastColorWrapper(_lightRegion, true, false), new ContrastColorWrapper(_lightBase.BaseColor, true, false) };
+                _darkPrimary.ContrastColors = new List<ContrastColorWrapper> { new ContrastColorWrapper(_whiteColor, true, true), new ContrastColorWrapper(_blackColor, false, false), new ContrastColorWrapper(_darkRegion, true, false), new ContrastColorWrapper(_darkBase.BaseColor, true, false) };
 
-            _lightColorMappings = ColorMapping.ParseList(rootObject["LightPaletteMapping"].AsArray(), _lightRegion, _darkRegion, _lightBase, _darkBase, _lightPrimary, _darkPrimary, _whiteColor, _blackColor);
-            _lightColorMappings.Sort((a, b) =>
-            {
-                return a.Target.ToString().CompareTo(b.Target.ToString());
+                _lightColorMappings = ColorMapping.ParseList(rootObject["LightPaletteMapping"].AsArray(), _lightRegion, _darkRegion, _lightBase, _darkBase, _lightPrimary, _darkPrimary, _whiteColor, _blackColor);
+                _lightColorMappings.Sort((a, b) =>
+                {
+                    return a.Target.ToString().CompareTo(b.Target.ToString());
+                });
+
+                _darkColorMappings = ColorMapping.ParseList(rootObject["DarkPaletteMapping"].AsArray(), _lightRegion, _darkRegion, _lightBase, _darkBase, _lightPrimary, _darkPrimary, _whiteColor, _blackColor);
+                _darkColorMappings.Sort((a, b) =>
+                {
+                    return a.Target.ToString().CompareTo(b.Target.ToString());
+                });
+
+                _lightRegion.ActiveColorChanged += PaletteEntry_ActiveColorChanged;
+                _darkRegion.ActiveColorChanged += PaletteEntry_ActiveColorChanged;
+                _lightBase.BaseColor.ActiveColorChanged += PaletteEntry_ActiveColorChanged;
+                _darkBase.BaseColor.ActiveColorChanged += PaletteEntry_ActiveColorChanged;
+                _lightPrimary.BaseColor.ActiveColorChanged += PaletteEntry_ActiveColorChanged;
+                _darkPrimary.BaseColor.ActiveColorChanged += PaletteEntry_ActiveColorChanged;
+                foreach (var entry in _lightBase.Palette)
+                {
+                    entry.ActiveColorChanged += PaletteEntry_ActiveColorChanged;
+                }
+                foreach (var entry in _darkBase.Palette)
+                {
+                    entry.ActiveColorChanged += PaletteEntry_ActiveColorChanged;
+                }
+                foreach (var entry in _lightPrimary.Palette)
+                {
+                    entry.ActiveColorChanged += PaletteEntry_ActiveColorChanged;
+                }
+                foreach (var entry in _darkPrimary.Palette)
+                {
+                    entry.ActiveColorChanged += PaletteEntry_ActiveColorChanged;
+                }
+
+                if (_lightRegion.Description == null)
+                {
+                    _lightRegion.Description = GenerateMappingDescription(_lightRegion, _lightColorMappings);
+                }
+                if (_darkRegion.Description == null)
+                {
+                    _darkRegion.Description = GenerateMappingDescription(_darkRegion, _darkColorMappings);
+                }
+                foreach (var entry in _lightBase.Palette)
+                {
+                    if (entry.Description == null)
+                    {
+                        entry.Description = GenerateMappingDescription(entry, _lightColorMappings);
+                    }
+                }
+                foreach (var entry in _darkBase.Palette)
+                {
+                    if (entry.Description == null)
+                    {
+                        entry.Description = GenerateMappingDescription(entry, _darkColorMappings);
+                    }
+                }
+                foreach (var entry in _lightPrimary.Palette)
+                {
+                    if (entry.Description == null)
+                    {
+                        entry.Description = GenerateMappingDescription(entry, _lightColorMappings);
+                    }
+                }
+                foreach (var entry in _darkPrimary.Palette)
+                {
+                    if (entry.Description == null)
+                    {
+                        entry.Description = GenerateMappingDescription(entry, _darkColorMappings);
+                    }
+                }
             });
-
-            _darkColorMappings = ColorMapping.ParseList(rootObject["DarkPaletteMapping"].AsArray(), _lightRegion, _darkRegion, _lightBase, _darkBase, _lightPrimary, _darkPrimary, _whiteColor, _blackColor);
-            _darkColorMappings.Sort((a, b) =>
-            {
-                return a.Target.ToString().CompareTo(b.Target.ToString());
-            });
-
-            _lightRegion.ActiveColorChanged += PaletteEntry_ActiveColorChanged;
-            _darkRegion.ActiveColorChanged += PaletteEntry_ActiveColorChanged;
-            _lightBase.BaseColor.ActiveColorChanged += PaletteEntry_ActiveColorChanged;
-            _darkBase.BaseColor.ActiveColorChanged += PaletteEntry_ActiveColorChanged;
-            _lightPrimary.BaseColor.ActiveColorChanged += PaletteEntry_ActiveColorChanged;
-            _darkPrimary.BaseColor.ActiveColorChanged += PaletteEntry_ActiveColorChanged;
-            foreach (var entry in _lightBase.Palette)
-            {
-                entry.ActiveColorChanged += PaletteEntry_ActiveColorChanged;
-            }
-            foreach (var entry in _darkBase.Palette)
-            {
-                entry.ActiveColorChanged += PaletteEntry_ActiveColorChanged;
-            }
-            foreach (var entry in _lightPrimary.Palette)
-            {
-                entry.ActiveColorChanged += PaletteEntry_ActiveColorChanged;
-            }
-            foreach (var entry in _darkPrimary.Palette)
-            {
-                entry.ActiveColorChanged += PaletteEntry_ActiveColorChanged;
-            }
-
-            if (_lightRegion.Description == null)
-            {
-                _lightRegion.Description = GenerateMappingDescription(_lightRegion, _lightColorMappings);
-            }
-            if (_darkRegion.Description == null)
-            {
-                _darkRegion.Description = GenerateMappingDescription(_darkRegion, _darkColorMappings);
-            }
-            foreach (var entry in _lightBase.Palette)
-            {
-                if (entry.Description == null)
-                {
-                    entry.Description = GenerateMappingDescription(entry, _lightColorMappings);
-                }
-            }
-            foreach (var entry in _darkBase.Palette)
-            {
-                if (entry.Description == null)
-                {
-                    entry.Description = GenerateMappingDescription(entry, _darkColorMappings);
-                }
-            }
-            foreach (var entry in _lightPrimary.Palette)
-            {
-                if (entry.Description == null)
-                {
-                    entry.Description = GenerateMappingDescription(entry, _lightColorMappings);
-                }
-            }
-            foreach (var entry in _darkPrimary.Palette)
-            {
-                if (entry.Description == null)
-                {
-                    entry.Description = GenerateMappingDescription(entry, _darkColorMappings);
-                }
-            }
         }
         
         private string GenerateMappingDescription(IColorPaletteEntry paletteEntry, List<ColorMapping> mappings)

@@ -18,8 +18,6 @@ namespace FluentEditor.ControlPalette.Model
 
     public class ControlPaletteExportProvider : IControlPaletteExportProvider
     {
-        private bool _isWindowInitializing = false;
-
         // This is owned by the UI thread for the _exportWindow
         private ExportViewModel _exportViewModel;
 
